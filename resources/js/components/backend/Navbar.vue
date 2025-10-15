@@ -13,7 +13,7 @@
       <!-- Title -->
       <div class="flex flex-1 lg:mr-32">
         <div class="relative w-full max-w-xl mr-6">
-          <p class="font-bold text-zinc-700">นโยบายองค์กร / มาตรการ</p>
+          <p class="font-bold text-zinc-700">{{ pageTitle }}</p>
         </div>
       </div>
 
@@ -114,3 +114,18 @@
     </div>
   </header>
 </template>
+
+
+<script>
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+
+export default {
+  setup() {
+    const route = useRoute()
+    const pageTitle = computed(() => route.meta?.title || route.name || '')
+    return { pageTitle }
+  }
+}
+
+</script>

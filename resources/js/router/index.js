@@ -1,5 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import http from '../services/AuthService'
+import {
+    createRouter,
+    createWebHistory
+} from 'vue-router'
+
 
 // import Layouts
 import FrontendLayout from "../layouts/Auth.vue"
@@ -9,53 +12,107 @@ import BackendLayout from '../layouts/Backend.vue'
 import Login from '../views/frontend/Login.vue'
 
 // Backend
-import Policys from '../views/backend/Policys.vue'
+import PoliciesList from '../views/backend/PoliciesList.vue'
+import Companies from '../views/backend/Companies.vue';
+import PolicyCategory from '../views/backend/PolicyCategory.vue';
 
-const routes =[{
-    path: '/login',
-    component: FrontendLayout,
-    children: [{
-      name: 'Login',
-      path: '',
-      component: Login
-    }],
-  },
-  {
-    path: '/backend',
-    component: BackendLayout,
-    children: [{
-        path: 'policys',
-        name: 'Policys',
-        component: Policys
-    }],
-    meta: {requiresAuth: true}
-  },
-  {
-    path: '/',
-    redirect: '/backend'
-  }
+const PoliciesForm = () => import('../views/backend/PoliciesForm.vue')
+
+const routes = [{
+        path: '/login',
+        component: FrontendLayout,
+        children: [{
+            name: 'Login',
+            path: '',
+            component: Login
+        }],
+    },
+    {
+        path: '/backend',
+        component: BackendLayout,
+        meta: {
+            requiresAuth: true
+        },
+        children: [{
+                path: '',
+                redirect: {
+                    name: 'Policies'
+                }
+            },
+            {
+                path: 'policies',
+                name: 'Policies',
+                component: PoliciesList,
+                meta: {
+                    title: 'นโยบายองค์กร / มาตรการ'
+                },
+            },
+
+            {
+                path: 'policies/create',
+                name: 'PolicyCreate',
+                component: PoliciesForm,
+                meta: {
+                    title: 'สร้างข้อมูลนโยบาย/มาตรการองค์กร'
+                },
+            },
+
+            {
+                path: 'policies/:id/edit',
+                name: 'PolicyEdit',
+                component: PoliciesForm,
+                props: true,
+                meta: {
+                    title: (r) => `แก้ไขนโยบาย #${r.params.id}`
+                },
+            },
+
+            {
+                path: 'companies',
+                name: 'Companies',
+                component: Companies,
+                meta: {
+                    title: 'จัดการ Company'
+                }
+            },
+            {
+                path: 'policy-category',
+                name: 'Policy-PolicyCategory',
+                component: PolicyCategory,
+                meta: {
+                    title: 'จัดการประเภทของนโยบาย'
+                }
+            },
+        ],
+    },
+    {
+        path: '/',
+        redirect: '/backend'
+    }
 
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (!to.meta?.requiresAuth) return next()
+    const needAuth = to.matched.some(r => r.meta?.requiresAuth)
+    if (!needAuth) return next()
 
-  const token = localStorage.getItem('auth_token')
+    const hasToken = !!localStorage.getItem('auth_token')
 
-  if (!token)
-    router.push('/login');
-    // return next({ name: 'Login', query: { redirect: to.fullPath } })
+    if (!hasToken) {
+        return next({
+            name: 'Login',
+            query: {
+                redirect: to.fullPath
+            }
+        })
+    }
 
-  if (!http.defaults.headers.common['Authorization']){
-    http.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  }
-  next()
+    return next()
 })
 
 export default router
-

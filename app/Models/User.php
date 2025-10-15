@@ -22,12 +22,12 @@ class User extends Authenticatable
         'org_unit_id',
         'job_level_id',
         'employee_no',
-        'name',
+        'name_th',
+        'name_en',
         'email',
         'add_object_id',
         'password',
         'is_active',
-
     ];
 
     /**
@@ -47,5 +47,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_policy_admin' => 'boolean',
+        'is_hr_viewer' => 'boolean'
     ];
 }

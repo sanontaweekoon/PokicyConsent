@@ -25,29 +25,20 @@
 </template>
 
 <script>
-import http from "../../services/AuthService";
+import { AuthService } from "../../services/AuthService";
 
 export default {
+  name: 'Login',
   mounted() {
-    let token = this.$route?.query?.token
+    const token = AuthService.completeLoginFromCallback();
 
-    if (!token) {
-      const usp = new URLSearchParams(window.location.search)
-      token = usp.get('token')
-    }
-
-    if (token) {
-      localStorage.setItem('auth_token', token)
-      http.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      this.$router.push({ name: 'Policys' })
-    } else {
-      localStorage.removeItem('auth_token', token)
-      delete http.defaults.headers.common['Authorization']
+    if (token || AuthService.isAuthenticated()) {
+      this.$router.replace({ name: 'Policies'});
     }
   },
   methods: {
     LoginWithMicrosoft() {
-      window.location.href = '/login/microsoft'
+      AuthService.beginMicrosoftLogin();
     }
   }
 };

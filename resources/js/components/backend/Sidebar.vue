@@ -9,7 +9,7 @@
       <ul class="mt-6">
         <li class="relative px-6 py-3">
           <span class="absolute inset-y-0 left-0 w-1 bg-red-700 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
-          <router-link to="/backend/policys"
+          <router-link to="/backend/policies"
             class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100">
             <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512">
               <path fill="#A4262C"
@@ -36,7 +36,7 @@
 
       <ul>
         <li class="relative px-6 py-3">
-          <router-link to="/backend"
+          <router-link to="/backend/policy-category"
             class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
             href="forms.html">
             <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 384 512"><path fill="#A4262C" d="M64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-277.5c0-17-6.7-33.3-18.7-45.3L258.7 18.7C246.7 6.7 230.5 0 213.5 0L64 0zM325.5 176L232 176c-13.3 0-24-10.7-24-24L208 58.5 325.5 176z"/></svg>
@@ -44,6 +44,18 @@
           </router-link>
         </li>
       </ul>
+
+      <ul>
+        <li class="relative px-6 py-3">
+          <router-link to="/backend/companies"
+            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+            href="forms.html">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 512 512"><path fill="#A4262C" d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L368 46.1 465.9 144 490.3 119.6c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L432 177.9 334.1 80 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/></svg>
+            <span class="ml-4">จัดการ Company</span>
+          </router-link>
+        </li>
+      </ul>
+
     </div>
     
   </aside>
@@ -74,11 +86,3 @@
     </div>
   </aside>
 </template>
-
-<script>
-export default {
-  methods: {
-
-  }
-};
-</script>

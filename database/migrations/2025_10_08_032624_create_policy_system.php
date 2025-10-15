@@ -8,7 +8,7 @@ class CreatePolicySystem extends Migration
 {
     public function up()
     {
-        // --- Base (companies, job_levels, org_units, users, groups) ---
+        // --- Base ---
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->nullable();
@@ -29,14 +29,16 @@ class CreatePolicySystem extends Migration
         Schema::create('org_units', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('company_id')->constrained('companies');
-            $table->foreignId('parent_id')->nullable()->constrained('org_units');
+            // self-FK: หลีกเลี่ยง cascade เพื่อกัน loop/cycle บน SQL Server
+            $table->foreignId('parent_id')->nullable()
+                  ->constrained('org_units')
+                  ->onDelete('no action')->onUpdate('no action');
             $table->string('code')->nullable();
             $table->string('name_th')->nullable();
             $table->string('name_en')->nullable();
             $table->string('path_code')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamp('created_at')->nullable();
-
             $table->index(['company_id', 'parent_id']);
         });
 
@@ -90,7 +92,7 @@ class CreatePolicySystem extends Migration
             $table->foreignId('owner_user_id')->nullable()->constrained('users');
             $table->foreignId('owner_org_unit_id')->nullable()->constrained('org_units');
             $table->boolean('is_required_ack')->default(true);
-            $table->enum('status', ['draft','active','archived'])->default('draft'); // status_polices
+            $table->enum('status', ['draft','active','archived'])->default('draft');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
@@ -103,12 +105,10 @@ class CreatePolicySystem extends Migration
             $table->text('change_log')->nullable();
             $table->string('file_attachment_path')->nullable();
             $table->timestamp('published_at')->nullable();
-            $table->enum('status', ['draft','published','retired'])->default('draft'); // status_policy_version
-            // เพิ่มกติกาสรุปการรับทราบ (แนะนำ)
+            $table->enum('status', ['draft','published','retired'])->default('draft');
             $table->enum('completion_rule', ['all','any','threshold'])->default('all');
             $table->unsignedInteger('completion_threshold')->nullable();
             $table->timestamp('created_at')->nullable();
-
             $table->index(['policy_id','version_no']);
         });
 
@@ -122,7 +122,6 @@ class CreatePolicySystem extends Migration
             $table->boolean('allow_late_ack')->default(false);
             $table->foreignId('create_by')->nullable()->constrained('users');
             $table->timestamps();
-
             $table->index(['policy_version_id','is_open']);
         });
 
@@ -139,14 +138,12 @@ class CreatePolicySystem extends Migration
         Schema::create('policy_targets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->enum('target_type', ['user','org_nit','job_level','group','company']); // ตามสคีมาเดิม (org_nit ตามสะกดเดิม)
+            $table->enum('target_type', ['user','org_nit','job_level','group','company']); // สะกดเดิม
             $table->unsignedBigInteger('target_id');
             $table->boolean('include_descendants')->default(true);
             $table->boolean('required')->default(true);
-            // index enum ที่ให้มา
             $table->enum('index', ['policy_window_id','target_type','target_id'])->nullable();
             $table->timestamps();
-
             $table->index(['policy_window_id','target_type','target_id']);
         });
 
@@ -158,13 +155,12 @@ class CreatePolicySystem extends Migration
             $table->boolean('locked')->default(false);
             $table->enum('uniqid', ['policy_window_id','user_id'])->nullable();
             $table->timestamps();
-
             $table->unique(['policy_window_id','user_id']);
             $table->index(['user_id','policy_window_id']);
         });
 
         // --- Channels & Announcements ---
-        Schema::create('chanels', function (Blueprint $table) { // สะกดตามเดิม
+        Schema::create('chanels', function (Blueprint $table) { // สะกดเดิม
             $table->bigIncrements('id');
             $table->string('code')->nullable();
             $table->string('name');
@@ -182,7 +178,6 @@ class CreatePolicySystem extends Migration
             $table->timestamp('send_at')->nullable();
             $table->enum('status', ['draft','queued','sending','sent','failed'])->default('draft');
             $table->timestamps();
-
             $table->index(['policy_window_id','channel_id','status']);
         });
 
@@ -194,15 +189,23 @@ class CreatePolicySystem extends Migration
             $table->json('meta')->nullable();
             $table->enum('index', ['announcement_id','user_id','status'])->nullable();
             $table->timestamps();
-
             $table->index(['announcement_id','user_id','status']);
         });
 
         // --- Acknowledgements (document-level) ---
         Schema::create('acknowledgements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->foreignId('policy_version_id')->constrained('policy_version')->cascadeOnDelete();
+
+            // เส้นหลัก: ผ่าน window
+            $table->foreignId('policy_window_id')
+                  ->constrained('policy_windows')
+                  ->cascadeOnDelete();
+
+            // กัน multiple paths: ห้าม cascade ตรงจาก policy_version
+            $table->foreignId('policy_version_id')
+                  ->constrained('policy_version')
+                  ->onDelete('no action')->onUpdate('no action');
+
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('status', ['pending','acknowledged'])->default('pending');
             $table->string('signer_name')->nullable();
@@ -215,7 +218,7 @@ class CreatePolicySystem extends Migration
             $table->timestamp('acknowledged_at')->nullable();
             $table->timestamps();
 
-            $table->unique(['policy_window_id','user_id']); // 1 window ต่อ user 1 แถว
+            $table->unique(['policy_window_id','user_id']);
             $table->index(['policy_version_id','status']);
         });
 
@@ -229,7 +232,7 @@ class CreatePolicySystem extends Migration
             $table->timestamps();
         });
 
-        // --- NEW: Policy Items (per version) ---
+        // --- Policy Items (per version) ---
         Schema::create('policy_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_version_id')->constrained('policy_version')->cascadeOnDelete();
@@ -245,32 +248,51 @@ class CreatePolicySystem extends Migration
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
-
             $table->index(['policy_version_id','order_no']);
         });
 
         Schema::create('policy_item_options', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('policy_item_id')->constrained('policy_items')->cascadeOnDelete();
+            // กันไม่ให้เกิดเส้นทางผ่าน options → acknowledgements
+            $table->foreignId('policy_item_id')
+                  ->constrained('policy_items')
+                  ->onDelete('no action')->onUpdate('no action');
             $table->string('label');
             $table->string('value')->nullable();
             $table->unsignedInteger('order_no')->default(0);
             $table->boolean('is_accept_option')->default(true);
             $table->timestamps();
-
             $table->index(['policy_item_id','order_no']);
         });
 
         Schema::create('policy_item_acknowledgements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->foreignId('policy_version_id')->constrained('policy_version')->cascadeOnDelete();
-            $table->foreignId('policy_item_id')->constrained('policy_items')->cascadeOnDelete();
+
+            // เส้นหลัก: ผ่าน window เท่านั้น
+            $table->foreignId('policy_window_id')
+                  ->constrained('policy_windows')
+                  ->cascadeOnDelete();
+
+            // กัน multiple paths: ไม่ cascade จาก policy_version
+            $table->foreignId('policy_version_id')
+                  ->constrained('policy_version')
+                  ->onDelete('no action')->onUpdate('no action');
+
+            // กัน multiple paths: ไม่ cascade จาก policy_items
+            $table->foreignId('policy_item_id')
+                  ->constrained('policy_items')
+                  ->onDelete('no action')->onUpdate('no action');
+
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
-            // ค่าคำตอบตามชนิด
+            // ค่าคำตอบ
             $table->boolean('checked')->default(false);
-            $table->foreignId('option_id')->nullable()->constrained('policy_item_options')->nullOnDelete();
+
+            // ยัง nullable ได้ แต่ห้าม SET NULL อัตโนมัติ (กันหลายเส้นทาง)
+            $table->foreignId('option_id')->nullable()
+                  ->constrained('policy_item_options')
+                  ->onDelete('no action')->onUpdate('no action');
+
             $table->text('value_text')->nullable();
             $table->string('file_path')->nullable();
 
@@ -287,7 +309,6 @@ class CreatePolicySystem extends Migration
 
     public function down()
     {
-        // ลบตามลำดับ FK ย้อนหลัง
         Schema::dropIfExists('policy_item_acknowledgements');
         Schema::dropIfExists('policy_item_options');
         Schema::dropIfExists('policy_items');
