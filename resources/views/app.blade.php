@@ -10,7 +10,6 @@
 
 <body>
   <div id="app"></div>
-  <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
   <script src="{{ mix('js/main.js') }}"></script>
 </body>
 
