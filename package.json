@@ -31,11 +31,10 @@
     "dependencies": {
         "@vuelidate/core": "^2.0.3",
         "@vuelidate/validators": "^2.0.4",
-        "@vueup/vue-quill": "^1.2.0",
         "dompurify": "^3.3.0",
         "marked": "^16.4.0",
         "pinia": "^3.0.3",
-        "quill-table-ui": "^1.0.7",
+        "quill": "^2.0.3",
         "quill-table-up": "^3.1.2",
         "raw-loader": "^4.0.2",
         "vue-awesome-paginate": "^1.2.0",

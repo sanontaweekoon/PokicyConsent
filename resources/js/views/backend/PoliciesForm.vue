@@ -82,8 +82,7 @@
                 <label class="block mb-1 font-medium">ข้อมูลนโยบาย/มาตรการองค์กร *</label>
                 <div>
                     <label class="block mb-1 font-medium"></label>
-                    <QuillEditor ref="quillRef" v-model="content" :options="quillOptions"
-                        class="min-h-[240px] bg-white" />
+                    <div ref="editorContainer" class="min-h-[240px] bg-white"></div>
                 </div>
             </div>
 
@@ -130,15 +129,16 @@
 <!--CKEditor-->
 <script setup>
 import Quill from 'quill'
+
 import { ref, onMounted, onBeforeUnmount, markRaw, computed, nextTick } from 'vue'
 import http from "../../services/BackendService.js";
 import DOMPurify from 'dompurify'
 
-import { QuillEditor } from '@vueup/vue-quill'
 import 'quill/dist/quill.snow.css'
 
 /* computed */
-const quillRef = ref(null) // Reference to Quill editor component
+const editorContainer = ref(null)
+const quInstance = ref(null)
 const content = ref('') // เก็บ text จาก Quill editor
 const appFont = typeof window !== 'undefined' ? getComputedStyle(document.body).fontFamily || 'Kanit, sans-serif' : 'Kanit, sans-serif'
 
@@ -150,18 +150,10 @@ let _quillMutObserver = null
 
 // หา Quill instance และ root element
 function resolveQuill() {
-    try {
-        if (!quillRef.value) return { qu: null, root: document.querySelector('.ql-editor') }
-       
-        if (typeof quillRef.value.getEditor === 'function') {
-            const maybe = quillRef.value.getEditor()
-            if (maybe) return { qu: maybe, root: maybe.root || document.querySelector('.ql-editor') }
-        }
-        if (quillRef.value.editor) return { qu: quillRef.value.editor, root: quillRef.value.editor.root }
-        if (quillRef.value.quill) return { qu: quillRef.value.quill, root: quillRef.value.quill.root }
-    } catch (e) { e }
-    // fallback เป็น DOM ของ .ql-editor
-    return { qu: null, root: document.querySelector('.ql-editor') }
+    const root = document.querySelector('.ql-editor')
+    return {
+        qu: quInstance.value, root
+    }
 }
 
 // ล้างค่าเมื่อ component ถูกลบ
@@ -173,7 +165,7 @@ onBeforeUnmount(() => {
         try {
             const { qu } = resolveQuill()
             if (qu) {
-                if (qu && typeof qu.off === 'function') {
+                if (typeof qu.off === 'function') {
                     if (_quillChangeHandler) {
                         qu.off('text-change', _quillChangeHandler)
                     }
@@ -198,14 +190,26 @@ onMounted(async () => {
     await loadCategories();
     await nextTick()
 
-    const resolved = resolveQuill()
+    if (!editorContainer.value) {
+        console.warn('Editor container not found')
+        return
+    }
 
-    const instance = resolved.qu || (quillRef.value?.getEditor?.() ?? quillRef.value?.editor ?? quillRef.value?.quill) || null
-    const root = resolved.root || document.querySelector('.ql-editor')
+    quInstance.value = new Quill(editorContainer.value, quillOptions)
+    const instance = quInstance.value
+    const root = instance?.root || editorContainer.value.querySelector('.ql-editor')
+
+    if (content.value && content.value.trim() !== '') {
+        try {
+            instance.clipboard.dangerouslyPasteHTML(content.value)
+        } catch (e) {
+
+        }
+    }
 
     const updateContentFromInstance = () => {
         try {
-            const html = instance.root ? instance.root.innerHTML : (root ? root.innerHTML : '')
+            const html = instance && instance.root ? instance.root.innerHTML : (root ? root.innerHTML : '')
             // ถ้าไม่มีเนื้อหา ให้เก็บเป็นค่าว่างแทน <p><br></p>
             content.value = (html && html.trim() === '<p><br></p>') ? '' : (html || '')
         } catch (e) {
@@ -263,6 +267,7 @@ onMounted(async () => {
 
     // ให้สามารถกด Tab ได้ใน Editor
     if (root) {
+        _editable = root
         _quillKeydownHandler = (evt) => {
             if (evt.key !== 'Tab') return
             // ป้องกัน browser กดแท็บแล้วเปลี่ยนตำแหน่ง
@@ -314,6 +319,7 @@ onMounted(async () => {
             } catch (e) {
                 console.warn('Could not handle Tab key in Quill editor', e)
             }
+            try { root.addEventListener('keydown', _quillKeydownHandler, true) } catch (e) { }
         }
     }
 })
@@ -375,7 +381,7 @@ const quillOptions = {
             }
         }
     },
-    formats: ['header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'bullet', 'indent', 'link', 'blockquote', 'code-block', 'script', 'align', 'color', 'background', 'table'],
+    formats: ['header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'indent', 'link', 'blockquote', 'code-block', 'script', 'align', 'color', 'background', 'table'],
 }
 
 /** form & lists */
@@ -427,22 +433,22 @@ function transformQuillClassesToInline(html) {
         if (!doc || !doc.body) return html
 
         // try read Delta attributes per-line from Quill instance
-        const qu = quillRef.value?.getEditor?.() ?? quillRef.value?.editor ?? quillRef.value?.quill ?? null
+        const qu = quInstance.value ?? null
         const lineAttrs = []
         if (qu && typeof qu.getContents === 'function') {
             try {
                 const delta = qu.getContents()
                 let lineIndex = 0
-                ;(delta.ops || []).forEach(op => {
-                    if (typeof op.insert === 'string') {
-                        for (let i = 0; i < op.insert.length; i++) {
-                            if (op.insert[i] === '\n') {
-                                lineAttrs[lineIndex] = Object.assign({}, lineAttrs[lineIndex] || {}, op.attributes || {})
-                                lineIndex++
+                    ; (delta.ops || []).forEach(op => {
+                        if (typeof op.insert === 'string') {
+                            for (let i = 0; i < op.insert.length; i++) {
+                                if (op.insert[i] === '\n') {
+                                    lineAttrs[lineIndex] = Object.assign({}, lineAttrs[lineIndex] || {}, op.attributes || {})
+                                    lineIndex++
+                                }
                             }
                         }
-                    }
-                })
+                    })
             } catch (e) {
                 // ignore
             }
@@ -489,7 +495,7 @@ const sanitizedHtml = computed(() => {
     } else {
         // ถ้าไม่มี ให้ลองอ่านจาก Quill editor instance
         try {
-            const q = quillRef.value?.getEditor?.() ?? quillRef.value?.editor ?? quillRef.value?.quill ?? null
+            const q = quInstance.value
             if (q && q.root && q.root.innerHTML) {
                 raw = q.root.innerHTML
             } else {
@@ -529,14 +535,14 @@ function printPreview() {
     let rawHtml = ''
     try {
         // อ่าน raw HTML จาก Quill editor
-        const q = quillRef.value?.getEditor?.() ?? quillRef.value?.editor ?? quillRef.value?.quill ?? null
+        const q = quInstance.value ?? null
         if (q && q.root && q.root.innerHTML) {
             rawHtml = q.root.innerHTML
         } else {
             rawHtml = sanitizedHtml.value || ''
         }
     } catch (e) {
-        rawHtml = sanititzedHtml.value || ''
+        rawHtml = sanitizedHtml.value || ''
     }
 
     console.log('DEBUG rawHtml from quill:', rawHtml)
@@ -614,7 +620,7 @@ function printPreview() {
     </html>
   `)
 
-    // copy font จาก head มาด้วย
+    // copy font จาก head มาให้ด้วย
     try {
         const headNodes = Array.from(document.head.querySelectorAll('link[rel="stylesheet"], style'))
         headNodes.forEach(node => {
