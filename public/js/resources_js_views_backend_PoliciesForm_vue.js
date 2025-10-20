@@ -474,13 +474,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/main/ts/index.js");
-/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.es.mjs");
-/* harmony import */ var _services_BackendService_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/BackendService.js */ "./resources/js/services/BackendService.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
+/* harmony import */ var _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @tinymce/tinymce-vue */ "./node_modules/@tinymce/tinymce-vue/lib/es2015/main/ts/index.js");
+/* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.es.mjs");
+/* harmony import */ var _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/BackendService.js */ "./resources/js/services/BackendService.js");
+/* harmony import */ var _vuelidate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @vuelidate/core */ "./node_modules/@vuelidate/core/dist/index.mjs");
+/* harmony import */ var _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @vuelidate/validators */ "./node_modules/@vuelidate/validators/dist/index.mjs");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+
+
 
 
 
@@ -491,49 +503,84 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     var __expose = _ref.expose;
     __expose();
     var content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(''); // เก็บ text จาก TinyMCE
+    var editorRef = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
+    var announce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(''); // now | scheduled
 
+    var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.useRoute)();
+    var saving = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
+    var publishErrors = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({});
+    function clearPublishErrors() {
+      publishErrors.value = {};
+    }
+    function collectValidationErrors() {
+      clearPublishErrors();
+      var v = v$.value;
+      alert('กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย');
+      for (var _i = 0, _Object$keys = Object.keys(v); _i < _Object$keys.length; _i++) {
+        var key = _Object$keys[_i];
+        if (v[key] && v[key].$errors && v[key].$errors.length) {
+          publishErrors.value[key] = v[key].$errors[0].$message || 'ข้อมูลไม่ถูกต้อง';
+        }
+      }
+      if (Object.keys(publishErrors.value).length === 0) {
+        publishErrors.value._general = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+      }
+      publishErrors.value = _objectSpread({}, publishErrors.value);
+    }
+
+    // Query categories
+    var categories = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
+    var catLoading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
+    var categoriesById = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({});
+    var isEdit = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return !!form.value.id;
+    });
     function onEditorInit(_evt, editor) {
       editorRef.value = editor;
     }
-    var appFont = typeof window !== 'undefined' ? getComputedStyle(document.body).fontFamily || 'Kanit, sans-serif' : 'Kanit, sans-serif';
-    var editorRef = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
 
     /** form & lists */
     var form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({
       title: '',
-      code: '',
+      description: '',
       category_id: null,
       publish_at: '',
       publish_date: '',
       publish_time: ''
     });
-    var categories = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
-    var catLoading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
-    var categoriesById = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({});
-    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.n) {
-          case 0:
-            _context.n = 1;
-            return loadCategories();
-          case 1:
-            _context.n = 2;
-            return (0,vue__WEBPACK_IMPORTED_MODULE_0__.nextTick)();
-          case 2:
-            return _context.a(2);
-        }
-      }, _callee);
-    })));
+    var rules = {
+      title: {
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาระบุหัวข้อ', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
+      },
+      category_id: {
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาเลือกประเภทนโยบาย', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
+      },
+      description: {
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาใส่เนื้อหานโยบาย', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
+      },
+      publish_date: {
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาเลือกวันที่เผยแพร่', (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf)(function () {
+          return announce.value === 'scheduled';
+        }))
+      },
+      publish_time: {
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาระบุเวลาเผยแพร่', (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf)(function () {
+          return announce.value === 'scheduled';
+        }))
+      }
+    };
+    var v$ = (0,_vuelidate_core__WEBPACK_IMPORTED_MODULE_5__["default"])(rules, form);
     var tinymceInit = {
       base_url: '/tinymce',
       suffix: '.min',
-      height: 600,
+      height: 500,
+      promotion: false,
       menubar: 'file edit view insert format table tools help',
       plugins: 'table lists link autolink code preview fullscreen',
       toolbar: ['undo redo | blocks fontfamily fontsize | bold italic underline |', 'alignleft aligncenter alignright alignjustify | numlist bullist outdent indent |', 'link | table | removeformat | preview fullscreen | code'].join(' '),
       table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | tablesmergecells tablesplitcells',
       branding: false,
-      content_style: "\n    body { font-family: ".concat(appFont, "; line-height: 1.6; }\n    table { border-collapse: collapse; width: 100%; }\n    table, th, td { border: 1px solid #ccc; }\n    th, td { padding: 6px; }\n  ")
+      content_style: "\n    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');\n    body { font-family: 'Kanit', sans-serif; line-height: 1.6; }\n    table { border-collapse: collapse; width: 100%; }\n    table, th, td { border: 1px solid #ccc; }\n    th, td { padding: 6px; }\n  "
     };
 
     /** load categories */
@@ -549,7 +596,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               catLoading.value = true;
               _context2.p = 1;
               _context2.n = 2;
-              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_3__["default"].get('/admin/policy-categories', {
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].get('/admin/policy-categories', {
                 params: {
                   per: 0
                 }
@@ -572,29 +619,223 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       }));
       return _loadCategories.apply(this, arguments);
     }
+    function getEditorHtml() {
+      try {
+        var _ref2, _editorRef$value$getC, _editorRef$value$getC2, _editorRef$value;
+        var raw = (_ref2 = (_editorRef$value$getC = (_editorRef$value$getC2 = (_editorRef$value = editorRef.value).getContent) === null || _editorRef$value$getC2 === void 0 ? void 0 : _editorRef$value$getC2.call(_editorRef$value, {
+          format: 'html'
+        })) !== null && _editorRef$value$getC !== void 0 ? _editorRef$value$getC : content.value) !== null && _ref2 !== void 0 ? _ref2 : '';
+        return dompurify__WEBPACK_IMPORTED_MODULE_3__["default"].sanitize(raw, {
+          USE_PROFILES: {
+            html: true
+          },
+          ADD_TAGS: ['table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'col', 'colgroup'],
+          ADD_ATTR: ['class', 'style', 'colspan', 'rowspan', 'width', 'data-*']
+        });
+      } catch (e) {
+        return '<p>เกิดข้อผิดพลาดในการดึงข้อมูล</p>';
+      }
+    }
+    function saveDraft() {
+      return _saveDraft.apply(this, arguments);
+    }
+    function _saveDraft() {
+      _saveDraft = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+        var payload, response, _t;
+        return _regenerator().w(function (_context3) {
+          while (1) switch (_context3.p = _context3.n) {
+            case 0:
+              saving.value = true;
+              _context3.p = 1;
+              form.value.description = getEditorHtml();
+              v$.value.$touch();
+              if (!v$.value.$invalid) {
+                _context3.n = 2;
+                break;
+              }
+              alert('กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึกฉบับร่าง');
+              return _context3.a(2);
+            case 2:
+              payload = {
+                title: form.value.title,
+                category_id: form.value.category_id,
+                description: getEditorHtml(),
+                publish_at: form.value.publish_date && form.value.publish_time ? "".concat(form.value.publish_date, " ").concat(form.value.publish_time) : null,
+                publish_date: form.value.publish_date,
+                publish_time: form.value.publish_time,
+                status: 'draft'
+              };
+              if (!isEdit.value) {
+                _context3.n = 4;
+                break;
+              }
+              _context3.n = 3;
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].put("/admin/policies/".concat(form.value.id), payload);
+            case 3:
+              response = _context3.v;
+              _context3.n = 6;
+              break;
+            case 4:
+              _context3.n = 5;
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].post('/admin/policies', payload);
+            case 5:
+              response = _context3.v;
+            case 6:
+              route.push({
+                path: '/backend/policies'
+              });
+              _context3.n = 8;
+              break;
+            case 7:
+              _context3.p = 7;
+              _t = _context3.v;
+              console.error('saveDraft failed:', _t);
+              alert('เกิดข้อผิดพลาดในการบันทึกฉบับร่าง');
+            case 8:
+              _context3.p = 8;
+              saving.value = false;
+              return _context3.f(8);
+            case 9:
+              return _context3.a(2);
+          }
+        }, _callee3, null, [[1, 7, 8, 9]]);
+      }));
+      return _saveDraft.apply(this, arguments);
+    }
+    function publishPolicy() {
+      return _publishPolicy.apply(this, arguments);
+    }
+    function _publishPolicy() {
+      _publishPolicy = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+        var payload, response, _t2;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.p = _context4.n) {
+            case 0:
+              saving.value = true;
+              _context4.p = 1;
+              form.value.description = getEditorHtml();
+              clearPublishErrors();
+              v$.value.$touch();
+              if (!v$.value.$invalid) {
+                _context4.n = 2;
+                break;
+              }
+              collectValidationErrors();
+              return _context4.a(2);
+            case 2:
+              payload = {
+                title: form.value.title,
+                category_id: form.value.category_id,
+                description: getEditorHtml(),
+                publish_at: form.value.publish_date && form.value.publish_time ? "".concat(form.value.publish_date, " ").concat(form.value.publish_time) : null,
+                publish_date: form.value.publish_date,
+                publish_time: form.value.publish_time,
+                status: 'active'
+              };
+              console.log('publishPolicy payload', payload);
+              _context4.n = 3;
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].post('/admin/policies', payload);
+            case 3:
+              response = _context4.v;
+              console.log('publishPolicy response', response && response.data);
+              alert('ประกาศสำเร็จ');
+              _context4.n = 5;
+              break;
+            case 4:
+              _context4.p = 4;
+              _t2 = _context4.v;
+              console.error('publishPolicy failed:', _t2);
+              alert('เกิดข้อผิดพลาดในการประกาศนโยบาย');
+            case 5:
+              _context4.p = 5;
+              saving.value = false;
+              return _context4.f(5);
+            case 6:
+              return _context4.a(2);
+          }
+        }, _callee4, null, [[1, 4, 5, 6]]);
+      }));
+      return _publishPolicy.apply(this, arguments);
+    }
+    function cancel() {
+      route.back();
+    }
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var id;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            _context.n = 1;
+            return loadCategories();
+          case 1:
+            _context.n = 2;
+            return (0,vue__WEBPACK_IMPORTED_MODULE_0__.nextTick)();
+          case 2:
+            id = route.params.id || null;
+            if (!id) {
+              _context.n = 3;
+              break;
+            }
+            _context.n = 3;
+            return loadPolicy(id);
+          case 3:
+            return _context.a(2);
+        }
+      }, _callee);
+    })));
     var __returned__ = {
       content: content,
-      onEditorInit: onEditorInit,
-      appFont: appFont,
       editorRef: editorRef,
-      form: form,
+      announce: announce,
+      route: route,
+      saving: saving,
+      publishErrors: publishErrors,
+      clearPublishErrors: clearPublishErrors,
+      collectValidationErrors: collectValidationErrors,
       categories: categories,
       catLoading: catLoading,
       categoriesById: categoriesById,
+      isEdit: isEdit,
+      onEditorInit: onEditorInit,
+      form: form,
+      rules: rules,
+      v$: v$,
       tinymceInit: tinymceInit,
       loadCategories: loadCategories,
+      getEditorHtml: getEditorHtml,
+      saveDraft: saveDraft,
+      publishPolicy: publishPolicy,
+      cancel: cancel,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
       nextTick: vue__WEBPACK_IMPORTED_MODULE_0__.nextTick,
       onMounted: vue__WEBPACK_IMPORTED_MODULE_0__.onMounted,
+      get useRouter() {
+        return vue_router__WEBPACK_IMPORTED_MODULE_1__.useRouter;
+      },
+      get useRoute() {
+        return vue_router__WEBPACK_IMPORTED_MODULE_1__.useRoute;
+      },
       get Editor() {
-        return _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_1__["default"];
+        return _tinymce_tinymce_vue__WEBPACK_IMPORTED_MODULE_2__["default"];
       },
       get DOMPurify() {
-        return dompurify__WEBPACK_IMPORTED_MODULE_2__["default"];
+        return dompurify__WEBPACK_IMPORTED_MODULE_3__["default"];
       },
       get http() {
-        return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_3__["default"];
+        return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"];
+      },
+      get useVuelidate() {
+        return _vuelidate_core__WEBPACK_IMPORTED_MODULE_5__["default"];
+      },
+      get required() {
+        return _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required;
+      },
+      get helpers() {
+        return _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers;
+      },
+      get requiredIf() {
+        return _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf;
       }
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
@@ -638,115 +879,151 @@ var _hoisted_6 = {
   "class": "flex flex-col"
 };
 var _hoisted_7 = {
-  "class": "grid grid-cols-2"
+  "class": "flex items-center gap-2"
 };
 var _hoisted_8 = {
-  "class": "flex items-center gap-2 mt-2"
+  "class": "grid grid-cols-2"
 };
 var _hoisted_9 = {
+  "class": "flex items-center gap-2 mt-2"
+};
+var _hoisted_10 = {
   "for": "option4",
   "class": "text-gray-700"
 };
-var _hoisted_10 = {
-  "class": "flex flex-row"
-};
 var _hoisted_11 = {
-  "class": "flex flex-col"
+  "class": "flex flex-row"
 };
 var _hoisted_12 = {
   "class": "flex flex-col"
 };
 var _hoisted_13 = {
-  "class": "grid grid-cols-2 gap-5"
+  key: 0,
+  "class": "mt-2 text-sm text-red-500"
 };
-var _hoisted_14 = ["value"];
+var _hoisted_14 = {
+  "class": "flex flex-col"
+};
 var _hoisted_15 = {
   key: 0,
-  "class": "text-grey 500"
+  "class": "mt-2 text-sm text-red-500"
 };
 var _hoisted_16 = {
+  "class": "grid grid-cols-2 gap-5"
+};
+var _hoisted_17 = {
+  key: 0,
+  "class": "mt-2 text-sm text-red-500"
+};
+var _hoisted_18 = ["value"];
+var _hoisted_19 = {
+  key: 0,
+  "class": "mt-2 text-sm text-red-500"
+};
+var _hoisted_20 = {
+  key: 1,
+  "class": "text-grey 500"
+};
+var _hoisted_21 = {
   "class": "space-y-3 md:col-span-2 mt-5"
 };
+var _hoisted_22 = {
+  "class": "flex"
+};
+var _hoisted_23 = {
+  key: 0,
+  "class": "my-auto text-sm text-red-500 mx-3"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ซ้าย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"font-medium mr-3\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" class=\"accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" class=\"accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ซ้าย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"font-medium mr-3\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" value=\"all\" class=\"accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" value=\"group\" class=\"accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "font-medium mr-3"
-  }, "เวลาประกาศ: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "flex items-center gap-2"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "เวลาประกาศ: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "radio",
     id: "option3",
     name: "announce",
+    value: "now",
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $setup.announce = $event;
+    }),
     "class": "accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500"
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.announce]]), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "option3",
     "class": "text-gray-700"
-  }, "ประกาศตอนนี้")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, "ประกาศตอนนี้", -1 /* CACHED */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "radio",
     id: "option4",
     name: "announce",
+    value: "scheduled",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $setup.announce = $event;
+    }),
     "class": "accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500"
-  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.announce]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "my-1 text-gray-500 text-xs",
     "for": ""
   }, "วันที่เผยแพร่", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.form.publish_date = $event;
     }),
     "class": "rounded border px-3 py-2 mr-5"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.publish_date]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.publish_date]]), $setup.publishErrors.publish_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.publish_date), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "my-1 text-gray-500 text-xs",
     "for": ""
   }, "เวลาเผยแพร่", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "time",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $setup.form.publish_time = $event;
     }),
     "class": "rounded border px-3 py-2"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.publish_time]])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.publish_time]]), $setup.publishErrors.publish_time ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.publish_time), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "block mb-1 font-medium"
   }, "หัวข้อ *", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $setup.form.title = $event;
     }),
     "class": "w-full rounded border px-3 py-2",
     placeholder: "ระบุหัวข้อนโยบาย"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.title]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.title]]), $setup.publishErrors.title ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.title), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "block mb-1 font-medium"
   }, "ประเภทนโยบาย *", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $setup.form.category_id = $event;
     }),
     "class": "w-full rounded border px-3 py-2 bg-white"
-  }, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  }, [_cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
     value: null
   }, "— เลือกประเภท —", -1 /* CACHED */)), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.categories, function (c) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: c.id,
       value: c.id
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(c.name), 9 /* TEXT, PROPS */, _hoisted_14);
-  }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.category_id]]), $setup.catLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_15, "กำลังโหลด...")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "block mb-1 font-medium"
-  }, "ข้อมูลนโยบาย/มาตรการองค์กร *", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "block mb-1 font-medium"
-  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Editor"], {
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(c.name), 9 /* TEXT, PROPS */, _hoisted_18);
+  }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.category_id]]), $setup.publishErrors.category_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.category_id), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.catLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_20, "กำลังโหลด...")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "class": "mb-1 font-medium flex"
+  }, "ข้อมูลนโยบาย/มาตรการองค์กร *", -1 /* CACHED */)), $setup.publishErrors.description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.description), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Editor"], {
     modelValue: $setup.content,
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $setup.content = $event;
     }),
     init: $setup.tinymceInit,
     onInit: $setup.onEditorInit,
     "tinymce-script-src": '/tinymce/tinymce.min.js'
-  }, null, 8 /* PROPS */, ["modelValue"])])]), _cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, null, 8 /* PROPS */, ["modelValue"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "flex items-center justify-center w-full my-5 space-x-5"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    onClick: $setup.cancel,
     "class": "px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
   }, " ยกเลิก "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    onClick: $setup.saveDraft,
     "class": "px-4 py-2 rounded-lg bg-zinc-500 text-white hover:bg-zinc-700"
   }, " บันทึกฉบับร่าง "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    onClick: $setup.publishPolicy,
     "class": "px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
-  }, " ประกาศ ")], -1 /* CACHED */))])]);
+  }, " ประกาศ ")])])]);
 }
 
 /***/ }),

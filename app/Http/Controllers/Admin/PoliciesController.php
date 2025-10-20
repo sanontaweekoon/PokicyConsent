@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Policy;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PoliciesController extends Controller
 {
@@ -51,6 +54,32 @@ class PoliciesController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge([
+            'code' => $request->input('code') !== '' ? $request->input('code') : null,
+            'category_id' => $request->input('category_id') !== '' ? $request->input('category_id') : null,
+            'owner_user_id' => $request->input('owner_user_id') !== '' ? $request->input('owner_user_id') : null,
+            'owner_org_unit_id' => $request->input('owner_org_unit_id') !== '' ? $request->input('owner_org_unit_id') : null,
+            'publish_date' => $request->input('publish_date') !== '' ? $request->input('publish_date') : null,
+            'publish_time' => $request->input('publish_time') !== '' ? $request->input('publish_time') : null,
+            'publish_at' => $request->input('publish_at') ?? null
+        ]);
+
+        if (is_null($request->input('code'))) {
+            $datePart = Carbon::now()->format('dmy');
+            $base = "P-{$datePart}";
+            $candidate = $base;
+            $suffix = 0;
+
+            while (Policy::where('code', $candidate)->exists()) {
+                $suffix++;
+                $candidate = $base . "-" . $suffix;
+            }
+
+            $request->merge(['code' => $candidate]);
+            Log::debug('Policy.store generated patterned code for null input', ['code' => $candidate]);
+        }
+
+
         $data = $request->validate([
             'category_id' => ['nullable', 'exists:policy_categories,id'],
             'code' => ['nullable', 'string', 'max:100', 'unique:policies,code'],
@@ -59,24 +88,65 @@ class PoliciesController extends Controller
             'owner_user_id' => ['nullable', 'exists:users,id'],
             'owner_org_unit_id' => ['nullable', 'exists:org_units,id'],
             'is_required_ack' => ['sometimes', 'boolean'],
-            'status' => ['required', Rule::in(['draft', 'published', 'archived'])],
+            'status' => ['required', Rule::in(Policy::STATUSES)],
             'publish_date' => ['nullable', 'date'],
             'publish_time' => ['nullable', 'date_format:H:i'],
+            'publish_at' => ['nullable', 'date']
         ]);
 
-        $data['publish_at'] = null;
-        if (!empty($data['publish_date'])) {
+        Log::debug('Policy.store validated data', $data);
+
+        if (!empty($data['publish_at'])) {
+            $data['publish_at'] = Carbon::parse($data['publish_at']);
+        } elseif (!empty($data['publish_date'])) {
             $time = $data['publish_time'] ?? '00:00';
-            $data['publish_at'] = Carbon::createFromFormat('Y-m-d H:i', "{$data['publish_date']} {$time}");
+            try {
+                $data['publish_at'] = Carbon::createFromFormat('Y-m-d H:i', "{$data['publish_date']} {$time}");
+            } catch (\Exception $e) {
+                $data['publish_at'] = Carbon::parse("{$data['publish_date']} {$time}");
+            }
+        } else {
+            $data['publish_at'] = null;
         }
-        unset($data['publish_date'], $data['publish_time']);
+
+        if (!empty($data['publish_at'])) {
+            $data['publish_date'] = $data['publish_at']->format('Y-m-d');
+            $data['publish_time'] = $data['publish_at']->format('H:i');
+        } else {
+            $data['publish_date'] = null;
+            $data['publish_time'] = null;
+        }
 
         $data['is_required_ack'] = $data['is_required_ack'] ?? true;
-        $data['created_by'] = $request->user()?->id;
-        $data['updated_by'] = $request->user()?->id;
 
-        $policy = Policy::create($data);
-        return response()->json($policy, 201);
+        $userId = $request->user()?->id ?? auth()->id();
+        Log::debug('Policy.store auth user id', ['userId' => $userId, 'request_user' => $request->user()]);
+        $data['created_by'] = $userId;
+        $data['updated_by'] = $userId;
+
+        Log::debug('Policy.store create payload', $data);
+
+        DB::enableQueryLog();
+
+        try {
+            $policy = Policy::create($data);
+
+            Log::debug('Policy.store queries', DB::getQueryLog());
+
+            return response()->json([
+                'ok' => true,
+                'validated' => $data,
+                'policy' => $policy
+            ], 201);
+        } catch (\Throwable $e) {
+            Log::error('Policy.create failed', [
+                'msg' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'data' => $data,
+                'queries' => DB::getQueryLog()
+            ]);
+            return response()->json(['message' => 'Could not create policy', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -110,38 +180,68 @@ class PoliciesController extends Controller
      */
     public function update(Request $request, Policy $policy)
     {
+        $request->merge([
+            'code' => $request->input('code') !== '' ? $request->input('code') : null,
+            'category_id' => $request->input('category_id') !== '' ? $request->input('category_id') : null,
+            'owner_user_id' => $request->input('owner_user_id') !== '' ? $request->input('owner_user_id') : null,
+            'owner_org_unit_id' => $request->input('owner_org_unit_id') !== '' ? $request->input('owner_org_unit_id') : null,
+            'publish_date' => $request->input('publish_date') !== '' ? $request->input('publish_date') : null,
+            'publish_time' => $request->input('publish_time') !== '' ? $request->input('publish_time') : null,
+            'publish_at' => $request->input('publish_at') ?? null
+        ]);
+
         $data = $request->validate([
-            'category_id'       => ['nullable', 'exists:policy_categories,id'],
-            'code'              => ['nullable', 'string', 'max:100', Rule::unique('policies', 'code')->ignore($policy->id)],
-            'title'             => ['required', 'string', 'max:255'],
-            'description'       => ['nullable', 'string'],
-            'owner_user_id'     => ['nullable', 'exists:users,id'],
+            'category_id' => ['nullable', 'exists:policy_categories,id'],
+            'code' => ['nullable', 'string', 'max:100', Rule::unique('policies', 'code')->ignore($policy->id)],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'owner_user_id' => ['nullable', 'exists:users,id'],
             'owner_org_unit_id' => ['nullable', 'exists:org_units,id'],
-            'is_required_ack'   => ['sometimes', 'boolean'],
-            'status'            => ['required', Rule::in(['draft', 'published', 'archived'])],
-            'publish_date'      => ['nullable', 'date'],
-            'publish_time'      => ['nullable', 'date_format:H:i'],
+            'is_required_ack' => ['sometimes', 'boolean'],
+            'status' => ['required', Rule::in(Policy::STATUSES)],
+            'publish_date' => ['nullable', 'date'],
+            'publish_time' => ['nullable', 'date_format:H:i'],
+            'publish_at' => ['nullable', 'date']
         ]);
 
         $publishAt = $policy->publish_at ? Carbon::parse($policy->publish_at) : null;
 
-        if (array_key_exists('publish_date', $data) || array_key_exists('publish_time', $data)) {
-            $date = $data['publish_date'] ?? ($publishAt ? $publishAt->format('Y-m-d') : null);
-            $time = $data['publish_time'] ?? ($publishAt ? $publishAt->format('H:i') : '00:00');
-
-            $data['publish_at'] = $date ? Carbon::createFromFormat('Y-m-d H:i', "{$date} {$time}") : null;
+        try {
+            if (!empty($data['publish_at'])) {
+                $publishAt = Carbon::parse($data['publish_at']);
+            } elseif (!empty($data['publish_date'])) {
+                $time = $data['publish_time'] ?? '00:00';
+                $publishAt = Carbon::createFromFormat('Y-m-d H:i', "{$data['publish_date']} {$time}");
+            }
+        } catch (\Exception $e) {
+            try {
+                $publishAt = !empty($data['publish_date']) ? Carbon::parse($data['publish_at']) : null;
+            } catch (\Throwable $ex) {
+                $publishAt = null;
+            }
         }
 
-        unset($data['publish_date'], $data['publish_time']);
+        if ($publishAt) {
+            $data['publish_at'] = $publishAt;
+            $data['publish_date'] = $publishAt->format('Y-m-d');
+            $data['publish_time'] = $publishAt->format('H:i');
+        } else {
+            if (array_key_exists('publish_date', $data) || array_key_exists('publish_time', $data) || array_key_exists('publish_at', $data)) {
+                $data['publish_at'] = null;
+                $data['publish_date'] = $data['publish_date'] ?? null;
+                $data['publish_time'] = $data['publish_time'] ?? null;
+            }
+        }
 
         if (!array_key_exists('is_required_ack', $data)) {
             $data['is_required_ack'] = $policy->is_required_ack;
         }
 
         unset($data['created_by']);
-        $data['updated_by'] = $request->user()?->id;
+        $data['updated_by'] = $request->user()?->id ?? auth()->id();
 
-        $policy->fill($data)->save();
+        $policy->fill($data);
+        $policy->save();
 
         return response()->json($policy);
     }
