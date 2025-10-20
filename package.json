@@ -29,13 +29,13 @@
         "vue-loader": "^16.8.3"
     },
     "dependencies": {
+        "@tinymce/tinymce-vue": "^5.1.1",
         "@vuelidate/core": "^2.0.3",
         "@vuelidate/validators": "^2.0.4",
         "dompurify": "^3.3.0",
         "marked": "^16.4.0",
+        "mermaid": "^11.12.0",
         "pinia": "^3.0.3",
-        "quill": "^2.0.3",
-        "quill-table-up": "^3.1.2",
         "raw-loader": "^4.0.2",
         "vue-awesome-paginate": "^1.2.0",
         "vue-router": "^4.5.1"
