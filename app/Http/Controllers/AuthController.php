@@ -50,6 +50,10 @@ class AuthController extends Controller
             }
         } catch (\Throwable $e) {
             report($e);
+             if (env('APP_DEBUG', false)) {
+                $msg = urlencode(substr($e->getMessage(), 0, 300));
+                return redirect('/login?error=callback_failed&msg=' . $msg);
+            }
             return redirect('/login?error=callback_failed');
         }
     }

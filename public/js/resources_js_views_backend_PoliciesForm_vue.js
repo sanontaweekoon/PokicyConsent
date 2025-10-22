@@ -505,9 +505,9 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   setup: function setup(__props, _ref) {
     var __expose = _ref.expose;
     __expose();
-    var content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(''); // เก็บ text จาก TinyMCE
+    var content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(""); // เก็บ text จาก TinyMCE
     var editorRef = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
-    var announce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(''); // now | scheduled
+    var announce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(""); // now | scheduled
 
     var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.useRoute)();
     var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.useRouter)();
@@ -519,15 +519,15 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     function collectValidationErrors() {
       clearPublishErrors();
       var v = v$.value;
-      alert('กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย');
+      alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย");
       for (var _i = 0, _Object$keys = Object.keys(v); _i < _Object$keys.length; _i++) {
         var key = _Object$keys[_i];
         if (v[key] && v[key].$errors && v[key].$errors.length) {
-          publishErrors.value[key] = v[key].$errors[0].$message || 'ข้อมูลไม่ถูกต้อง';
+          publishErrors.value[key] = v[key].$errors[0].$message || "ข้อมูลไม่ถูกต้อง";
         }
       }
       if (Object.keys(publishErrors.value).length === 0) {
-        publishErrors.value._general = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+        publishErrors.value._general = "กรุณากรอกข้อมูลให้ครบถ้วน";
       }
       publishErrors.value = _objectSpread({}, publishErrors.value);
     }
@@ -545,44 +545,44 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
     /** form & lists */
     var form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({
-      title: '',
-      description: '',
+      title: "",
+      description: "",
       category_id: null,
-      publish_at: '',
-      publish_date: '',
-      publish_time: ''
+      publish_at: "",
+      publish_date: "",
+      publish_time: ""
     });
     var rules = {
       title: {
-        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาระบุหัวข้อ', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage("กรุณาระบุหัวข้อ", _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
       },
       category_id: {
-        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาเลือกประเภทนโยบาย', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage("กรุณาเลือกประเภทนโยบาย", _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
       },
       description: {
-        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาใส่เนื้อหานโยบาย', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage("กรุณาใส่เนื้อหานโยบาย", _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required)
       },
       publish_date: {
-        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาเลือกวันที่เผยแพร่', (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf)(function () {
-          return announce.value === 'scheduled';
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage("กรุณาเลือกวันที่เผยแพร่", (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf)(function () {
+          return announce.value === "scheduled";
         }))
       },
       publish_time: {
-        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('กรุณาระบุเวลาเผยแพร่', (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf)(function () {
-          return announce.value === 'scheduled';
+        required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage("กรุณาระบุเวลาเผยแพร่", (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.requiredIf)(function () {
+          return announce.value === "scheduled";
         }))
       }
     };
     var v$ = (0,_vuelidate_core__WEBPACK_IMPORTED_MODULE_5__["default"])(rules, form);
     var tinymceInit = {
-      base_url: '/tinymce',
-      suffix: '.min',
+      base_url: "/tinymce",
+      suffix: ".min",
       height: 500,
       promotion: false,
-      menubar: 'file edit view insert format table tools help',
-      plugins: 'table lists link autolink code preview fullscreen',
-      toolbar: ['undo redo | blocks fontfamily fontsize | bold italic underline |', 'alignleft aligncenter alignright alignjustify | numlist bullist outdent indent |', 'link | table | removeformat | preview fullscreen | code'].join(' '),
-      table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | tablesmergecells tablesplitcells',
+      menubar: "file edit view insert format table tools help",
+      plugins: "table lists link autolink code preview fullscreen",
+      toolbar: ["undo redo | blocks fontfamily fontsize | bold italic underline |", "alignleft aligncenter alignright alignjustify | numlist bullist outdent indent |", "link | table | removeformat | preview fullscreen | code"].join(" "),
+      table_toolbar: "tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | tablesmergecells tablesplitcells",
       branding: false,
       content_style: "\n    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');\n    body { font-family: 'Kanit', sans-serif; line-height: 1.6; }\n    table { border-collapse: collapse; width: 100%; }\n    table, th, td { border: 1px solid #ccc; }\n    th, td { padding: 6px; }\n  "
     };
@@ -600,7 +600,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
               catLoading.value = true;
               _context2.p = 1;
               _context2.n = 2;
-              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].get('/admin/policy-categories', {
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].get("/admin/policy-categories", {
                 params: {
                   per: 0
                 }
@@ -627,17 +627,17 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       try {
         var _ref2, _editorRef$value$getC, _editorRef$value$getC2, _editorRef$value;
         var raw = (_ref2 = (_editorRef$value$getC = (_editorRef$value$getC2 = (_editorRef$value = editorRef.value).getContent) === null || _editorRef$value$getC2 === void 0 ? void 0 : _editorRef$value$getC2.call(_editorRef$value, {
-          format: 'html'
-        })) !== null && _editorRef$value$getC !== void 0 ? _editorRef$value$getC : content.value) !== null && _ref2 !== void 0 ? _ref2 : '';
+          format: "html"
+        })) !== null && _editorRef$value$getC !== void 0 ? _editorRef$value$getC : content.value) !== null && _ref2 !== void 0 ? _ref2 : "";
         return dompurify__WEBPACK_IMPORTED_MODULE_3__["default"].sanitize(raw, {
           USE_PROFILES: {
             html: true
           },
-          ADD_TAGS: ['table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'col', 'colgroup'],
-          ADD_ATTR: ['class', 'style', 'colspan', 'rowspan', 'width', 'data-*']
+          ADD_TAGS: ["table", "thead", "tbody", "tfoot", "tr", "td", "th", "col", "colgroup"],
+          ADD_ATTR: ["class", "style", "colspan", "rowspan", "width", "data-*"]
         });
       } catch (e) {
-        return '<p>เกิดข้อผิดพลาดในการดึงข้อมูล</p>';
+        return "<p>เกิดข้อผิดพลาดในการดึงข้อมูล</p>";
       }
     }
     function saveDraft() {
@@ -645,7 +645,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     }
     function _saveDraft() {
       _saveDraft = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
-        var payload, response, Toast, _t;
+        var payload, response, Toast, message, _t;
         return _regenerator().w(function (_context3) {
           while (1) switch (_context3.p = _context3.n) {
             case 0:
@@ -657,78 +657,97 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
                 _context3.n = 2;
                 break;
               }
-              alert('กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึกฉบับร่าง');
+              alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึกฉบับร่าง");
               return _context3.a(2);
             case 2:
+              if (!(announce.value === "scheduled")) {
+                _context3.n = 4;
+                break;
+              }
+              if (!v$.value.$invalid) {
+                _context3.n = 3;
+                break;
+              }
+              alert("กรุณากรอกข้อมูลให้ครบถ้วน (วันที่ / เวลา) ก่อนบันทึกฉบับร่าง");
+              return _context3.a(2);
+            case 3:
+              _context3.n = 5;
+              break;
+            case 4:
+              if (!(!form.value.title || !form.value.category_id || !form.value.description)) {
+                _context3.n = 5;
+                break;
+              }
+              alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึกฉบับร่าง");
+              return _context3.a(2);
+            case 5:
               payload = {
                 title: form.value.title,
                 category_id: form.value.category_id,
                 description: getEditorHtml(),
-                publish_at: null,
-                publish_date: form.value.publish_date,
-                publish_time: form.value.publish_time,
-                status: 'draft'
-              };
-              if (announce.value === 'scheduled') {
+                status: "draft"
+              }; //  ตรวจสอบว่าจะตั้งเวลาประกาศหรือไม่
+              if (announce.value === "scheduled" && form.value.publish_date && form.value.publish_time) {
+                // draft พร้อมตั้งเวลาประกาศ
                 payload.publish_date = form.value.publish_date;
                 payload.publish_time = form.value.publish_time;
-                if (payload.publish_date && payload.publish_time) {
-                  payload.publish_at = "".concat(payload.publish_date, " ").concat(payload.publish_time);
-                }
+                payload.publish_at = "".concat(payload.publish_date, " ").concat(payload.publish_time);
               } else {
+                // draft ไม่ตั้งเวลาประกาศ
                 payload.publish_at = null;
                 payload.publish_date = null;
                 payload.publish_time = null;
               }
               if (!isEdit.value) {
-                _context3.n = 4;
+                _context3.n = 7;
                 break;
               }
-              _context3.n = 3;
-              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].put("/admin/policies/".concat(form.value.id), payload);
-            case 3:
-              response = _context3.v;
               _context3.n = 6;
-              break;
-            case 4:
-              _context3.n = 5;
-              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].post('/admin/policies', payload);
-            case 5:
-              response = _context3.v;
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].put("/admin/policies/".concat(form.value.id), payload);
             case 6:
+              response = _context3.v;
+              _context3.n = 9;
+              break;
+            case 7:
+              _context3.n = 8;
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].post("/admin/policies", payload);
+            case 8:
+              response = _context3.v;
+            case 9:
               Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().mixin({
                 toast: true,
-                position: 'top-end',
+                position: "top-end",
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: function didOpen(toast) {
-                  toast.addEventListener('mouseenter', (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().stopTimer));
-                  toast.addEventListener('mouseleave', (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().resumeTimer));
+                  toast.addEventListener("mouseenter", (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().stopTimer));
+                  toast.addEventListener("mouseleave", (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().resumeTimer));
                 }
               });
+              message = announce.value === 'scheduled' ? 'บันทึกฉบับร่างพร้อมเวลาประกาศเรียบร้อยแล่ว' : 'บันทึกฉบับร่างเรียบร้อยแล้ว';
               Toast.fire({
-                icon: 'success',
-                title: 'บันทึกฉบับร่างเรียบร้อยแล้ว'
+                icon: "success",
+                title: message
               }).then(function () {
                 router.push({
-                  name: 'Policies'
+                  name: "Policies"
                 });
               });
-              _context3.n = 8;
+              _context3.n = 11;
               break;
-            case 7:
-              _context3.p = 7;
+            case 10:
+              _context3.p = 10;
               _t = _context3.v;
-              console.error('saveDraft failed:', _t);
-              alert('เกิดข้อผิดพลาดในการบันทึกฉบับร่าง');
-            case 8:
-              _context3.p = 8;
+              console.error("saveDraft failed:", _t);
+              alert("เกิดข้อผิดพลาดในการบันทึกฉบับร่าง");
+            case 11:
+              _context3.p = 11;
               saving.value = false;
-              return _context3.f(8);
-            case 9:
+              return _context3.f(11);
+            case 12:
               return _context3.a(2);
           }
-        }, _callee3, null, [[1, 7, 8, 9]]);
+        }, _callee3, null, [[1, 10, 11, 12]]);
       }));
       return _saveDraft.apply(this, arguments);
     }
@@ -760,22 +779,22 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
                 publish_at: null,
                 publish_date: form.value.publish_date,
                 publish_time: form.value.publish_time,
-                status: 'active'
+                status: "active"
               };
-              if (announce.value === 'now') {
-                payload.status = 'active';
+              if (announce.value === "now") {
+                payload.status = "active";
                 now = new Date();
-                dd = String(now.getDate()).padStart(2, '0');
-                mm = String(now.getMonth() + 1).padStart(2, '0');
+                dd = String(now.getDate()).padStart(2, "0");
+                mm = String(now.getMonth() + 1).padStart(2, "0");
                 yyyy = String(now.getFullYear());
-                HH = String(now.getHours()).padStart(2, '0');
-                Min = String(now.getMinutes()).padStart(2, '0');
-                Sec = String(now.getSeconds()).padStart(2, '0');
+                HH = String(now.getHours()).padStart(2, "0");
+                Min = String(now.getMinutes()).padStart(2, "0");
+                Sec = String(now.getSeconds()).padStart(2, "0");
                 payload.publish_at = "".concat(yyyy, "-").concat(mm, "-").concat(dd, " ").concat(HH, ":").concat(Min, ":").concat(Sec);
                 payload.publish_date = null;
                 payload.publish_time = null;
-              } else if (announce.value === 'scheduled') {
-                payload.status = 'scheduled';
+              } else if (announce.value === "scheduled") {
+                payload.status = "scheduled";
                 payload.publish_date = form.value.publish_date;
                 payload.publish_time = form.value.publish_time;
                 if (payload.publish_date && payload.publish_time) {
@@ -793,26 +812,26 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
               break;
             case 4:
               _context4.n = 5;
-              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].post('/admin/policies', payload);
+              return _services_BackendService_js__WEBPACK_IMPORTED_MODULE_4__["default"].post("/admin/policies", payload);
             case 5:
               // console.log('publishPolicy payload', payload)
               // console.log('publishPolicy response', response && response.data)
               Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().mixin({
                 toast: true,
-                position: 'top-end',
+                position: "top-end",
                 timer: 1500,
                 timerProgressBar: true,
                 didOpen: function didOpen(toast) {
-                  toast.addEventListener('mouseenter', (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().stopTimer));
-                  toast.addEventListener('mouseleave', (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().resumeTimer));
+                  toast.addEventListener("mouseenter", (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().stopTimer));
+                  toast.addEventListener("mouseleave", (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().resumeTimer));
                 }
               });
               Toast.fire({
-                icon: 'success',
-                title: 'ประกาศนโยบายเรียบร้อยแล้ว'
+                icon: "success",
+                title: "ประกาศนโยบายเรียบร้อยแล้ว"
               }).then(function () {
                 router.push({
-                  name: 'Policies'
+                  name: "Policies"
                 });
               });
               _context4.n = 7;
@@ -820,8 +839,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
             case 6:
               _context4.p = 6;
               _t2 = _context4.v;
-              console.error('publishPolicy failed:', _t2);
-              alert('เกิดข้อผิดพลาดในการประกาศนโยบาย');
+              console.error("publishPolicy failed:", _t2);
+              alert("เกิดข้อผิดพลาดในการประกาศนโยบาย");
             case 7:
               _context4.p = 7;
               saving.value = false;
@@ -835,7 +854,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     }
     function normalizeDate(value) {
       if (!value) {
-        return '';
+        return "";
       }
       var s = String(value).trim();
       var m = s.match(/^(\d{2})-(\d{2})-(\d{4})/);
@@ -845,29 +864,29 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       var d = new Date(s);
       if (!isNaN(d)) {
         var year = d.getFullYear();
-        var month = String(d.getMonth() + 1).padStart(2, '0');
-        var day = String(d.getDate()).padStart(2, '0');
+        var month = String(d.getMonth() + 1).padStart(2, "0");
+        var day = String(d.getDate()).padStart(2, "0");
         return "".concat(year, "-").concat(month, "-").concat(day);
       }
-      return '';
+      return "";
     }
     function normalizeTime(value) {
       if (!value) {
-        return '';
+        return "";
       }
       var s = String(value).trim();
       var m = s.match(/(\d{2}:\d{2}(?::\d{2})?)/);
       if (m) {
         var t = m[1];
-        return t.split(':').slice(0, 2).join(':');
+        return t.split(":").slice(0, 2).join(":");
       }
       var d = new Date(s);
       if (!isNaN(d)) {
-        var hh = String(d.getHours()).padStart(2, '0');
-        var mm = String(d.getMinutes()).padStart(2, '0');
+        var hh = String(d.getHours()).padStart(2, "0");
+        var mm = String(d.getMinutes()).padStart(2, "0");
         return "".concat(hh, ":").concat(mm);
       }
-      return '';
+      return "";
     }
     function loadPolicy(_x) {
       return _loadPolicy.apply(this, arguments);
@@ -875,7 +894,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     function _loadPolicy() {
       _loadPolicy = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(id) {
         var _payload$category_id;
-        var response, payload, status, isScheduled, ts, hasPub, _editorRef$value2, _editorRef$value2$set;
+        var response, payload, fromPublishAtDate, fromPublishAtTime, status, hasDateTime, _editorRef$value2, _editorRef$value2$set;
         return _regenerator().w(function (_context5) {
           while (1) switch (_context5.n) {
             case 0:
@@ -891,63 +910,40 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
               return _context5.a(2);
             case 2:
               form.value.id = payload.id;
-              form.value.title = payload.title || '';
+              form.value.title = payload.title || "";
               form.value.category_id = (_payload$category_id = payload.category_id) !== null && _payload$category_id !== void 0 ? _payload$category_id : null;
-              form.value.description = payload.description || '';
-              if (payload.publish_date) {
-                form.value.publish_date = normalizeDate(payload.publish_date);
-              } else if (payload.publish_at) {
-                form.value.publish_date = normalizeDate(payload.publish_at);
+              form.value.description = payload.description || "";
+
+              // แยกวันที่จาก publish_date , publish_time หรือ publish_at
+              fromPublishAtDate = payload.publish_at ? normalizeDate(payload.publish_at) : "";
+              fromPublishAtTime = payload.publish_at ? normalizeTime(payload.publish_at) : "";
+              form.value.publish_date = payload.publish_date || fromPublishAtDate || "";
+              form.value.publish_time = payload.publish_time || fromPublishAtTime || "";
+              content.value = payload.description || "";
+              status = String(payload.status || "").toLowerCase(); // ตรวจสอบว่ามีการตั้งเวลาประกาศหรือไม่
+              hasDateTime = !!(form.value.publish_date || form.value.publish_time); // กำหนดประกาศ ตามสถานะและวันเวลา
+              if (status === "draft") {
+                // draft ที่มีวันเวลาประกาศ = scheduled , ไม่มีวันเวลาประกาศ = now
+                announce.value = hasDateTime ? "scheduled" : "now";
+              } else if (status === "scheduled") {
+                // scheduled ต้องมีวันเวลาประกาศ
+                announce.value = "scheduled";
+              } else if (status === "active") {
+                // active = ประกาศตอนนี้
+                announce.value = "now";
+                form.value.publish_date = "";
+                form.value.publish_time = "";
               } else {
-                form.value.publish_date = '';
-              }
-              if (payload.publish_time) {
-                form.value.publish_time = normalizeTime(payload.publish_time);
-              } else if (payload.publish_at) {
-                form.value.publish_time = normalizeTime(payload.publish_at);
-              } else {
-                form.value.publish_time = '';
-              }
-              content.value = payload.description || '';
-              status = String(payload.status || '').toLowerCase();
-              if (status) {
-                if (status === 'scheduled') {
-                  announce.value = 'scheduled';
-                } else if (status === 'draft') {
-                  isScheduled = false;
-                  if (payload.publish_date && payload.publish_time) {
-                    isScheduled = true;
-                  } else if (payload.publish_at) {
-                    ts = Date.parse(String(payload.publish_at));
-                    if (!isNaN(ts) && ts > Date.now()) {
-                      isScheduled = true;
-                    }
-                  }
-                  announce.value = isScheduled ? 'scheduled' : 'now';
-                  if (!isScheduled) {
-                    form.value.publish_date = '';
-                    form.value.publish_time = '';
-                  }
-                } else if (status === 'active') {
-                  announce.value = 'now';
-                  form.value.publish_date = '';
-                  form.value.publish_time = '';
-                } else {
-                  hasPub = payload.publish_date || payload.publish_time || payload.publish_at;
-                  announce.value = hasPub ? 'scheduled' : 'now';
-                  if (announce.value === 'now') {
-                    form.value.publish_date = '';
-                    form.value.publish_time = '';
-                  }
-                }
+                // กรณีอื่นๆ ตั้งค่าเป็น now
+                announce.value = hasDateTime ? "scheduled" : "now";
               }
               _context5.n = 3;
               return (0,vue__WEBPACK_IMPORTED_MODULE_0__.nextTick)();
             case 3:
               try {
-                (_editorRef$value2 = editorRef.value) === null || _editorRef$value2 === void 0 || (_editorRef$value2$set = _editorRef$value2.setContent) === null || _editorRef$value2$set === void 0 || _editorRef$value2$set.call(_editorRef$value2, content.value || '');
+                (_editorRef$value2 = editorRef.value) === null || _editorRef$value2 === void 0 || (_editorRef$value2$set = _editorRef$value2.setContent) === null || _editorRef$value2$set === void 0 || _editorRef$value2$set.call(_editorRef$value2, content.value || "");
               } catch (e) {
-                console.error('setContent failed:', e);
+                console.error("setContent failed:", e);
               }
             case 4:
               return _context5.a(2);
@@ -1068,7 +1064,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "flex items-center space-y-6 my-5"
+  "class": "flex items-center my-5 space-y-6"
 };
 var _hoisted_2 = {
   "class": "container mx-auto"
@@ -1134,18 +1130,18 @@ var _hoisted_22 = {
   "class": "text-grey 500"
 };
 var _hoisted_23 = {
-  "class": "space-y-3 md:col-span-2 mt-5"
+  "class": "mt-5 space-y-3 md:col-span-2"
 };
 var _hoisted_24 = {
   "class": "flex"
 };
 var _hoisted_25 = {
   key: 0,
-  "class": "my-auto text-sm text-red-500 mx-3"
+  "class": "mx-3 my-auto text-sm text-red-500"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ซ้าย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"font-medium mr-3\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" value=\"all\" class=\"accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" value=\"group\" class=\"accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "font-medium mr-3"
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ซ้าย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[14] || (_cache[14] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"mr-3 font-medium\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" value=\"all\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" value=\"group\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "class": "mr-3 font-medium"
   }, "เวลาประกาศ: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "radio",
     id: "option3",
@@ -1154,7 +1150,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $setup.announce = $event;
     }),
-    "class": "accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500"
+    "class": "w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.announce]]), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "option3",
     "class": "text-gray-700"
@@ -1166,9 +1162,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.announce = $event;
     }),
-    "class": "accent-red-700 w-4 h-4 text-red-600 focus:ring-red-500"
+    "class": "w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.announce]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "my-1 text-gray-500 text-xs",
+    "class": "my-1 text-xs text-gray-500",
     "for": ""
   }, "วันที่เผยแพร่", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
@@ -1176,9 +1172,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.form.publish_date = $event;
     }),
     disabled: $setup.announce !== 'scheduled',
-    "class": "rounded border px-3 py-2 mr-5"
+    "class": "px-3 py-2 mr-5 border rounded"
   }, null, 8 /* PROPS */, _hoisted_13), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.publish_date]]), $setup.publishErrors.publish_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.publish_date), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "my-1 text-gray-500 text-xs",
+    "class": "my-1 text-xs text-gray-500",
     "for": ""
   }, "เวลาเผยแพร่", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "time",
@@ -1186,7 +1182,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.form.publish_time = $event;
     }),
     disabled: $setup.announce !== 'scheduled',
-    "class": "rounded border px-3 py-2"
+    "class": "px-3 py-2 border rounded"
   }, null, 8 /* PROPS */, _hoisted_16), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.publish_time]]), $setup.publishErrors.publish_time ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.publish_time), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "block mb-1 font-medium"
   }, "หัวข้อ *", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -1194,7 +1190,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $setup.form.title = $event;
     }),
-    "class": "w-full rounded border px-3 py-2",
+    "class": "w-full px-3 py-2 border rounded",
     placeholder: "ระบุหัวข้อนโยบาย"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.title]]), $setup.publishErrors.title ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.title), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "block mb-1 font-medium"
@@ -1202,7 +1198,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $setup.form.category_id = $event;
     }),
-    "class": "w-full rounded border px-3 py-2 bg-white"
+    "class": "w-full px-3 py-2 bg-white border rounded"
   }, [_cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
     value: null
   }, "— เลือกประเภท —", -1 /* CACHED */)), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.categories, function (c) {
@@ -1211,7 +1207,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       value: c.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(c.name), 9 /* TEXT, PROPS */, _hoisted_20);
   }), 128 /* KEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.category_id]]), $setup.publishErrors.category_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.category_id), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.catLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("small", _hoisted_22, "กำลังโหลด...")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_cache[15] || (_cache[15] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "mb-1 font-medium flex"
+    "class": "flex mb-1 font-medium"
   }, "ข้อมูลนโยบาย/มาตรการองค์กร *", -1 /* CACHED */)), $setup.publishErrors.description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.description), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Editor"], {
     modelValue: $setup.content,
     "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
@@ -1225,15 +1221,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     onClick: $setup.cancel,
-    "class": "px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
+    "class": "px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700"
   }, " ยกเลิก "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     onClick: $setup.saveDraft,
-    "class": "px-4 py-2 rounded-lg bg-zinc-500 text-white hover:bg-zinc-700"
+    "class": "px-4 py-2 text-white rounded-lg bg-zinc-500 hover:bg-zinc-700"
   }, " บันทึกฉบับร่าง "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     onClick: $setup.publishPolicy,
-    "class": "px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
+    "class": "px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
   }, " ประกาศ ")])])]);
 }
 
@@ -2645,13 +2641,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PoliciesForm_vue_vue_type_template_id_f8e95024__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PoliciesForm.vue?vue&type=template&id=f8e95024 */ "./resources/js/views/backend/PoliciesForm.vue?vue&type=template&id=f8e95024");
 /* harmony import */ var _PoliciesForm_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PoliciesForm.vue?vue&type=script&setup=true&lang=js */ "./resources/js/views/backend/PoliciesForm.vue?vue&type=script&setup=true&lang=js");
-/* harmony import */ var C_xampp_htdocs_policyconsentsystem_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_PokicyConsent_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_policyconsentsystem_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PoliciesForm_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PoliciesForm_vue_vue_type_template_id_f8e95024__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/views/backend/PoliciesForm.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_PokicyConsent_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PoliciesForm_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PoliciesForm_vue_vue_type_template_id_f8e95024__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/views/backend/PoliciesForm.vue"]])
 /* hot reload */
 if (false) // removed by dead control flow
 {}
