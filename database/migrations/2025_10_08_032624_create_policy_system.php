@@ -92,7 +92,7 @@ class CreatePolicySystem extends Migration
             $table->foreignId('owner_user_id')->nullable()->constrained('users');
             $table->foreignId('owner_org_unit_id')->nullable()->constrained('org_units');
             $table->boolean('is_required_ack')->default(true);
-            $table->enum('status', ['draft','active','archived'])->default('draft');
+            $table->enum('status', ['draft','active','scheduled'])->default('draft');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();

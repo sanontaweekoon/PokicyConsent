@@ -123,7 +123,22 @@ import { computed } from 'vue';
 export default {
   setup() {
     const route = useRoute()
-    const pageTitle = computed(() => route.meta?.title || route.name || '')
+
+    const pageTitle = computed(() => {
+      const metaTitle = route.meta?.title
+      if (typeof metaTitle === 'function') {
+        try {
+          return metaTitle(route)
+        } catch (e) {
+          console.warn('Error evaluating meta.title:', e)
+          return route.name || ''
+        }
+      }
+      if (typeof metaTitle === 'string') {
+        return metaTitle
+      }
+      return route.name || ''
+    })
     return { pageTitle }
   }
 }

@@ -97,6 +97,26 @@ const router = createRouter({
     routes
 })
 
+router.afterEach((to) => {
+    const defaultTitle = 'ระบบจัดการนโยบายและมาตรการองค์กร'
+    const metaTitle = to.meta?.title
+    let title = defaultTitle
+
+    if (typeof metaTitle === 'function') {
+        try {
+            // เรียกฟังก์ชันด้วยพารามิเตอร์ route ปัจจุบัน
+            title = metaTitle(to)
+        } catch (e) {
+            console.warn('Error evaluating meta.title', e)
+            title = defaultTitle
+        }
+    } else if (typeof metaTitle === 'string') {
+        title = metaTitle
+    }
+    // console.log('document.title:', title)
+    document.title = title
+})
+
 router.beforeEach(async (to, from, next) => {
     const needAuth = to.matched.some(r => r.meta?.requiresAuth)
     if (!needAuth) return next()

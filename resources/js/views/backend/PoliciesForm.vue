@@ -45,6 +45,7 @@
                                             <div class="flex flex-col">
                                                 <label class="my-1 text-gray-500 text-xs" for="">วันที่เผยแพร่</label>
                                                 <input type="date" v-model="form.publish_date"
+                                                    :disabled="announce !== 'scheduled'"
                                                     class="rounded border px-3 py-2 mr-5" />
                                                 <div v-if="publishErrors.publish_date"
                                                     class="mt-2 text-sm text-red-500">
@@ -54,6 +55,7 @@
                                             <div class="flex flex-col">
                                                 <label class="my-1 text-gray-500 text-xs" for="">เวลาเผยแพร่</label>
                                                 <input type="time" v-model="form.publish_time"
+                                                    :disabled="announce !== 'scheduled'"
                                                     class="rounded border px-3 py-2" />
                                                 <div v-if="publishErrors.publish_time"
                                                     class="mt-2 text-sm text-red-500">
@@ -130,19 +132,22 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, onMounted } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Editor from '@tinymce/tinymce-vue'
 import DOMPurify from 'dompurify'
 import http from "../../services/BackendService.js";
 import useVuelidate from '@vuelidate/core';
 import { required, helpers, requiredIf } from '@vuelidate/validators';
+import Swal from 'sweetalert2';
 
 const content = ref('') // เก็บ text จาก TinyMCE
 const editorRef = ref(null)
 const announce = ref('') // now | scheduled
 
+
 const route = useRoute()
+const router = useRouter()
 const saving = ref(false)
 
 const publishErrors = ref({})
@@ -265,18 +270,49 @@ async function saveDraft() {
             title: form.value.title,
             category_id: form.value.category_id,
             description: getEditorHtml(),
-            publish_at: form.value.publish_date && form.value.publish_time ? `${form.value.publish_date} ${form.value.publish_time}` : null,
+            publish_at: null,
             publish_date: form.value.publish_date,
             publish_time: form.value.publish_time,
             status: 'draft'
         }
+
+        if (announce.value === 'scheduled') {
+            payload.publish_date = form.value.publish_date
+            payload.publish_time = form.value.publish_time
+
+            if (payload.publish_date && payload.publish_time) {
+                payload.publish_at = `${payload.publish_date} ${payload.publish_time}`
+            }
+        } else {
+            payload.publish_at = null
+            payload.publish_date = null
+            payload.publish_time = null
+        }
+
         let response
         if (isEdit.value) {
             response = await http.put(`/admin/policies/${form.value.id}`, payload)
         } else {
             response = await http.post('/admin/policies', payload)
         }
-        route.push({ path: '/backend/policies' })
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+        });
+        Toast.fire({
+            icon: 'success',
+            title: 'บันทึกฉบับร่างเรียบร้อยแล้ว'
+        }).then(() => {
+            router.push({ name: 'Policies' });
+        });
+
     } catch (e) {
         console.error('saveDraft failed:', e)
         alert('เกิดข้อผิดพลาดในการบันทึกฉบับร่าง')
@@ -299,16 +335,60 @@ async function publishPolicy() {
             title: form.value.title,
             category_id: form.value.category_id,
             description: getEditorHtml(),
-            publish_at: form.value.publish_date && form.value.publish_time ? `${form.value.publish_date} ${form.value.publish_time}` : null,
+            publish_at: null,
             publish_date: form.value.publish_date,
             publish_time: form.value.publish_time,
             status: 'active'
         }
-        console.log('publishPolicy payload', payload)
 
-        const response = await http.post('/admin/policies', payload)
-        console.log('publishPolicy response', response && response.data)
-        alert('ประกาศสำเร็จ')
+        if (announce.value === 'now') {
+            payload.status = 'active'
+            const now = new Date()
+            const dd = String(now.getDate()).padStart(2, '0')
+            const mm = String(now.getMonth() + 1).padStart(2, '0')
+            const yyyy = String(now.getFullYear())
+            const HH = String(now.getHours()).padStart(2, '0')
+            const Min = String(now.getMinutes()).padStart(2, '0')
+            const Sec = String(now.getSeconds()).padStart(2, '0')
+            payload.publish_at = `${yyyy}-${mm}-${dd} ${HH}:${Min}:${Sec}`
+            payload.publish_date = null
+            payload.publish_time = null
+        } else if (announce.value === 'scheduled') {
+            payload.status = 'scheduled'
+            payload.publish_date = form.value.publish_date
+            payload.publish_time = form.value.publish_time
+
+            if (payload.publish_date && payload.publish_time) {
+                payload.publish_at = `${payload.publish_date} ${payload.publish_time}`
+            }
+        }
+
+        if (form.value.id) {
+            await http.put(`/admin/policies/${form.value.id}`, payload)
+        } else {
+            await http.post('/admin/policies', payload)
+        }
+
+        // console.log('publishPolicy payload', payload)
+        // console.log('publishPolicy response', response && response.data)
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+        });
+        Toast.fire({
+            icon: 'success',
+            title: 'ประกาศนโยบายเรียบร้อยแล้ว'
+        }).then(() => {
+            router.push({ name: 'Policies' });
+        });
+
     } catch (e) {
         console.error('publishPolicy failed:', e)
         alert('เกิดข้อผิดพลาดในการประกาศนโยบาย')
@@ -317,8 +397,122 @@ async function publishPolicy() {
     }
 }
 
+function normalizeDate(value) {
+    if (!value) {
+        return '';
+    }
+    const s = String(value).trim();
+    const m = s.match(/^(\d{2})-(\d{2})-(\d{4})/);
+    if (m) {
+        return m[1];
+    }
+    const d = new Date(s)
+
+    if (!isNaN(d)) {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
+    }
+    return '';
+}
+
+function normalizeTime(value) {
+    if (!value) {
+        return '';
+    }
+    const s = String(value).trim();
+    const m = s.match(/(\d{2}:\d{2}(?::\d{2})?)/)
+    if (m) {
+        const t = m[1];
+        return t.split(':').slice(0, 2).join(':');
+    }
+    const d = new Date(s)
+
+    if (!isNaN(d)) {
+        const hh = String(d.getHours()).padStart(2, '0')
+        const mm = String(d.getMinutes()).padStart(2, '0')
+        return `${hh}:${mm}`
+    }
+    return '';
+}
+
+async function loadPolicy(id) {
+    const response = await http.get(`/admin/policies/${id}`)
+    const payload = response.data
+    if (!payload) return;
+
+    form.value.id = payload.id;
+    form.value.title = payload.title || '';
+    form.value.category_id = payload.category_id ?? null;
+    form.value.description = payload.description || '';
+
+    if (payload.publish_date) {
+        form.value.publish_date = normalizeDate(payload.publish_date)
+    } else if (payload.publish_at) {
+        form.value.publish_date = normalizeDate(payload.publish_at)
+    } else {
+        form.value.publish_date = ''
+    }
+
+    if (payload.publish_time) {
+        form.value.publish_time = normalizeTime(payload.publish_time)
+    } else if (payload.publish_at) {
+        form.value.publish_time = normalizeTime(payload.publish_at)
+    } else {
+        form.value.publish_time = ''
+    }
+
+    content.value = payload.description || ''
+
+    const status = String(payload.status || '').toLowerCase()
+
+    if (status) {
+        if (status === 'scheduled') {
+            announce.value = 'scheduled'
+        } else if (status === 'draft') {
+            let isScheduled = false
+            if (payload.publish_date && payload.publish_time) {
+                isScheduled = true
+            } else if (payload.publish_at) {
+                const ts = Date.parse(String(payload.publish_at))
+                if (!isNaN(ts) && ts > Date.now()) {
+                    isScheduled = true
+                }
+            }
+
+            announce.value = isScheduled ? 'scheduled' : 'now'
+            if (!isScheduled) {
+                form.value.publish_date = ''
+                form.value.publish_time = ''
+            }
+
+        } else if (status === 'active') {
+            announce.value = 'now'
+            form.value.publish_date = ''
+            form.value.publish_time = ''
+        } else {
+            const hasPub = payload.publish_date || payload.publish_time || payload.publish_at
+            announce.value = hasPub ? 'scheduled' : 'now'
+            if (announce.value === 'now') {
+                form.value.publish_date = ''
+                form.value.publish_time = ''
+            }
+        }
+    }
+
+    await nextTick();
+
+    try {
+        editorRef.value?.setContent?.(content.value || '')
+    } catch (e) {
+        console.error('setContent failed:', e)
+    }
+
+}
+
 function cancel() {
-    route.back()
+    router.back()
 }
 
 onMounted(async () => {

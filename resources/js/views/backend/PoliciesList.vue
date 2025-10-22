@@ -44,74 +44,78 @@
             </div>
         </div>
 
-        <button
-            @click="$router.push({name: 'PolicyCreate'})"
+        <button @click="$router.push({ name: 'PolicyCreate' })"
             class="flex items-center justify-between px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
             <svg class="w-4 h-4 mr-2 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
             <span>เพิ่ม</span>
         </button>
+
     </div>
+
+    <div class="mb-4 flex gap-4 border-b-2">
+        <div @click="changeTab('scheduled')" class="flex gap-1">
+            <button type="button"
+                :class="['px-4 py-2  text-sm', selectedTab === 'scheduled' ? 'border-x-2 border-t-2 text-red-800' : 'bg-gray-50']">กำหนดเวลา</button>
+        </div>
+
+        <div @click="changeTab('active')" class="flex gap-1">
+            <button type="button"
+                :class="['px-4 py-2 text-sm', selectedTab === 'active' ? 'border-x-2 border-t-2 text-red-800' : 'bg-gray-50']">ประกาศแล้ว</button>
+        </div>
+
+        <div @click="changeTab('draft')" class="flex gap-1">
+            <button type="button"
+                :class="['px-4 py-2 text-sm', selectedTab === 'draft' ? 'border-x-2 border-t-2 text-red-800' : 'bg-gray-50']">ฉบับร่าง</button>
+        </div>
+    </div>
+
     <!-- ตารางแสดงสินค้า -->
-    <div class="w-full overflow-hidden rounded-lg shadow-xs">
+    <div class="w-full overflow-hidden shadow-xs">
         <div class="w-full overflow-x-auto">
             <table class="w-full whitespace-no-wrap">
                 <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border">
                         <th class="px-4 py-3">DocNO.</th>
-                        <th class="px-4 py-3">ข้อมูล</th>
-                        <th class="px-4 py-3">เป้าหมาย</th>
-                        <th class="px-4 py-3">ผู้รับทราบ</th>
+                        <th class="px-4 py-3">หัวข้อ</th>
+                        <th class="px-4 py-3">ผู้รับนโยบาย</th>
                         <th class="px-4 py-3">เวลาประกาศ</th>
                         <th class="px-4 py-3">ดำเนินการ</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                    <tr class="text-gray-700 dark:text-gray-400 hover:bg-blue-100">
-                        <td class="px-4 py-3 text-sm">1</td>
+                    <tr v-for="policy in paginatePolicies" :key="policy.id"
+                        class="text-gray-700 dark:text-gray-400 hover:bg-gray-100">
+                        <td class="px-4 py-3 text-sm">{{ policy.code ?? '-' }}</td>
 
-                        <td class="px-4 py-3">
-                            <div class="flex items-center text-sm">
-                                <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-                                    <p>นโยบาย</p>
-                                </div>
-                                <div>
-                                    <p class="font-semibold"></p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">
-                                    </p>
-                                </div>
+                        <td class="px-4 py-3 text-sm">
+                            <div class="w-60 truncate">
+                                {{ policy.title ?? '-' }}
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-sm">test</td>
 
                         <td class="px-4 py-3 text-sm">
                             <div class="flex items-center text-sm">
-                                <div class="relative hidden w=8 h-8 mr-3 rounded-full md:block">
-
-                                    <div class="absolute inset-0 shadow-inner rounded_full" aria-hidden="true"></div>
-                                </div>
                                 <div>
-                                    <p class="font-semibold">user_fullname</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">
-                                        Update
-                                    </p>
+                                    {{ policy.owner_user_id ?? '-' }}
                                 </div>
                             </div>
                         </td>
+
                         <td class="px-4 py-3 text-sm">
-                            07/10/2568
+                            {{ formatPublishAt(policy.publish_at) }}
                         </td>
 
                         <td class="px-4 py-3 text-sm">
-                            <button
+                            <button @click="editPolicy(policy.id)"
                                 class="px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-400 border border-transparent rounded-lg active:bg-yellow-300 hover:bg-yellow-500 focus:outline-none">
                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                 </svg>
                             </button>
-                            <button
+                            <button @click="deletePolicy(policy.id)"
                                 class="px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-500 hover:bg-red-700 focus:outline-none">
                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -122,9 +126,215 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="example-one">
+                <VueAwesomePaginate v-model="currentPage" :total-items="filteredTotal" :items-per-page="perPage"
+                    :max-pages-shown="7" :on-click="onPageChanged" />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import http from '../../services/BackendService';
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+
+export default {
+    data() {
+        return {
+            policies: [],
+            selectedTab: 'active',
+            pagination: {},
+            currentPage: 1,
+            perPage: 10,
+        }
+    },
+    computed: {
+        filteredPolicies() {
+            if (!Array.isArray(this.policies)) {
+                return [];
+            }
+
+            const tab = this.selectedTab;
+            const now = Date.now();
+
+            if (tab === 'draft') {
+                return this.policies.filter(payload => String(payload.status || '').toLowerCase() === 'draft');
+            }
+
+            if (tab === 'active') {
+                return this.policies.filter(payload => String(payload.status || '').toLowerCase() === 'active');
+            }
+
+            if (tab === 'scheduled') {
+                return this.policies.filter(payload => String(payload.status || '').toLowerCase() === 'scheduled');
+            }
+            return this.policies
+        },
+
+        paginatePolicies() {
+            const list = this.filteredPolicies
+            const page = Math.max(1, Number(this.currentPage || 1))
+            const per = Math.max(1, Number(this.perPage || 10))
+            const start = (page - 1) * per
+            return list.slice(start, start + per)
+        },
+
+        filteredTotal() {
+            return Array.isArray(this.filteredPolicies) ? this.filteredPolicies.length : 0
+        }
+    },
+
+    methods: {
+        async loadPolicies(tab = null, page = 1) {
+            try {
+                const params = { per_page: this.perPage, page };
+
+                if (tab) {
+                    params.status = tab;
+                }
+               
+                const response = await http.get('/admin/policies', { params })
+                //console.log('loadPolicies: response.data', response.data)
+
+                if (response.data && Array.isArray(response.data.data)) {
+                    this.policies = response.data.data;
+                    this.pagination = {
+                        current_page: response.data.current_page,
+                        last_page: response.data.last_page,
+                        total: response.data.total,
+                        per_page: response.data.per_page
+                    }
+                    this.currentPage = response.data.current_page || page;
+                } else {
+                    this.policies = Array.isArray(response.data) ? response.data : (response.data?.data || [])
+                    this.pagination = {}
+                    this.currentPage = page
+                }
+            } catch (e) {
+                console.error('loadPolicies failed', e)
+            }
+        },
+
+        async onPageChanged(page) {
+            await this.loadPolicies(this.selectedTab, page)
+        },
+
+
+        changeTab(tab) {
+            this.selectedTab = tab
+            this.currentPage = 1
+            this.loadPolicies(tab, 1)
+        },
+
+        formatPublishAt(value) {
+            if (!value) return '-'
+            try {
+                let s = String(value)
+
+                if (!s.includes('T') && s.includes(' ')) {
+                    s = s.replace(' ', 'T')
+                }
+                if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)) {
+                    s = s + ':00'
+                }
+                let d = new Date(s)
+                if (isNaN(d)) {
+                    const m = s.match(/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?/)
+                    if (m) d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0))
+                }
+                if (isNaN(d)) return String(value)
+
+                const pad = n => String(n).padStart(2, '0')
+                const day = pad(d.getDate())
+                const month = pad(d.getMonth() + 1)
+                const year = d.getFullYear()
+                const hour = pad(d.getHours())
+                const minute = pad(d.getMinutes())
+
+                return `${day}/${month}/${year} ${hour}:${minute}`
+            } catch (e) {
+                return String(value)
+            }
+        },
+
+        editPolicy(id) {
+            this.$router.push({ name: 'PolicyEdit', params: { id } })
+        },
+        
+        async deletePolicy(id) {
+            const confirm = await Swal.fire({
+                title: 'ยืนยันการลบ?',
+                text: "การลบจะไม่สามารถย้อนกลับได้",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "ใช่, ลบเลย",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "ยกเลิก"
+            })
+            if (!confirm.isConfirmed) {
+                return;
+            }
+
+            try {
+                Swal.fire({
+                    title: 'กำลังลบ...',
+                    didOpen: () =>
+                        Swal.showLoading(),
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                })
+                await http.delete(`admin/policies/${id}`);
+                Swal.fire('ลบสำเร็จ', 'นโยบายถูกลบเรียบร้อยแล้ว', 'success')
+                this.loadPolicies();
+            } catch (e) {
+                console.error('deletePolicy failed', e)
+                Swal.fire('ลบนโยบายไม่สำเร็จ', 'ไม่สามารถลบข้อมูลได้', 'error')
+            }
+        }
+    },
+    mounted() {
+        this.loadPolicies(this.selectedTab, this.currentPage);
+    }
+}
+
 </script>
+
+
+<style>
+.example-one .pagination-container {
+    column-gap: 5px;
+    background-color: #F9FAFB;
+}
+
+.example-one .paginate-buttons {
+    height: 30px;
+    width: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+}
+
+.example-one .paginate-buttons:hover {
+    background-color: #d8d8d8;
+}
+
+.example-one .active-page {
+    background-color: #991B1B;
+    border: 1px solid #991B1B;
+    color: white;
+}
+
+.example-one .active-page:hover {
+    background-color: #b81b1b;
+    border: 1px solid #b81b1b;
+}
+
+.example-one .back-button:active,
+.example-one .next-button:active {
+    background-color: #c4c4c4;
+}
+</style>

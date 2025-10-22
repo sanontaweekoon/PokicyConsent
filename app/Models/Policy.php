@@ -11,12 +11,12 @@ class Policy extends Model
 
     public const STATUS_DRAFT = 'draft';
     public const STATUS_ACTIVE = 'active';
-    public const STATUS_ARCHIVED = 'archived';
+    public const STATUS_SCHEDULED = 'scheduled';
 
     public const STATUSES = [
         self::STATUS_DRAFT,
         self::STATUS_ACTIVE,
-        self::STATUS_ARCHIVED
+        self::STATUS_SCHEDULED
     ];
 
     protected $table = 'policies';

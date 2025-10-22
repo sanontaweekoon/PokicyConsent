@@ -21,19 +21,35 @@ class PoliciesController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
-        $perPage = (int) $request->query('per', 25);
+        $perPage = (int) $request->query('per_page', $request->query('per', 25));
+        $page = (int) $request->query('page', 1);
 
         $query = Policy::query()->when($search !== '', function ($q) use ($search) {
             $q->where(function ($w) use ($search) {
                 $w->where('code', 'like', "%{$search}%")
                     ->orWhere('title', 'like', "%{$search}%");
             });
-        })
-            ->orderByDesc('id');
+        });
+
+        // status filter: active | draft | scheduled
+        if ($request->filled('status')) {
+            $status = strtolower((string) $request->query('status'));
+            if ($status === 'scheduled') {
+                $query->whereNotNull('publish_at')->where('publish_at', '>', now());
+            } elseif ($status === 'draft') {
+                $query->where('status', Policy::STATUS_DRAFT);
+            } elseif ($status === 'active') {
+                $query->where('status', Policy::STATUS_ACTIVE);
+            } else {
+                $query->where('status', $status);
+            }
+        }
+
+        $query->orderByDesc('id');
 
         return $perPage === 0 ?
             response()->json($query->get())
-            : response()->json($query->paginate($perPage));
+            : response()->json($query->paginate($perPage, ['*'], 'page', $page));
     }
 
     /**
@@ -189,6 +205,21 @@ class PoliciesController extends Controller
             'publish_time' => $request->input('publish_time') !== '' ? $request->input('publish_time') : null,
             'publish_at' => $request->input('publish_at') ?? null
         ]);
+
+        if (is_null($request->input('code'))) {
+            $datePart = Carbon::now()->format('dmy');
+            $base = "P-{$datePart}";
+            $candidate = $base;
+            $suffix = 0;
+
+            while (Policy::where('code', $candidate)->exists()) {
+                $suffix++;
+                $candidate = $base . "-" . $suffix;
+            }
+
+            $request->merge(['code' => $candidate]);
+            Log::debug('Policy.store generated patterned code for null input', ['code' => $candidate]);
+        }
 
         $data = $request->validate([
             'category_id' => ['nullable', 'exists:policy_categories,id'],
