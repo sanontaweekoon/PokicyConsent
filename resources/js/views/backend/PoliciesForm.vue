@@ -411,7 +411,10 @@ async function saveDraft() {
       },
     });
 
-    const message = announce.value === 'scheduled' ? 'บันทึกฉบับร่างพร้อมเวลาประกาศเรียบร้อยแล่ว' : 'บันทึกฉบับร่างเรียบร้อยแล้ว';
+    const message =
+      announce.value === "scheduled"
+        ? "บันทึกฉบับร่างพร้อมเวลาประกาศเรียบร้อยแล่ว"
+        : "บันทึกฉบับร่างเรียบร้อยแล้ว";
     Toast.fire({
       icon: "success",
       title: message,
@@ -551,38 +554,41 @@ async function loadPolicy(id) {
   form.value.category_id = payload.category_id ?? null;
   form.value.description = payload.description || "";
 
-  // แยกวันที่จาก publish_date , publish_time หรือ publish_at
-  const fromPublishAtDate = payload.publish_at
-    ? normalizeDate(payload.publish_at)
-    : "";
-  const fromPublishAtTime = payload.publish_at
-    ? normalizeTime(payload.publish_at)
-    : "";
+  const hasDateTime = !!(
+    payload.publish_date ||
+    payload.publish_time ||
+    payload.publish_at
+  );
 
-  form.value.publish_date = payload.publish_date || fromPublishAtDate || "";
-  form.value.publish_time = payload.publish_time || fromPublishAtTime || "";
+  // ถ้ามีเวลาจาก backend → แสดง, ถ้าไม่มี → clear form
+  if (hasDateTime) {
+    const fromPublishAtDate = payload.publish_at
+      ? normalizeDate(payload.publish_at)
+      : "";
+    const fromPublishAtTime = payload.publish_at
+      ? normalizeTime(payload.publish_at)
+      : "";
+
+    form.value.publish_date = payload.publish_date || fromPublishAtDate || "";
+    form.value.publish_time = payload.publish_time || fromPublishAtTime || "";
+  } else {
+    // ไม่มีเวลา → clear ฟิลด์ทั้งหมด
+    form.value.publish_date = "";
+    form.value.publish_time = "";
+  }
 
   content.value = payload.description || "";
 
   const status = String(payload.status || "").toLowerCase();
 
-  // ตรวจสอบว่ามีการตั้งเวลาประกาศหรือไม่
-  const hasDateTime = !!(form.value.publish_date || form.value.publish_time);
-
   // กำหนดประกาศ ตามสถานะและวันเวลา
   if (status === "draft") {
-    // draft ที่มีวันเวลาประกาศ = scheduled , ไม่มีวันเวลาประกาศ = now
     announce.value = hasDateTime ? "scheduled" : "now";
   } else if (status === "scheduled") {
-    // scheduled ต้องมีวันเวลาประกาศ
     announce.value = "scheduled";
   } else if (status === "active") {
-    // active = ประกาศตอนนี้
     announce.value = "now";
-    form.value.publish_date = "";
-    form.value.publish_time = "";
   } else {
-    // กรณีอื่นๆ ตั้งค่าเป็น now
     announce.value = hasDateTime ? "scheduled" : "now";
   }
 

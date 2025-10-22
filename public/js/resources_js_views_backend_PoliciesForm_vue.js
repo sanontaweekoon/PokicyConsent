@@ -724,7 +724,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
                   toast.addEventListener("mouseleave", (sweetalert2__WEBPACK_IMPORTED_MODULE_7___default().resumeTimer));
                 }
               });
-              message = announce.value === 'scheduled' ? 'บันทึกฉบับร่างพร้อมเวลาประกาศเรียบร้อยแล่ว' : 'บันทึกฉบับร่างเรียบร้อยแล้ว';
+              message = announce.value === "scheduled" ? "บันทึกฉบับร่างพร้อมเวลาประกาศเรียบร้อยแล่ว" : "บันทึกฉบับร่างเรียบร้อยแล้ว";
               Toast.fire({
                 icon: "success",
                 title: message
@@ -894,7 +894,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     function _loadPolicy() {
       _loadPolicy = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(id) {
         var _payload$category_id;
-        var response, payload, fromPublishAtDate, fromPublishAtTime, status, hasDateTime, _editorRef$value2, _editorRef$value2$set;
+        var response, payload, hasDateTime, fromPublishAtDate, fromPublishAtTime, status, _editorRef$value2, _editorRef$value2$set;
         return _regenerator().w(function (_context5) {
           while (1) switch (_context5.n) {
             case 0:
@@ -913,28 +913,26 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
               form.value.title = payload.title || "";
               form.value.category_id = (_payload$category_id = payload.category_id) !== null && _payload$category_id !== void 0 ? _payload$category_id : null;
               form.value.description = payload.description || "";
-
-              // แยกวันที่จาก publish_date , publish_time หรือ publish_at
-              fromPublishAtDate = payload.publish_at ? normalizeDate(payload.publish_at) : "";
-              fromPublishAtTime = payload.publish_at ? normalizeTime(payload.publish_at) : "";
-              form.value.publish_date = payload.publish_date || fromPublishAtDate || "";
-              form.value.publish_time = payload.publish_time || fromPublishAtTime || "";
-              content.value = payload.description || "";
-              status = String(payload.status || "").toLowerCase(); // ตรวจสอบว่ามีการตั้งเวลาประกาศหรือไม่
-              hasDateTime = !!(form.value.publish_date || form.value.publish_time); // กำหนดประกาศ ตามสถานะและวันเวลา
-              if (status === "draft") {
-                // draft ที่มีวันเวลาประกาศ = scheduled , ไม่มีวันเวลาประกาศ = now
-                announce.value = hasDateTime ? "scheduled" : "now";
-              } else if (status === "scheduled") {
-                // scheduled ต้องมีวันเวลาประกาศ
-                announce.value = "scheduled";
-              } else if (status === "active") {
-                // active = ประกาศตอนนี้
-                announce.value = "now";
+              hasDateTime = !!(payload.publish_date || payload.publish_time || payload.publish_at); // ถ้ามีเวลาจาก backend → แสดง, ถ้าไม่มี → clear form
+              if (hasDateTime) {
+                fromPublishAtDate = payload.publish_at ? normalizeDate(payload.publish_at) : "";
+                fromPublishAtTime = payload.publish_at ? normalizeTime(payload.publish_at) : "";
+                form.value.publish_date = payload.publish_date || fromPublishAtDate || "";
+                form.value.publish_time = payload.publish_time || fromPublishAtTime || "";
+              } else {
+                // ไม่มีเวลา → clear ฟิลด์ทั้งหมด
                 form.value.publish_date = "";
                 form.value.publish_time = "";
+              }
+              content.value = payload.description || "";
+              status = String(payload.status || "").toLowerCase(); // กำหนดประกาศ ตามสถานะและวันเวลา
+              if (status === "draft") {
+                announce.value = hasDateTime ? "scheduled" : "now";
+              } else if (status === "scheduled") {
+                announce.value = "scheduled";
+              } else if (status === "active") {
+                announce.value = "now";
               } else {
-                // กรณีอื่นๆ ตั้งค่าเป็น now
                 announce.value = hasDateTime ? "scheduled" : "now";
               }
               _context5.n = 3;
