@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::get('policies', [PoliciesController::class, 'index']);
         Route::get('policies/{policy}', [PoliciesController::class, 'show']);
 
+
     });
 
     // เพิ่ม/ลบ/แก้ไข 

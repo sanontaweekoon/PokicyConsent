@@ -9,7 +9,8 @@ use App\Models\Policy;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PoliciesController extends Controller
 {
@@ -110,27 +111,36 @@ class PoliciesController extends Controller
             'publish_at' => ['nullable', 'date']
         ]);
 
-        Log::debug('Policy.store validated data', $data);
+        // Log::debug('Policy.store validated data', $data);
+        $status = $data['status'];
+        $date = $data['publish_date'] ?? null;
+        $time = $data['publish_time'] ?? null;
+        $timeSeconds = $time ? ($time . (strlen($time) === 5 ? ':00' : '')) : null;
 
-        if (!empty($data['publish_at'])) {
-            $data['publish_at'] = Carbon::parse($data['publish_at']);
-        } elseif (!empty($data['publish_date'])) {
-            $time = $data['publish_time'] ?? '00:00';
-            try {
-                $data['publish_at'] = Carbon::createFromFormat('Y-m-d H:i', "{$data['publish_date']} {$time}");
-            } catch (\Exception $e) {
-                $data['publish_at'] = Carbon::parse("{$data['publish_date']} {$time}");
-            }
-        } else {
-            $data['publish_at'] = null;
-        }
-
-        if (!empty($data['publish_at'])) {
-            $data['publish_date'] = $data['publish_at']->format('Y-m-d');
-            $data['publish_time'] = $data['publish_at']->format('H:i');
-        } else {
+        if ($status === 'active') {
             $data['publish_date'] = null;
             $data['publish_time'] = null;
+            $data['publish_at'] = ($data['publish_at'] ?? null)
+                ? Carbon::parse($data['publish_at'])->format('Y-m-d H:i:s')
+                : Carbon::now()->format('Y-m-d H:i:s');
+        } elseif ($status === 'scheduled') {
+            if ($date && $timeSeconds) {
+                $data['publish_at'] = Carbon::parse("$date $timeSeconds")->format('Y-m-d H:i:s');
+            } else {
+                $data['publish_date'] = null;
+                $data['publish_time'] = null;
+                $data['publish_at'] = null;
+            }
+        } else { // draft
+            if ($date && $timeSeconds) {
+                $data['publish_at'] = Carbon::parse("$date $timeSeconds")->format('Y-m-d H:i:s');
+            } else {
+                $data['publish_at'] = null;
+                if (!$date || !$time) {
+                    $data['publish_date'] = null;
+                    $data['publish_time'] = null;
+                }
+            }
         }
 
         $data['is_required_ack'] = $data['is_required_ack'] ?? true;
@@ -235,34 +245,49 @@ class PoliciesController extends Controller
             'publish_at' => ['nullable', 'date']
         ]);
 
-        $publishAt = $policy->publish_at ? Carbon::parse($policy->publish_at) : null;
+        $status = $data['status'];
 
-        try {
-            if (!empty($data['publish_at'])) {
-                $publishAt = Carbon::parse($data['publish_at']);
-            } elseif (!empty($data['publish_date'])) {
-                $time = $data['publish_time'] ?? '00:00';
-                $publishAt = Carbon::createFromFormat('Y-m-d H:i', "{$data['publish_date']} {$time}");
-            }
-        } catch (\Exception $e) {
-            try {
-                $publishAt = !empty($data['publish_date']) ? Carbon::parse($data['publish_at']) : null;
-            } catch (\Throwable $ex) {
-                $publishAt = null;
-            }
-        }
+        $date = $data['publish_date'] ?? null;
+        $time = $data['publish_time'] ?? null;
+        $timeSeconds = $time ? ($time . (strlen($time) === 5 ? ':00' : '')) : null;
 
-        if ($publishAt) {
-            $data['publish_at'] = $publishAt;
-            $data['publish_date'] = $publishAt->format('Y-m-d');
-            $data['publish_time'] = $publishAt->format('H:i');
-        } else {
-            if (array_key_exists('publish_date', $data) || array_key_exists('publish_time', $data) || array_key_exists('publish_at', $data)) {
+
+        if ($status === 'active') {
+            $data['publish_date'] = null;
+            $data['publish_time'] = null;
+            $data['publish_at'] = ($data['publish_at'] ?? null) ? Carbon::parse($data['publish_at'])->format('Y-m-d H:i:s') : Carbon::now()->format('Y-m-d H:i:s');
+        } elseif ($status === 'scheduled') {
+            // scheduled ต้องมีวัน+เวลา
+            if ($date && $timeSeconds) {
+                $data['publish_at'] = Carbon::parse("$date $timeSeconds")->format('Y-m-d H:i:s');
+            } else {
+                // ไม่มีข้อมูลวัน/เวลา ให้เป็น null
                 $data['publish_at'] = null;
-                $data['publish_date'] = $data['publish_date'] ?? null;
-                $data['publish_time'] = $data['publish_time'] ?? null;
+                $data['publish_date'] = null;
+                $data['publish_time'] = null;
+            }
+        } else {
+            // draft
+            if ($date && $timeSeconds) {
+                $data['publish_at'] = Carbon::parse("$date $timeSeconds")->format('Y-m-d H:i:s');
+            } else {
+                $data['publish_at'] = null;
+                if (!$date || $time) {
+                    $data['publish_date'] = null;
+                    $data['publish_time'] = null;
+                }
             }
         }
+
+        $policy->fill([
+            'title'        => $data['title'],
+            'category_id'  => $data['category_id'],
+            'description'  => $data['description'],
+            'status'       => $status,
+            'publish_date' => $data['publish_date'],
+            'publish_time' => $data['publish_time'],
+            'publish_at'   => $data['publish_at'],
+        ])->save();
 
         if (!array_key_exists('is_required_ack', $data)) {
             $data['is_required_ack'] = $policy->is_required_ack;
@@ -287,5 +312,11 @@ class PoliciesController extends Controller
     {
         $policy->delete();
         return response()->noContent();
+    }
+
+    public function sendEmail(Request $request ,Policy $policy){
+        $data = $request->validate([
+            'recipients'
+        ]);
     }
 }

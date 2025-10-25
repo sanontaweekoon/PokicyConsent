@@ -23,7 +23,7 @@
 
             <div>
                 <button
-                    class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-purple">
+                    class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-500 border border-transparent rounded-lg active:bg-blue-700 hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
                     <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -34,7 +34,7 @@
 
             <div>
                 <button
-                    class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-yellow-700 focus:outline-none focus:shadow-outline-purple">
+                    class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-500 border border-transparent rounded-lg active:bg-yellow-700 hover:bg-yellow-600 focus:outline-none focus:shadow-outline-yellow">
                     <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -45,7 +45,7 @@
         </div>
 
         <button @click="$router.push({ name: 'PolicyCreate' })"
-            class="flex items-center justify-between px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple">
+            class="flex items-center justify-between px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-green-700 hover:bg-green-600 focus:outline-none focus:shadow-outline-green">
             <svg class="w-4 h-4 mr-2 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -54,20 +54,33 @@
 
     </div>
 
-    <div class="mb-4 flex gap-4 border-b-2">
-        <div @click="changeTab('scheduled')" class="flex gap-1">
-            <button type="button"
-                :class="['px-4 py-2  text-sm', selectedTab === 'scheduled' ? 'border-x-2 border-t-2 text-red-800' : 'bg-gray-50']">กำหนดเวลา</button>
-        </div>
+    <div class="mb-4 flex border-b-2 z-50">
+        <button @click="changeTab('scheduled')" type="button" :class="[
+            'px-4 py-2 text-sm border-2 -mb-[2px]',
+            selectedTab === 'scheduled'
+                ? 'border-gray-200 text-red-800 bg-gray-50'
+                : 'border-transparent bg-gray-50 text-gray-700 mb-[2px]',
+            'border-b-gray-50'
+        ]">กำหนดเวลา</button>
 
         <div @click="changeTab('active')" class="flex gap-1">
-            <button type="button"
-                :class="['px-4 py-2 text-sm', selectedTab === 'active' ? 'border-x-2 border-t-2 text-red-800' : 'bg-gray-50']">ประกาศแล้ว</button>
+            <button type="button" :class="[
+                'px-4 py-2 text-sm border-2 -mb-[2px]',
+                selectedTab === 'active'
+                    ? 'border-gray-200 text-red-800 bg-gray-50'
+                    : 'border-transparent bg-gray-50 text-gray-700 mb-[2px]',
+                'border-b-gray-50'
+            ]">ประกาศแล้ว</button>
         </div>
 
         <div @click="changeTab('draft')" class="flex gap-1">
-            <button type="button"
-                :class="['px-4 py-2 text-sm', selectedTab === 'draft' ? 'border-x-2 border-t-2 text-red-800' : 'bg-gray-50']">ฉบับร่าง</button>
+            <button type="button" :class="[
+                'px-4 py-2 text-sm border-2 -mb-[2px]',
+                selectedTab === 'draft'
+                    ? 'border-gray-200 text-red-800 bg-gray-50'
+                    : 'border-transparent bg-gray-50 text-gray-700 mb-[2px]',
+                'border-b-gray-50'
+            ]">ฉบับร่าง</button>
         </div>
     </div>
 
@@ -193,7 +206,7 @@ export default {
                 if (tab) {
                     params.status = tab;
                 }
-               
+
                 const response = await http.get('/admin/policies', { params })
                 //console.log('loadPolicies: response.data', response.data)
 
@@ -229,39 +242,22 @@ export default {
 
         formatPublishAt(value) {
             if (!value) return '-'
-            try {
-                let s = String(value)
+            const s = String(value).trim();
 
-                if (!s.includes('T') && s.includes(' ')) {
-                    s = s.replace(' ', 'T')
-                }
-                if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)) {
-                    s = s + ':00'
-                }
-                let d = new Date(s)
-                if (isNaN(d)) {
-                    const m = s.match(/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?/)
-                    if (m) d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0))
-                }
-                if (isNaN(d)) return String(value)
+            const m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?)?/);
+            if (!m) return s;
 
-                const pad = n => String(n).padStart(2, '0')
-                const day = pad(d.getDate())
-                const month = pad(d.getMonth() + 1)
-                const year = d.getFullYear()
-                const hour = pad(d.getHours())
-                const minute = pad(d.getMinutes())
+            const [, y, mo, d, h, mi] = m;
 
-                return `${day}/${month}/${year} ${hour}:${minute}`
-            } catch (e) {
-                return String(value)
-            }
+            return (h !== undefined && mi !== undefined)
+                ? `${d}/${mo}/${y} ${h}:${mi}`
+                : `${d}/${mo}/${y}`;
         },
 
         editPolicy(id) {
             this.$router.push({ name: 'PolicyEdit', params: { id } })
         },
-        
+
         async deletePolicy(id) {
             const confirm = await Swal.fire({
                 title: 'ยืนยันการลบ?',

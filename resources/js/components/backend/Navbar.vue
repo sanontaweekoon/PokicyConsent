@@ -65,7 +65,7 @@
           <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none" aria-label="Account"
             aria-haspopup="true">
             <img class="object-cover w-8 h-8 rounded-full"
-              src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+              src="https://images.unsplash.com/photo-1581456495146-65a71b2c8e52?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=686"
               alt="" aria-hidden="true" />
           </button>
           <template>
