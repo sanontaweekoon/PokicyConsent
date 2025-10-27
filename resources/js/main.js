@@ -5,6 +5,7 @@ import 'vue-awesome-paginate/dist/style.css'
 import router from './router'
 import '../css/app.css'
 import { AuthService } from './services/AuthService'
+import VueSignaturePad from 'vue-signature-pad'
 
 AuthService.completeLoginFromCallback();
 
@@ -12,6 +13,7 @@ AuthService.completeLoginFromCallback();
 const app = createApp(App)
 
 app.use(router)
+app.use(VueSignaturePad)
 app.use(VueAwesomePaginate)
 app.mount('#app')
 

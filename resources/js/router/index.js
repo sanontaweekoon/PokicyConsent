@@ -16,6 +16,9 @@ import PoliciesList from '../views/backend/PoliciesList.vue'
 import Companies from '../views/backend/Companies.vue';
 import PolicyCategory from '../views/backend/PolicyCategory.vue';
 
+//Public
+import PublicAck from '../views/public/PublicAck.vue'
+
 const PoliciesForm = () => import('../views/backend/PoliciesForm.vue')
 
 const routes = [{
@@ -85,6 +88,23 @@ const routes = [{
             },
         ],
     },
+
+    {
+        path: '/ack/:window',
+        name: 'PublicAck',
+        component: PublicAck,
+    },
+
+    {
+        path: '/dev/ack/:window',
+        name: 'PublicAckDev',
+        component: PublicAck,
+    },
+
+    {
+        path: ''
+    },
+
     {
         path: '/',
         redirect: '/backend'

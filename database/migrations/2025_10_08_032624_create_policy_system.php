@@ -127,27 +127,28 @@ class CreatePolicySystem extends Migration
         Schema::create('policy_target_resolved', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('employee_code', 50)->index();
             $table->string('reason')->nullable();
             $table->boolean('locked')->default(false);
-            $table->enum('uniqid', ['policy_window_id', 'user_id'])->nullable();
+            $table->string('uniqid')->nullable();
             $table->timestamps();
-            $table->unique(['policy_window_id', 'user_id']);
-            $table->index(['user_id', 'policy_window_id']);
+            $table->unique(['policy_window_id', 'employee_code']);
+            $table->index(['employee_code', 'policy_window_id']);
         });
 
         // --- Channels & Announcements ---
-        Schema::create('chanels', function (Blueprint $table) { // สะกดเดิม
+        Schema::create('channels', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code')->nullable();
+            $table->string('code')->unique();
             $table->string('name');
             $table->boolean('is_active')->default(true);
+            $table->index('is_active');
         });
 
         Schema::create('policy_announcements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->foreignId('channel_id')->constrained('chanels');
+            $table->foreignId('channel_id')->constrained('channels');
             $table->string('subject')->nullable();
             $table->longText('content_html')->nullable();
             $table->text('content_text')->nullable();
@@ -158,7 +159,7 @@ class CreatePolicySystem extends Migration
             $table->index(['policy_window_id', 'channel_id', 'status']);
         });
 
-        Schema::create('policy_announcements_logs', function (Blueprint $table) {
+        Schema::create('policy_announcement_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('announcement_id')->constrained('policy_announcements')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
@@ -172,28 +173,24 @@ class CreatePolicySystem extends Migration
         // --- Acknowledgements (document-level) ---
         Schema::create('acknowledgements', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            // เส้นหลัก: ผ่าน window
             $table->foreignId('policy_window_id')
                 ->constrained('policy_windows')
                 ->cascadeOnDelete();
-
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('employee_code', 50)->index(); 
             $table->enum('status', ['pending', 'acknowledged'])->default('pending');
             $table->string('signer_name')->nullable();
+            $table->json('signature_payload')->nullable();
             $table->string('signature_hash')->nullable();
-
             $table->timestamp('acknowledged_at')->nullable();
             $table->timestamps();
-
-            $table->unique(['policy_window_id', 'user_id']);
+            $table->unique(['policy_window_id', 'employee_code']);
         });
     }
 
     public function down()
     {
         Schema::dropIfExists('acknowledgements');
-        Schema::dropIfExists('chanels');
+        Schema::dropIfExists('channels');
         Schema::dropIfExists('companies');
         Schema::dropIfExists('group_user');
         Schema::dropIfExists('groups');
@@ -201,7 +198,7 @@ class CreatePolicySystem extends Migration
         Schema::dropIfExists('org_units');
         Schema::dropIfExists('policies');
         Schema::dropIfExists('policy_announcements');
-        Schema::dropIfExists('policy_announcements_logs');
+        Schema::dropIfExists('policy_announcement_logs');
         Schema::dropIfExists('policy_categories');
         Schema::dropIfExists('policy_target_resolved');
         Schema::dropIfExists('policy_targets');

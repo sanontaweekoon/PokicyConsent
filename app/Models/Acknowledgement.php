@@ -14,10 +14,10 @@ class Acknowledgement extends Model
 
     protected $fillable = [
         'policy_window_id',
-        'user_id',
+        'employee_code',
         'status',
         'signer_name',
-        'signature_payload', // JSON strokes
+        'signature_payload',
         'signature_hash',
         'acknowledged_at',
     ];
@@ -31,7 +31,7 @@ class Acknowledgement extends Model
         return $this->belongsTo(PolicyWindow::class, 'policy_window_id');
     }
 
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class, 'user_id');
+    public function employee(): BelongsTo {
+        return $this->belongsTo(User::class, 'employee_code', 'EmpCode');
     }
 }

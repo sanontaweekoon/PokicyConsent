@@ -509,13 +509,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
   setup: function setup(__props, _ref) {
     var __expose = _ref.expose;
     __expose();
-    var content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(''); // เก็บ text จาก TinyMCE
+    var content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(""); // เก็บ text จาก TinyMCE
     var editorRef = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
-    var announce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('now');
+    var announce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("now");
     function clearScheduleFields() {
       var _v$$value$publish_dat, _v$$value$publish_dat2, _v$$value$publish_tim, _v$$value$publish_tim2;
-      form.value.publish_date = '';
-      form.value.publish_time = '';
+      form.value.publish_date = "";
+      form.value.publish_time = "";
       (_v$$value$publish_dat = v$.value.publish_date) === null || _v$$value$publish_dat === void 0 || (_v$$value$publish_dat2 = _v$$value$publish_dat.$reset) === null || _v$$value$publish_dat2 === void 0 || _v$$value$publish_dat2.call(_v$$value$publish_dat);
       (_v$$value$publish_tim = v$.value.publish_time) === null || _v$$value$publish_tim === void 0 || (_v$$value$publish_tim2 = _v$$value$publish_tim.$reset) === null || _v$$value$publish_tim2 === void 0 || _v$$value$publish_tim2.call(_v$$value$publish_tim);
     }
@@ -524,7 +524,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         return _regenerator().w(function (_context) {
           while (1) switch (_context.n) {
             case 0:
-              if (!(val === 'now')) {
+              if (!(val === "now")) {
                 _context.n = 1;
                 break;
               }
@@ -712,7 +712,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนบันทึกฉบับร่าง");
               return _context4.a(2);
             case 5:
-              if (announce.value !== 'scheduled') {
+              if (announce.value !== "scheduled") {
                 clearScheduleFields();
               }
               payload = {
@@ -905,12 +905,12 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         var day = String(d.getDate()).padStart(2, "0");
         return "".concat(year, "-").concat(month, "-").concat(day);
       }
-      return '';
+      return "";
     }
     function normalizeTime(value) {
       var withSeconds = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       if (!value) {
-        return '';
+        return "";
       }
       var s = String(value).trim();
       var m = s.match(/(\d{2}:\d{2}(?::\d{2})?)/);
@@ -924,7 +924,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         var mm = String(d.getMinutes()).padStart(2, "0");
         return "".concat(hh, ":").concat(mm);
       }
-      return '';
+      return "";
     }
     function loadPolicy(_x2) {
       return _loadPolicy.apply(this, arguments);
@@ -966,14 +966,14 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               return _context6.a(2);
             case 2:
               form.value.id = payload.id;
-              form.value.title = payload.title || '';
+              form.value.title = payload.title || "";
               form.value.category_id = (_payload$category_id = payload.category_id) !== null && _payload$category_id !== void 0 ? _payload$category_id : null;
-              form.value.description = payload.description || '';
-              fromPublishAtDate = payload.publish_at ? normalizeDate(payload.publish_at) : '';
-              fromPublishAtTime = payload.publish_at ? normalizeTime(payload.publish_at) : '';
-              form.value.publish_date = payload.publish_date ? normalizeDate(payload.publish_date) : fromPublishAtDate || '';
-              form.value.publish_time = payload.publish_time ? normalizeTime(payload.publish_time) : fromPublishAtTime || '';
-              content.value = payload.description || '';
+              form.value.description = payload.description || "";
+              fromPublishAtDate = payload.publish_at ? normalizeDate(payload.publish_at) : "";
+              fromPublishAtTime = payload.publish_at ? normalizeTime(payload.publish_at) : "";
+              form.value.publish_date = payload.publish_date ? normalizeDate(payload.publish_date) : fromPublishAtDate || "";
+              form.value.publish_time = payload.publish_time ? normalizeTime(payload.publish_time) : fromPublishAtTime || "";
+              content.value = payload.description || "";
               status = String(payload.status || "").toLowerCase();
               ts = getPublishTs({
                 publish_at: payload.publish_at,
@@ -982,22 +982,22 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
               });
               isFuture = !isNaN(ts) && ts > Date.now(); // กำหนดประกาศ ตามสถานะและวันเวลา
               if (status === "scheduled") {
-                announce.value = 'scheduled';
-              } else if (status === 'draft') {
-                announce.value = isFuture ? 'scheduled' : 'now';
+                announce.value = "scheduled";
+              } else if (status === "draft") {
+                announce.value = isFuture ? "scheduled" : "now";
                 if (!isFuture) {
-                  form.value.publish_date = '';
-                  form.value.publish_time = '';
+                  form.value.publish_date = "";
+                  form.value.publish_time = "";
                 }
-              } else if (status === 'active') {
-                announce.value = 'now';
-                form.value.publish_date = '';
-                form.value.publish_time = '';
+              } else if (status === "active") {
+                announce.value = "now";
+                form.value.publish_date = "";
+                form.value.publish_time = "";
               } else {
-                announce.value = isFuture ? 'scheduled' : 'now';
+                announce.value = isFuture ? "scheduled" : "now";
                 if (!isFuture) {
-                  form.value.publish_date = '';
-                  form.value.publish_time = '';
+                  form.value.publish_date = "";
+                  form.value.publish_time = "";
                 }
               }
               _context6.n = 3;
@@ -1206,7 +1206,7 @@ var _hoisted_23 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ซ้าย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"mr-3 font-medium\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" value=\"all\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" value=\"group\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "mr-3 text-nowrap font-medium"
+    "class": "mr-3 font-medium text-nowrap"
   }, "เวลาประกาศ: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "radio",
     id: "option3",
@@ -1227,7 +1227,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.announce = $event;
     }),
-    "class": "w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500 scale-125"
+    "class": "w-4 h-4 text-red-600 scale-125 accent-red-700 focus:ring-red-500"
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.announce]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["VueFlatpickr"], {
     modelValue: $setup.form.publish_date,
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
@@ -1258,7 +1258,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 'time-' + $setup.announce,
     "class": "px-3 py-2 mr-5 border rounded"
   }, null, 8 /* PROPS */, ["modelValue", "disabled"])), $setup.publishErrors.publish_time ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.publishErrors.publish_time), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "w-auto text-nowrap my-auto px-3 text-gray-500 text-xs rounded-xl border-2 text-center"
+    "class": "w-auto px-3 my-auto text-xs text-center text-gray-500 border-2 text-nowrap rounded-xl"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "UTC +7:00")], -1 /* CACHED */))])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "block mb-1 font-medium"
   }, "หัวข้อ *", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -5758,13 +5758,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PoliciesForm_vue_vue_type_template_id_f8e95024__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PoliciesForm.vue?vue&type=template&id=f8e95024 */ "./resources/js/views/backend/PoliciesForm.vue?vue&type=template&id=f8e95024");
 /* harmony import */ var _PoliciesForm_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PoliciesForm.vue?vue&type=script&setup=true&lang=js */ "./resources/js/views/backend/PoliciesForm.vue?vue&type=script&setup=true&lang=js");
-/* harmony import */ var C_xampp_htdocs_policyconsentsystem_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_PokicyConsent_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_policyconsentsystem_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PoliciesForm_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PoliciesForm_vue_vue_type_template_id_f8e95024__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/views/backend/PoliciesForm.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_PokicyConsent_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PoliciesForm_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PoliciesForm_vue_vue_type_template_id_f8e95024__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/views/backend/PoliciesForm.vue"]])
 /* hot reload */
 if (false) // removed by dead control flow
 {}

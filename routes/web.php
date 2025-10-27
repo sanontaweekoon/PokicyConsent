@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Public\PublicAckController;
+use Laravel\Socialite\Facades\Socialite;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +23,12 @@ Route::get('/login/microsoft', function () {
         ->scopes(['openid','profile','email'])
         ->redirect();
 });
+
+Route::get('/dev/ack/{window}', [PublicAckController::class, 'show'])->name('ack.window.dev');
+
+Route::get('/ack/{window}', [PublicAckController::class, 'show'])
+    ->name('ack.window')
+    ->middleware('signed');
 
 Route::get('/login/microsoft/callback', [AuthController::class, 'microsoftCallback']);
 
