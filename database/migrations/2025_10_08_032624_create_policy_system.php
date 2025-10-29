@@ -9,69 +9,23 @@ class CreatePolicySystem extends Migration
     public function up()
     {
         // --- Base ---
-        Schema::create('companies', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('code')->nullable();
-            $table->string('name_th')->nullable();
-            $table->string('name_en')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('job_levels', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('code')->nullable();
-            $table->string('name')->nullable();
-            $table->unsignedInteger('rank')->nullable();
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('org_units', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('company_id')->constrained('companies');
-            // self-FK: หลีกเลี่ยง cascade เพื่อกัน loop/cycle บน SQL Server
-            $table->foreignId('parent_id')->nullable()
-                ->constrained('org_units')
-                ->onDelete('no action')->onUpdate('no action');
-            $table->string('code')->nullable();
-            $table->string('name_th')->nullable();
-            $table->string('name_en')->nullable();
-            $table->string('path_code')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamp('created_at')->nullable();
-            $table->index(['company_id', 'parent_id']);
-        });
-
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('company_id')->nullable()->constrained('companies');
-            $table->foreignId('org_unit_id')->nullable()->constrained('org_units');
-            $table->foreignId('job_level_id')->nullable()->constrained('job_levels');
-            $table->string('employee_no')->nullable();
-            $table->string('name_th')->nullable();
-            $table->string('name_en')->nullable();
+            $table->string('name')->nullable();
             $table->string('email')->unique();
-            $table->uuid('add_object_id')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('groups', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('company_id')->constrained('companies');
-            $table->string('code')->nullable();
+        Schema::create('recipient_groups', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
-            $table->boolean('is_dynamic')->default(false);
-            $table->uuid('external_id')->nullable();
-        });
+            $table->enum('type', ['department', 'level', 'custom'])->default('custom');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->timestamps();
 
-        Schema::create('group_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->unique(['group_id', 'user_id']);
+            $table->foreign('created_by')->references('id')->on('users')->nullOnDelete();
         });
 
         // --- Policies ---
@@ -90,9 +44,10 @@ class CreatePolicySystem extends Migration
             $table->string('title');
             $table->longText('description')->nullable();
             $table->foreignId('owner_user_id')->nullable()->constrained('users');
-            $table->foreignId('owner_org_unit_id')->nullable()->constrained('org_units');
             $table->boolean('is_required_ack')->default(true);
             $table->enum('status', ['draft', 'active', 'scheduled'])->default('draft');
+            $table->enum('recipient_type', ['all', 'target'])->default('all');
+            $table->json('recipient_emails')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
@@ -101,7 +56,7 @@ class CreatePolicySystem extends Migration
         Schema::create('policy_windows', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_id')->constrained('policies')->cascadeOnDelete();
-            $table->unsignedInteger('window_no')->default(1);
+            $table->string('window_no', 50)->nullable();
             $table->dateTime('start_at')->nullable();
             $table->dateTime('end_at')->nullable();
             $table->boolean('is_open')->default(false);
@@ -111,44 +66,10 @@ class CreatePolicySystem extends Migration
             $table->index(['policy_id', 'is_open', 'start_at', 'end_at']);
         });
 
-        // --- Targets / Resolved recipients ---
-        Schema::create('policy_targets', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->enum('target_type', ['user', 'org_unit', 'job_level', 'group', 'company']);
-            $table->unsignedBigInteger('target_id');
-            $table->boolean('include_descendants')->default(true);
-            $table->boolean('required')->default(true);
-            $table->enum('index', ['policy_window_id', 'target_type', 'target_id'])->nullable();
-            $table->timestamps();
-            $table->index(['policy_window_id', 'target_type', 'target_id']);
-        });
-
-        Schema::create('policy_target_resolved', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->string('employee_code', 50)->index();
-            $table->string('reason')->nullable();
-            $table->boolean('locked')->default(false);
-            $table->string('uniqid')->nullable();
-            $table->timestamps();
-            $table->unique(['policy_window_id', 'employee_code']);
-            $table->index(['employee_code', 'policy_window_id']);
-        });
-
-        // --- Channels & Announcements ---
-        Schema::create('channels', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('code')->unique();
-            $table->string('name');
-            $table->boolean('is_active')->default(true);
-            $table->index('is_active');
-        });
 
         Schema::create('policy_announcements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_window_id')->constrained('policy_windows')->cascadeOnDelete();
-            $table->foreignId('channel_id')->constrained('channels');
             $table->string('subject')->nullable();
             $table->longText('content_html')->nullable();
             $table->text('content_text')->nullable();
@@ -156,7 +77,7 @@ class CreatePolicySystem extends Migration
             $table->timestamp('send_at')->nullable();
             $table->enum('status', ['draft', 'queued', 'sending', 'sent', 'failed'])->default('draft');
             $table->timestamps();
-            $table->index(['policy_window_id', 'channel_id', 'status']);
+            $table->index(['policy_window_id', 'status']);
         });
 
         Schema::create('policy_announcement_logs', function (Blueprint $table) {
@@ -170,13 +91,13 @@ class CreatePolicySystem extends Migration
             $table->index(['announcement_id', 'user_id', 'status']);
         });
 
-        // --- Acknowledgements (document-level) ---
+        // --- Acknowledgements ---
         Schema::create('acknowledgements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('policy_window_id')
                 ->constrained('policy_windows')
                 ->cascadeOnDelete();
-            $table->string('employee_code', 50)->index(); 
+            $table->string('employee_code', 50)->index();
             $table->enum('status', ['pending', 'acknowledged'])->default('pending');
             $table->string('signer_name')->nullable();
             $table->json('signature_payload')->nullable();
@@ -185,24 +106,54 @@ class CreatePolicySystem extends Migration
             $table->timestamps();
             $table->unique(['policy_window_id', 'employee_code']);
         });
+
+         // --- recipient ---
+        Schema::create('recipient_group_members', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('recipient_group_id');
+            $table->string('email');
+            $table->string('name')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->foreign('recipient_group_id')
+                ->references('id')
+                ->on('recipient_groups')
+                ->onDelete('cascade');
+
+            $table->unique(['recipient_group_id', 'email']);
+        });
+
+        Schema::create('policy_recipient_groups', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('policy_id');
+            $table->unsignedBigInteger('recipient_group_id');
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->foreign('policy_id')
+                ->references('id')
+                ->on('policies')
+                ->onDelete('cascade');
+
+            $table->foreign('recipient_group_id')
+                ->references('id')
+                ->on('recipient_groups')
+                ->onDelete('cascade');
+
+            $table->unique(['policy_id', 'recipient_group_id']);
+        });
     }
 
     public function down()
     {
+        Schema::dropIfExists('policy_recipient_groups');
+        Schema::dropIfExists('recipient_group_members');
         Schema::dropIfExists('acknowledgements');
-        Schema::dropIfExists('channels');
-        Schema::dropIfExists('companies');
-        Schema::dropIfExists('group_user');
-        Schema::dropIfExists('groups');
-        Schema::dropIfExists('job_levels');
-        Schema::dropIfExists('org_units');
-        Schema::dropIfExists('policies');
-        Schema::dropIfExists('policy_announcements');
         Schema::dropIfExists('policy_announcement_logs');
-        Schema::dropIfExists('policy_categories');
-        Schema::dropIfExists('policy_target_resolved');
-        Schema::dropIfExists('policy_targets');
+        Schema::dropIfExists('policy_announcements');
         Schema::dropIfExists('policy_windows');
+        Schema::dropIfExists('policies');
+        Schema::dropIfExists('policy_categories');
+        Schema::dropIfExists('recipient_groups');
         Schema::dropIfExists('users');
     }
 }

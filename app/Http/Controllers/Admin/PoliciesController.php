@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PoliciesController extends Controller
@@ -22,15 +23,20 @@ class PoliciesController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
-        $perPage = (int) $request->query('per_page', $request->query('per', 25));
+        $perPage = (int) ($request->input('per_page') ?? 10);
         $page = (int) $request->query('page', 1);
+        $status = $request->input('status');
 
-        $query = Policy::query()->when($search !== '', function ($q) use ($search) {
-            $q->where(function ($w) use ($search) {
-                $w->where('code', 'like', "%{$search}%")
-                    ->orWhere('title', 'like', "%{$search}%");
+        $query = Policy::query()
+            ->with(['policyWindows' => function ($q) {
+                $q->orderBy('created_at', 'desc');
+            }])
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($w) use ($search) {
+                    $w->where('code', 'like', "%{$search}%")
+                        ->orWhere('title', 'like', "%{$search}%");
+                });
             });
-        });
 
         // status filter: active | draft | scheduled
         if ($request->filled('status')) {
@@ -75,7 +81,6 @@ class PoliciesController extends Controller
             'code' => $request->input('code') !== '' ? $request->input('code') : null,
             'category_id' => $request->input('category_id') !== '' ? $request->input('category_id') : null,
             'owner_user_id' => $request->input('owner_user_id') !== '' ? $request->input('owner_user_id') : null,
-            'owner_org_unit_id' => $request->input('owner_org_unit_id') !== '' ? $request->input('owner_org_unit_id') : null,
             'publish_date' => $request->input('publish_date') !== '' ? $request->input('publish_date') : null,
             'publish_time' => $request->input('publish_time') !== '' ? $request->input('publish_time') : null,
             'publish_at' => $request->input('publish_at') ?? null
@@ -103,7 +108,6 @@ class PoliciesController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'owner_user_id' => ['nullable', 'exists:users,id'],
-            'owner_org_unit_id' => ['nullable', 'exists:org_units,id'],
             'is_required_ack' => ['sometimes', 'boolean'],
             'status' => ['required', Rule::in(Policy::STATUSES)],
             'publish_date' => ['nullable', 'date'],
@@ -159,6 +163,12 @@ class PoliciesController extends Controller
 
             Log::debug('Policy.store queries', DB::getQueryLog());
 
+            if ($policy->status === Policy::STATUS_ACTIVE) {
+                $this->handlePolicyActivation($policy);
+            }
+
+            $policy->load('policyWindows');
+
             return response()->json([
                 'ok' => true,
                 'validated' => $data,
@@ -210,7 +220,6 @@ class PoliciesController extends Controller
             'code' => $request->input('code') !== '' ? $request->input('code') : null,
             'category_id' => $request->input('category_id') !== '' ? $request->input('category_id') : null,
             'owner_user_id' => $request->input('owner_user_id') !== '' ? $request->input('owner_user_id') : null,
-            'owner_org_unit_id' => $request->input('owner_org_unit_id') !== '' ? $request->input('owner_org_unit_id') : null,
             'publish_date' => $request->input('publish_date') !== '' ? $request->input('publish_date') : null,
             'publish_time' => $request->input('publish_time') !== '' ? $request->input('publish_time') : null,
             'publish_at' => $request->input('publish_at') ?? null
@@ -237,7 +246,6 @@ class PoliciesController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'owner_user_id' => ['nullable', 'exists:users,id'],
-            'owner_org_unit_id' => ['nullable', 'exists:org_units,id'],
             'is_required_ack' => ['sometimes', 'boolean'],
             'status' => ['required', Rule::in(Policy::STATUSES)],
             'publish_date' => ['nullable', 'date'],
@@ -279,6 +287,8 @@ class PoliciesController extends Controller
             }
         }
 
+        $oldStatus = $policy->status;
+
         $policy->fill([
             'title'        => $data['title'],
             'category_id'  => $data['category_id'],
@@ -299,6 +309,12 @@ class PoliciesController extends Controller
         $policy->fill($data);
         $policy->save();
 
+        if ($oldStatus !== Policy::STATUS_ACTIVE && $policy->status === Policy::STATUS_ACTIVE) {
+            $this->handlePolicyActivation($policy);
+        }
+
+        $policy->load('policyWindows');
+
         return response()->json($policy);
     }
 
@@ -314,9 +330,58 @@ class PoliciesController extends Controller
         return response()->noContent();
     }
 
-    public function sendEmail(Request $request ,Policy $policy){
+    public function sendEmail(Request $request, Policy $policy)
+    {
         $data = $request->validate([
             'recipients'
         ]);
+    }
+
+    protected function createPolicyWindow(Policy $policy)
+    {
+        return $policy->policyWindows()->create([
+            'window_no' => 'WIN-' . str_pad($policy->id, 6, '0', STR_PAD_LEFT),
+            'is_open' => true,
+            'start_at' => now(),
+            'end_at' => null,
+        ]);
+    }
+
+    protected function generateQrCode($window)
+    {
+        try {
+            $url = config('app.url') . '/ack/' . $window->id;
+            $path = "qr/window_{$window->id}.png";
+            $png = QrCode::format('png')->size(512)->margin(1)->generate($url);
+            Storage::disk('public')->put($path, $png);
+
+            Log::info('QR Code generated', ['window_id' => $window->id, 'path' => $path]);
+        } catch (\Exception $e) {
+            Log::error('Failed to generate QR Code', [
+                'window_id' => $window->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    protected function handlePolicyActivation(Policy $policy)
+    {
+        $window = $policy->policyWindows()->first();
+
+        if (!$window) {
+            // Create a new policy window
+            $window = $this->createPolicyWindow($policy);
+            Log::info('Created new policy window', ['policy_id' => $policy->id, 'window_id' => $window->id]);
+        } else {
+            $window->update([
+                'is_open' => true,
+                'start_at' => $window->start_at ?? now(),
+            ]);
+            Log::info('Updated existing policy window', ['window_id' => $window->id]);
+        }
+
+        $this->generateQrCode($window);
+
+        return $window;
     }
 }

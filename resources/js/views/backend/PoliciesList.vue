@@ -34,7 +34,7 @@
 
             <div>
                 <button
-                    class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-500 border border-transparent rounded-lg active:bg-yellow-700 hover:bg-yellow-600 focus:outline-none focus:shadow-outline-yellow">
+                    class="flex items-center justify-between px-4 py-1.5 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-zinc-400 border border-transparent rounded-lg active:bg-zinc-700 hover:bg-zinc-600 focus:outline-none focus:shadow-outline-zinc">
                     <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -92,8 +92,9 @@
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border">
                         <th class="px-4 py-3">DocNO.</th>
                         <th class="px-4 py-3">หัวข้อ</th>
-                        <th class="px-4 py-3">ผู้รับนโยบาย</th>
                         <th class="px-4 py-3">เวลาประกาศ</th>
+                        <th class="px-4 py-3">สถานะ</th>
+                        <th class="px-4 py-3">QR Coe</th>
                         <th class="px-4 py-3">ดำเนินการ</th>
                     </tr>
                 </thead>
@@ -103,21 +104,44 @@
                         <td class="px-4 py-3 text-sm">{{ policy.code ?? '-' }}</td>
 
                         <td class="px-4 py-3 text-sm">
-                            <div class="w-60 truncate">
+                            <div class="max-w-lg truncate" :title="policy.title">
                                 {{ policy.title ?? '-' }}
                             </div>
                         </td>
 
                         <td class="px-4 py-3 text-sm">
-                            <div class="flex items-center text-sm">
-                                <div>
-                                    {{ policy.owner_user_id ?? '-' }}
-                                </div>
+                            {{ formatPublishAt(policy.publish_at) }}
+                        </td>
+
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <button @click="toggleWindow(policy.policy_windows[0])" :class="[
+                                    'px-3 py-1.5 text-xs font-medium rounded-full transition-colors',
+                                    policy.policy_windows[0]?.is_open
+                                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                                        : 'bg-red-100 text-red-800 hover:bg-red-200'  
+                                ]">
+                                {{  policy.policy_windows[0]?.is_open ? 'เปิดการรับทราบ' : 'ปิดการรับทราบ' }}
+                                </button>
                             </div>
                         </td>
 
                         <td class="px-4 py-3 text-sm">
-                            {{ formatPublishAt(policy.publish_at) }}
+                            <div v-if="hasQrCode(policy)" class="flex gap-1">
+                                <button @click="viewQr(policy.policy_windows[0])"
+                                    class="px-3 py-1.5 text-xs font-medium text-white bg-stone-100 rounded hover:bg-stone-200"
+                                    title="QR Code">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="#000000"
+                                            d="M64 160l64 0 0-64-64 0 0 64zM0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 416l64 0 0-64-64 0 0 64zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zM320 96l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zM288 352a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm0 64c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zm96 32c0-17.7 14.3-32 32-32s32 14.3 32 32-14.3 32-32 32-32-14.3-32-32zm32-96a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm-32 32a32 32 0 1 1 -64 0 32 32 0 1 1 64 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <span v-else-if="policy.status === 'draft'" class="text-gray-400 text-xs">📝
+                                ฉบับร่าง</span>
+                            <span v-else-if="policy.status === 'scheduled'" class="text-orange-500 text-xs">⏰
+                                รอประกาศ</span>
+                            <span v-else class="text-gray-400 text-xs">-</span>
                         </td>
 
                         <td class="px-4 py-3 text-sm">
@@ -145,6 +169,34 @@
             </div>
         </div>
     </div>
+
+    <Teleport to="body">
+        <div v-if="showQrModal" @click="showQrModal = false"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div @click.stop class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">QR Code สำหรับรับทราบนโยบาย</h3>
+                    <button @click="showQrModal = false" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="text-center space-y-4">
+                    <img :src="currentQrUrl" alt="QR Code" class="w-full max-w-sm mx-auto border rounded-lg p-4" />
+                    <div class="text-sm text-gray-600 break-all bg-gray-50 p-3 rounded">{{ currentQrLink }}</div>
+                    <div class="flex gap-2 justify-center">
+                        <button @click="copyQrLink"
+                            class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">คัดลอก</button>
+                        <a :href="currentQrUrl" download="qr-code.svg"
+                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">ดาวน์โหลด</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Teleport>
 </template>
 
 <script>
@@ -160,6 +212,9 @@ export default {
             pagination: {},
             currentPage: 1,
             perPage: 10,
+            showQrModal: false,
+            currentQrUrl: '',
+            currentQrLink: '',
         }
     },
     computed: {
@@ -227,6 +282,86 @@ export default {
             } catch (e) {
                 console.error('loadPolicies failed', e)
             }
+        },
+
+        hasQrCode(policy) {
+            return policy.status === 'active' &&
+                policy.policy_windows &&
+                policy.policy_windows.length > 0 &&
+                policy.policy_windows[0]?.is_open === true;
+        },
+
+        async toggleWindow(policyWindow) {
+            if (!policyWindow?.id) {
+                Swal.fire('ข้อผิดพลาด', 'ไม่พบข้อมูล หน้าต่างนโยบาย', 'error')
+                return;
+            }
+            const action = policyWindow.is_open ? 'ปิด' : 'เปิด';
+            const confirm = await Swal.fire({
+                title: `${action}การรับทราบ?`,
+                text: policyWindow.is_open
+                    ? 'การปิดจะทำให้พนักงานไม่สามารถรับทราบนโยบายได้อีก'
+                    : 'พนักงานจะสามารถรับทราบนโยบายได้แล้ว',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: policyWindow.is_open ? '#dc2626' : '#16a34a',
+                confirmButtonText: `ใช่, ${action}เลย`,
+                cancelButtonText: 'ยกเลิก'
+            });
+
+            if (!confirm.isConfirmed) {
+                return;
+            }
+
+            try {
+                Swal.fire({
+                    title: `กำลัง${action}`,
+                    didOpen: () => Swal.showLoading(),
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                });
+
+                const response = await http.put(`/admin/policy-windows/${policyWindow.id}/toggle`);
+
+                await Swal.fire({
+                    icon: 'success',
+                    title: response.data?.message || `${action}การรับทราบสำเร็จ`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                await this.loadPolicies(this.selectedTab, this.currentPage);
+            } catch (e) {
+                console.error('Toggle window failed', e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: e.response?.data?.message || `ไม่สามารถ${action}การรับทราบได้`
+                });
+            }
+        },
+
+        viewQr(policyWindow) {
+            if (!policyWindow || !policyWindow.id) {
+                Swal.fire('ข้อผิดพลาด', 'ไม่พบข้อมูล หน้าต่างนโยบาย', 'error')
+                return;
+            }
+
+            this.currentQrUrl = `/api/policy-windows/${policyWindow.id}/qr`;
+            this.currentQrLink = `${window.location.origin}/ack/${policyWindow.id}`;
+            this.showQrModal = true;
+        },
+
+        copyQrLink() {
+            navigator.clipboard.writeText(this.currentQrLink);
+            Swal.fire({
+                icon: 'success',
+                title: 'คัดลอกลิงก์สำเร็จ',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            });
         },
 
         async onPageChanged(page) {

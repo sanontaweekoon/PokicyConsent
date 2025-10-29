@@ -1,12 +1,25 @@
 <?php
 
+/* ส่วนของ Admin จัดการระบบ */
 use App\Http\Controllers\Admin\CompaniesController;
+// ส่วนของการสร้างนโยบาย เพิ่ม แก้ไข ลบ 
 use App\Http\Controllers\Admin\PoliciesController;
+// ส่วนของประเภทนโยบาย
 use App\Http\Controllers\Admin\PolicyCategoriesController;
+// ส่วนของการสร้าง QrCode เมื่อมีการประกาศนโยบาย
 use App\Http\Controllers\Admin\PolicyWindowActionController;
+// ส่วนของการเปิด-ปิด การรับทราบของนโยบาย
+use App\Http\Controllers\Admin\PolicyWindowController;
+
+// ส่วนของการเข้าใช้งานระบบ เฉพาะ Admin
 use App\Http\Controllers\AuthController;
+
+/* ส่วนของพนักงานที่จะต้องรับทราบ */
+// ส่วนของพนักงาน ที่จะต้องยืนยันตัวตน และ รับทราบนโยบาย 
 use App\Http\Controllers\Public\PolicyAckController;
-use App\Http\Controllers\Public\PublicAckController;
+// ส่วนของการดึงเอาเนื้อหานโยบายมาแสดง แต่ละหน้าต่างนโยบาย
+use App\Http\Controllers\Public\PolicyContentController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,9 +36,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('/logout-beacon', [AuthController::class, 'logoutBeacon']);
 
 Route::prefix('policy-windows')->middleware('throttle:20,1')->group(function () {
+    Route::get('{window}/qr', [PolicyWindowActionController::class, 'qr']);
+    Route::get('{window}/qr-svg', [PolicyWindowActionController::class, 'qrSvg']);
+
     Route::post('{window}/identity-check', [PolicyAckController::class, 'verifyIdentity']);
     Route::post('{window}/acknowledge', [PolicyAckController::class, 'acknowledge']);
 });
+
+Route::get('policy-windows/{window}/content', [PolicyContentController::class, 'show']);
 
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 
@@ -59,6 +77,12 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::put('policies/{policy}', [PoliciesController::class, 'update']);
         Route::delete('policies/{policy}', [PoliciesController::class, 'destroy']);
 
+        Route::post('policy-windows/{window}/announce', [PolicyWindowActionController::class, 'announceNow']);
+        Route::get('policy-windows/{window}/qr-download', [PolicyWindowActionController::class, 'qrDownload']);
+
+        Route::put('policy-windows/{window}/toggle', [PolicyWindowController::class, 'toggle']);
+        Route::put('policy-windows/{window}/open', [PolicyWindowController::class, 'open']);
+        Route::put('policy-windows/{window}/close', [PolicyWindowController::class, 'close']);
     });
 
     // Logout

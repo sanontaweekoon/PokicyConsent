@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
@@ -6,23 +7,36 @@ use App\Models\Acknowledgement;
 use App\Models\CheckLogin;
 use App\Models\PolicyWindow;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PolicyAckController extends Controller
 {
-    public function verifyIdentity(Request $request, PolicyWindow $window)
+    public function show(PolicyWindow $window)
     {
-        if (method_exists($window, 'isOpen') && ! $window->isOpen()){
-            return response()->json([
-                'message' => 'หน้าต่างการรับทราบนโยบายนี้ปิดแล้ว'
-            ], 410);
+        if (method_exists($window, 'isOpen') && ! $window->isOpen()) {
+            return response()->json(['message' => 'หน้าต่างการรับทราบนโยบายนี้ปิดแล้ว'], 410);
         }
 
+        return view('app', [
+            'windowId' => $window->id,
+        ]);
+    }
+
+    public function verifyIdentity(Request $request, PolicyWindow $window)
+    {
         $validate = $request->validate([
             'IdentityCard' => ['required', 'digits:13'],
             'birthDate'    => ['required', 'date_format:Y-m-d'],
         ]);
 
+        if (!$window->is_open) {
+            Log::warning("Window is closed", ['window_id' => $window->id]);
+            return response()->json(['message' => 'ขณะนี้ปิดการรับทราบนโยบายแล้ว กรุณาติดต่อผู้ดูแลระบบ'], 403);
+        }
+
         $record = CheckLogin::query()
+            ->select(['EmpCode', DB::raw('FName as full_name')])
             ->where('IdentityCard', $validate['IdentityCard'])
             ->whereDate('BirthDate', $validate['birthDate'])
             ->first();
@@ -36,6 +50,8 @@ class PolicyAckController extends Controller
             ], 422);
         }
 
+        $policy = $window->policy()->select('title', 'description')->first();
+
         $ack = Acknowledgement::firstOrCreate(
             [
                 'policy_window_id' => $window->id,
@@ -45,65 +61,117 @@ class PolicyAckController extends Controller
                 'status' => 'pending',
             ]
         );
+
+        if ($ack->status === 'acknowledged') {
+            Log::info("Already acknowledged", [
+                'window_id' => $window->id,
+                'employee_code' => $record->EmpCode,
+            ]);
+        }
+
         return response()->json([
             'ok'                 => true,
             'employee'           => [
                 'EmpCode' => $record->EmpCode,
-                'fname'   => $record->Fname,
-                'lname'   => $record->Lname,
+                'Name'   => $record->full_name,
+                'EmpLevelCode' => $record->EmpLevelCode,
+                'mailAD' => $record->mailAD,
+                'PositionName' => $record->PositionName,
+                'Department' => $record->Department
+            ],
+            'policy' => [
+                'title'   => $policy->title ?? '',
+                'content' => $policy->description ?? '',
             ],
             'acknowledgement_id' => $ack->id,
             'has_signed'         => $ack->status === 'acknowledged',
-        ]);
+        ], 200);
     }
 
     public function acknowledge(Request $request, PolicyWindow $window)
     {
-        if (method_exists($window, 'isOpen') && ! $window->isOpen()){
-            return response()->json([
-                'message' => 'หน้าต่างการรับทราบนโยบายนี้ปิดแล้ว'
-            ], 410);
+        if (method_exists($window, 'isOpen') && ! $window->isOpen()) {
+            return response()->json(['message' => 'หน้าต่างการรับทราบนโยบายนี้ปิดแล้ว'], 410);
         }
 
         $data = $request->validate([
-            'employee_code'       => ['required', 'string', 'max:20'],
-            'signer_name'         => ['required', 'string', 'max:255'],
-            'signature_strokes'   => ['required', 'array', 'min:1'],
-            'signature_strokes.*' => ['array'],
+            'acknowledgement_id'   => ['required', 'integer', 'exists:acknowledgements,id'],
+            'employee_code'        => ['required', 'string', 'max:100'],
+            'signature_strokes'    => ['required', 'array', 'min:1'],
+            'signature_strokes.*'  => ['array'],
         ]);
+
+        if (!$window->is_open) {
+            Log::warning("Attempt to acknowledge on closed window", [
+                'window_id' => $window->id,
+                'ack_id' => $data['acknowledgement_id']
+            ]);
+
+            return response()->json([
+                'message' => 'ขณะนี้ปิดการรับทราบนโยบายแล้ว กรุณาติดต่อผู้ดูแลระบบ'
+            ], 403);
+        }
+
+        $existing = Acknowledgement::query()
+            ->where('id', $data['acknowledgement_id'])
+            ->where('policy_window_id', $window->id)
+            ->where('employee_code', $data['employee_code'])
+            ->firstOrFail();
+
+        if ($existing && $existing->status === 'acknowledged') {
+            return response()->json([
+                'ok' => false,
+                'message' => 'คุณได้รับทราบนโยบายนี้ไปแล้ว ไม่สามารถยืนยันซ้ำได้'
+            ], 422);
+        }
+
+        $emp = CheckLogin::query()
+            ->select(['EmpCode', DB::raw('FName as full_name')])
+            ->where('EmpCode', $data['employee_code'])
+            ->first();
+
+        if (! $emp) {
+            return response()->json(['ok' => false, 'message' => 'ไม่พบพนักงาน'], 422);
+        }
 
         $normalized = json_encode(
             $data['signature_strokes'],
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
-
-        $existing = Acknowledgement::where('policy_window_id', $window->id)
-            ->where('employee_code', $request->input('employee_code'))
-            ->first();
-
-        if($existing && $existing->status === 'acknowledged') {
-            return response()->json([
-                'ok' => true,
-                'id' => $existing->id,
-                'message' => 'รับทราบนโยบายนี้ไปแล้ว'
-            ], 200);
-        }
-
         $hash = hash('sha256', $normalized . '|emp:' . $data['employee_code'] . '|win:' . $window->id);
 
-        $ack = Acknowledgement::updateOrCreate(
-            [
-                'policy_window_id' => $window->id,
-                'employee_code'          => $data['employee_code']
-            ],
-            [
+        if ($existing && $existing->status === 'pending') {
+            $existing->update([
                 'status'            => 'acknowledged',
-                'signer_name'       => $data['signer_name'],
-                'signature_payload' => $data['signature_strokes'],
+                'signer_name'       => $emp->full_name,
+                'signature_payload' => json_decode($normalized, true),
                 'signature_hash'    => $hash,
                 'acknowledged_at'   => now(),
-            ]
-        );
+            ]);
+            $ack = $existing;
+        } else {
+            $ack = Acknowledgement::create(
+                [
+                    'policy_window_id'  => $window->id,
+                    'employee_code'     => $data['employee_code'],
+                    'status'            => 'acknowledged',
+                    'signer_name'       => $emp->full_name,
+                    'signature_payload' => json_decode($normalized, true),
+                    'signature_hash'    => $hash,
+                    'acknowledged_at'   => now(),
+                ]
+            );
+        }
+
+        if ($ack->wasRecentlyCreated === false && $ack->status !== 'acknowledged') {
+            $ack->update([
+                'status' => 'acknowledged',
+                'signer_name' => $emp->full_name,
+                'signature_payload' => json_decode($normalized, true),
+                'signature_hash'    => $hash,
+                'acknowledged_at'   => now(),
+            ]);
+        }
         return response()->json(['ok' => true, 'id' => $ack->id]);
     }
 

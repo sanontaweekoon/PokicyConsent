@@ -27,9 +27,10 @@ class Policy extends Model
         'title',
         'description',
         'owner_user_id',
-        'owner_org_unit_id',
         'is_required_ack',
         'status',
+        'recipient_type',
+        'recipient_emails',
         'publish_at',
         'publish_date',
         'publish_time',
@@ -38,7 +39,37 @@ class Policy extends Model
     ];
     protected $casts = [
         'is_required_ack' => 'boolean',
+        'recipient_emails' => 'array',
         'publish_at' => 'datetime',
         'publish_date' => 'date',
     ];
+
+    public function policyWindows()
+    {
+        return $this->hasMany(PolicyWindow::class, 'policy_id', 'id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(PolicyCategory::class, 'category_id');
+    }
+
+    public function recipientGroups()
+    {
+        return $this->belongsToMany(
+            RecipientGroup::class,
+            'policy_recipient_groups',
+            'policy_id',
+            'recipient_group_id'
+        )->withTimestamps();
+    }
+
+    public function getAllRecipientEmails()
+    {
+        $emails = [];
+        foreach ($this->recipientGroups as $group) {
+            $emails = array_merge($emails, $group->getEmails());
+        }
+        return array_unique($emails);
+    }
 }

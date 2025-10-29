@@ -3,8 +3,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\URL;
 
 class PolicyWindow extends Model
@@ -32,27 +30,22 @@ class PolicyWindow extends Model
         'create_by'      => 'integer',
     ];
 
-    public function policy(): BelongsTo
+    public function policy()
     {
         return $this->belongsTo(Policy::class, 'policy_id');
     }
 
-    public function creator(): BelongsTo
+    public function creator()
     {
         return $this->belongsTo(User::class, 'create_by');
     }
 
-    public function acknowledgements(): HasMany
+    public function acknowledgements()
     {
         return $this->hasMany(Acknowledgement::class, 'policy_window_id');
     }
 
-    public function targetResolved(): HasMany
-    {
-        return $this->hasMany(PolicyTargetResolved::class, 'policy_window_id');
-    }
-
-    public function announcements(): HasMany
+    public function announcements()
     {
         return $this->hasMany(PolicyAnnouncement::class, 'policy_window_id');
     }

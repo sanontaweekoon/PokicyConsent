@@ -15,7 +15,7 @@
 
 <script>
 import Header from "../components/backend/Header.vue";
-import Navbar from "../components/backend/Navbar.vue";
+import Navbar from "../components/backend/Topbar.vue";
 import Sidebar from "../components/backend/Sidebar.vue";
 
 export default {

@@ -17,15 +17,36 @@ class CheckLogin extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'EmpCode',
         'Fname',
-        'Lname',
+        'NickName',
+        'EmplLevelCode',
+        'AAD',
+        'DisplayAD',
+        'mailAD',
+        'PositionName',
+        'Department',
         'IdentityCard',
-        'BirthDate',
-        'EmpLevelID',
-        'EmpCode'
+        'BirthDate'
     ];
 
     protected $casts = [
         'BirthDate' => 'date:Y-m-d'
     ];
+
+    public static function getEmployeesWithEmail(){
+        return static::query()
+            ->select([
+                'EmpCode',
+                'Fname as full_name',
+                'EmpLevelCode as level',
+                'mailAD as email',
+                'PositionName',
+                'Department'
+            ])
+            ->whereNotNull('mailAD')
+            ->where('mailAD', '!=', '')
+            ->orderBy('Fname')
+            ->get();
+    }
 }

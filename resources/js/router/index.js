@@ -15,6 +15,7 @@ import Login from '../views/frontend/Login.vue'
 import PoliciesList from '../views/backend/PoliciesList.vue'
 import Companies from '../views/backend/Companies.vue';
 import PolicyCategory from '../views/backend/PolicyCategory.vue';
+import RecipientGroups from '../views/backend/RecipientGroups.vue';
 
 //Public
 import PublicAck from '../views/public/PublicAck.vue'
@@ -69,13 +70,12 @@ const routes = [{
                     title: (r) => `แก้ไขนโยบาย #${r.params.id}`
                 },
             },
-
             {
-                path: 'companies',
-                name: 'Companies',
-                component: Companies,
+                path: 'recipient-groups',
+                name: 'RecipientGroups',
+                component: RecipientGroups,
                 meta: {
-                    title: 'จัดการ Company'
+                    title: 'จัดการกลุ่มผู้รับนโยบาย'
                 }
             },
             {
@@ -93,12 +93,9 @@ const routes = [{
         path: '/ack/:window',
         name: 'PublicAck',
         component: PublicAck,
-    },
-
-    {
-        path: '/dev/ack/:window',
-        name: 'PublicAckDev',
-        component: PublicAck,
+        meta: {
+            title: 'รับทราบนโยบายและมาตรการองค์กร',
+        }
     },
 
     {
