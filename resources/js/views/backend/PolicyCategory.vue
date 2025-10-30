@@ -51,8 +51,10 @@
                     </tr>
                 </tbody>
             </table>
-            <VueAwesomePaginate v-model="currentPage" :total-items="total" :items-per-page="perPage"
-                :max-pages-shown="7" :on-click="onPageChanged" />
+            <div class="example-one">
+                <VueAwesomePaginate v-model="currentPage" :total-items="total" :items-per-page="perPage"
+                    :max-pages-shown="7" :on-click="onPageChanged" />
+            </div>
         </div>
     </div>
 
@@ -91,16 +93,16 @@
                     </div>
 
                     <div class="grid grid-cols-3 gap-4">
-                        <div class="col-span-2">
-                            <button type="submit"
-                                class="w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 rounded-lg hover:bg-blue-700">
-                                บันทึก
-                            </button>
-                        </div>
                         <div>
                             <button type="button" @click="onResetForm"
                                 class="w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-gray-500 rounded-lg hover:bg-gray-700">
                                 ล้าง
+                            </button>
+                        </div>
+                        <div class="col-span-2">
+                            <button type="submit"
+                                class="w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 rounded-lg hover:bg-blue-700">
+                                บันทึก
                             </button>
                         </div>
                     </div>
@@ -271,51 +273,38 @@ export default {
 </script>
 
 <style>
-.pagination-container {
-    margin-top: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    padding: 10px 0px;
+.example-one .pagination-container {
+    column-gap: 5px;
+    background-color: #F9FAFB;
 }
 
-.paginate-buttons {
-    width: 30px;
+.example-one .paginate-buttons {
     height: 30px;
-    margin-inline: 5px;
+    width: 30px;
+    border-radius: 20px;
     cursor: pointer;
-    border: none;
-    background-color: transparent;
-    border-radius: 2px;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
 }
 
-.back-button {
-    width: 30px;
+.example-one .paginate-buttons:hover {
+    background-color: #d8d8d8;
 }
 
-.next-button {
-    width: 30px;
+.example-one .active-page {
+    background-color: #991B1B;
+    border: 1px solid #991B1B;
+    color: white;
 }
 
-.back-button svg {
-    transform: rotate(180deg);
+.example-one .active-page:hover {
+    background-color: #b81b1b;
+    border: 1px solid #b81b1b;
 }
 
-.active-page {
-    background-color: #2980b9;
-    color: #fff;
-}
-
-.paginate-buttons:hover {
-    background-color: #e5e5e5;
-}
-
-.active-page:hover {
-    background-color: #3b8cc3;
-    color: #fff;
-}
-
-.back-button:active,
-.next-button:active {
-    background-color: #dedede;
+.example-one .back-button:active,
+.example-one .next-button:active {
+    background-color: #c4c4c4;
 }
 </style>

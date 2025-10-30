@@ -17,7 +17,7 @@ class RecipientGroup extends Model
     ];
 
 
-    public function member(): HasMany
+    public function members(): HasMany
     {
         return $this->hasMany(RecipientGroupMember::class);
     }
@@ -32,4 +32,15 @@ class RecipientGroup extends Model
         return $this->members()->pluck('email')->toArray();
     }
 
+    public function getMembersData()
+    {
+        return $this->members()
+            ->select(['email', 'name'])
+            ->get()
+            ->map(fn($m) => [
+                'email' => $m->email,
+                'name' => $m->name
+            ])
+            ->toArray();
+    }
 }

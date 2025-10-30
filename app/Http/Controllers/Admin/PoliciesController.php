@@ -112,7 +112,11 @@ class PoliciesController extends Controller
             'status' => ['required', Rule::in(Policy::STATUSES)],
             'publish_date' => ['nullable', 'date'],
             'publish_time' => ['nullable', 'date_format:H:i'],
-            'publish_at' => ['nullable', 'date']
+            'publish_at' => ['nullable', 'date'],
+            'recipient_type' => ['required', 'in:all,target'],
+            'recipient_emails' => ['required_if:recipient_type,target', 'array'],
+            'recipient_emails.*.email' => ['required', 'email'],
+            'recipient_emails.*.name' => ['required', 'string'],
         ]);
 
         // Log::debug('Policy.store validated data', $data);
@@ -148,6 +152,8 @@ class PoliciesController extends Controller
         }
 
         $data['is_required_ack'] = $data['is_required_ack'] ?? true;
+        $data['recipient_type'] = $data['recipient_type'] ?? 'all';
+        $data['recipient_emails'] = $data['recipient_emails'] ?? [];
 
         $userId = $request->user()?->id ?? auth()->id();
         Log::debug('Policy.store auth user id', ['userId' => $userId, 'request_user' => $request->user()]);
@@ -250,7 +256,11 @@ class PoliciesController extends Controller
             'status' => ['required', Rule::in(Policy::STATUSES)],
             'publish_date' => ['nullable', 'date'],
             'publish_time' => ['nullable', 'date_format:H:i'],
-            'publish_at' => ['nullable', 'date']
+            'publish_at' => ['nullable', 'date'],
+            'recipient_type' => ['required', 'in:all,target'],
+            'recipient_emails' => ['required_if:recipient_type,target', 'array'],
+            'recipient_emails.*.email' => ['required', 'email'],
+            'recipient_emails.*.name' => ['required', 'string'],
         ]);
 
         $status = $data['status'];
@@ -297,6 +307,8 @@ class PoliciesController extends Controller
             'publish_date' => $data['publish_date'],
             'publish_time' => $data['publish_time'],
             'publish_at'   => $data['publish_at'],
+            'recipient_type' => $data['recipient_type'] ?? 'all',
+            'recipient_emails' => $data['recipient_emails'] ?? [],
         ])->save();
 
         if (!array_key_exists('is_required_ack', $data)) {

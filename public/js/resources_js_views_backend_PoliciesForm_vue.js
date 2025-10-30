@@ -512,6 +512,8 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     var content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(""); // เก็บ text จาก TinyMCE
     var editorRef = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
     var announce = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("now");
+    var recipientGroups = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]); // กลุ่มเป้าหมายผู้รับนโยบาย
+
     function clearScheduleFields() {
       var _v$$value$publish_dat, _v$$value$publish_dat2, _v$$value$publish_tim, _v$$value$publish_tim2;
       form.value.publish_date = "";
@@ -540,6 +542,13 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         return _ref2.apply(this, arguments);
       };
     }());
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.watch)(function () {
+      return form.value.recipient_type;
+    }, function (newType) {
+      if (newType === 'all') {
+        form.value.recipient_emails = [];
+      }
+    });
     var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.useRoute)();
     var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.useRouter)();
     var saving = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
@@ -550,7 +559,9 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
     function collectValidationErrors() {
       clearPublishErrors();
       var v = v$.value;
-      alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย");
+      if (form.value.recipientt_type === 'target' && form.value.recipient_emails.length === 0) {
+        publishErrors.value.recipient_emails = "กรุณาเลือกผู้รับนโยบายอย่างน้อย 1 คน";
+      }
       for (var _i = 0, _Object$keys = Object.keys(v); _i < _Object$keys.length; _i++) {
         var key = _Object$keys[_i];
         if (v[key] && v[key].$errors && v[key].$errors.length) {
@@ -558,7 +569,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
         }
       }
       if (Object.keys(publishErrors.value).length === 0) {
-        publishErrors.value._general = "กรุณากรอกข้อมูลให้ครบถ้วน";
+        alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย");
       }
       publishErrors.value = _objectSpread({}, publishErrors.value);
     }
@@ -581,7 +592,9 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       category_id: null,
       publish_at: "",
       publish_date: "",
-      publish_time: ""
+      publish_time: "",
+      recipient_type: "all",
+      recipient_emails: []
     });
     var rules = {
       title: {
@@ -1045,6 +1058,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
       content: content,
       editorRef: editorRef,
       announce: announce,
+      recipientGroups: recipientGroups,
       clearScheduleFields: clearScheduleFields,
       route: route,
       router: router,
@@ -1205,7 +1219,7 @@ var _hoisted_23 = {
   "class": "mx-3 my-auto text-sm text-red-500"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ซ้าย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"mr-3 font-medium\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" value=\"all\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" value=\"group\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ฟอร์ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"grid grid-cols-1\"><div class=\"flex\"><label class=\"mr-3 font-medium\">ผู้รับนโยบาย: </label><div class=\"flex flex-col\"><div class=\"flex items-center gap-2\"><input type=\"radio\" id=\"option1\" name=\"recipient\" value=\"all\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option1\" class=\"text-gray-700\">ทุกคน</label></div><div class=\"flex items-center gap-2 mt-2\"><input type=\"radio\" id=\"option2\" name=\"recipient\" value=\"group\" class=\"w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500\"><label for=\"option2\" class=\"text-gray-700\">กำหนดเป้าหมาย</label></div></div></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "mr-3 font-medium text-nowrap"
   }, "เวลาประกาศ: ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "radio",

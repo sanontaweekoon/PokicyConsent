@@ -25164,6 +25164,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_BackendService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/BackendService */ "./resources/js/services/BackendService.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_2__);
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 
 
 
@@ -25175,27 +25179,566 @@ __webpack_require__.r(__webpack_exports__);
     var groups = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
     var showModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
     var isEdit = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
+    var memberTab = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('search'); // 'search' | 'department' | 'all'
     var searchQuery = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
     var searchResults = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
-    var showMemberModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
+    var departments = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
+    var selectedDepartment = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
+    var showMembersModal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
     var viewingGroup = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
     var viewingMembers = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
     var form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({
       id: null,
       name: '',
       type: 'custom',
-      members: []
+      members: [] // {{ email, name }}
     });
+    function getTypeLabel(type) {
+      var labels = {
+        department: 'แผนก',
+        level: 'ระดับ',
+        custom: 'กำหนดเอง'
+      };
+      return labels[type] || type;
+    }
+    function formatDate(date) {
+      if (!date) return '-';
+      return new Date(date).toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    function loadGroups() {
+      return _loadGroups.apply(this, arguments);
+    }
+    function _loadGroups() {
+      _loadGroups = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+        var response, _t;
+        return _regenerator().w(function (_context2) {
+          while (1) switch (_context2.p = _context2.n) {
+            case 0:
+              _context2.p = 0;
+              _context2.n = 1;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get('/admin/recipient-groups');
+            case 1:
+              response = _context2.v;
+              groups.value = response.data;
+              _context2.n = 3;
+              break;
+            case 2:
+              _context2.p = 2;
+              _t = _context2.v;
+              console.error('Error loading groups:', _t);
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลกลุ่มได้', 'error');
+            case 3:
+              return _context2.a(2);
+          }
+        }, _callee2, null, [[0, 2]]);
+      }));
+      return _loadGroups.apply(this, arguments);
+    }
+    function loadDepartments() {
+      return _loadDepartments.apply(this, arguments);
+    }
+    function _loadDepartments() {
+      _loadDepartments = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
+        var response, _t2;
+        return _regenerator().w(function (_context3) {
+          while (1) switch (_context3.p = _context3.n) {
+            case 0:
+              _context3.p = 0;
+              _context3.n = 1;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get('/admin/employees/departments');
+            case 1:
+              response = _context3.v;
+              departments.value = response.data.data;
+              _context3.n = 3;
+              break;
+            case 2:
+              _context3.p = 2;
+              _t2 = _context3.v;
+              console.error('Error loading departments:', _t2);
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลแผนกได้', 'error');
+            case 3:
+              return _context3.a(2);
+          }
+        }, _callee3, null, [[0, 2]]);
+      }));
+      return _loadDepartments.apply(this, arguments);
+    }
+    function openCreateModal() {
+      form.value = {
+        id: null,
+        name: '',
+        description: '',
+        type: 'custom',
+        members: []
+      };
+      isEdit.value = false;
+      memberTab.value = 'search';
+      searchQuery.value = '';
+      searchResults.value = [];
+      selectedDepartment.value = '';
+      showModal.value = true;
+    }
+    function editGroup(_x) {
+      return _editGroup.apply(this, arguments);
+    }
+    function _editGroup() {
+      _editGroup = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(group) {
+        var response, data, _t3;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.p = _context4.n) {
+            case 0:
+              _context4.p = 0;
+              _context4.n = 1;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get("/admin/recipient-groups/".concat(group.id));
+            case 1:
+              response = _context4.v;
+              data = response.data;
+              form.value = {
+                id: data.id,
+                name: data.name,
+                type: data.type,
+                members: data.members.map(function (m) {
+                  return {
+                    email: m.email,
+                    name: m.name
+                  };
+                })
+              };
+              isEdit.value = true;
+              memberTab.value = 'search';
+              searchQuery.value = '';
+              searchResults.value = [];
+              selectedDepartment.value = '';
+              showModal.value = true;
+              _context4.n = 3;
+              break;
+            case 2:
+              _context4.p = 2;
+              _t3 = _context4.v;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลกลุ่มได้', 'error');
+            case 3:
+              return _context4.a(2);
+          }
+        }, _callee4, null, [[0, 2]]);
+      }));
+      return _editGroup.apply(this, arguments);
+    }
+    function searchEmployees() {
+      return _searchEmployees.apply(this, arguments);
+    }
+    function _searchEmployees() {
+      _searchEmployees = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+        var response, _t4;
+        return _regenerator().w(function (_context5) {
+          while (1) switch (_context5.p = _context5.n) {
+            case 0:
+              if (searchQuery.value.trim()) {
+                _context5.n = 1;
+                break;
+              }
+              searchResults.value = [];
+              return _context5.a(2);
+            case 1:
+              _context5.p = 1;
+              _context5.n = 2;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get('/admin/employees/search', {
+                params: {
+                  q: searchQuery.value
+                }
+              });
+            case 2:
+              response = _context5.v;
+              searchResults.value = response.data;
+              _context5.n = 4;
+              break;
+            case 3:
+              _context5.p = 3;
+              _t4 = _context5.v;
+              console.error('Search failed', _t4);
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถค้นหาได้', 'error');
+            case 4:
+              return _context5.a(2);
+          }
+        }, _callee5, null, [[1, 3]]);
+      }));
+      return _searchEmployees.apply(this, arguments);
+    }
+    function loadByDepartment() {
+      return _loadByDepartment.apply(this, arguments);
+    }
+    function _loadByDepartment() {
+      _loadByDepartment = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
+        var response, _t5;
+        return _regenerator().w(function (_context6) {
+          while (1) switch (_context6.p = _context6.n) {
+            case 0:
+              if (selectedDepartment.value) {
+                _context6.n = 1;
+                break;
+              }
+              searchResults.value = [];
+              return _context6.a(2);
+            case 1:
+              _context6.p = 1;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+                title: 'กำลังโหลด...',
+                didOpen: function didOpen() {
+                  return sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().showLoading();
+                },
+                allowOutsideClick: false
+              });
+              _context6.n = 2;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get('/admin/employees/by-department', {
+                params: {
+                  department: selectedDepartment.value
+                }
+              });
+            case 2:
+              response = _context6.v;
+              searchResults.value = response.data;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().close();
+              _context6.n = 4;
+              break;
+            case 3:
+              _context6.p = 3;
+              _t5 = _context6.v;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().close();
+              console.error('Failed to load by department', _t5);
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
+            case 4:
+              return _context6.a(2);
+          }
+        }, _callee6, null, [[1, 3]]);
+      }));
+      return _loadByDepartment.apply(this, arguments);
+    }
+    function loadAllEmployees() {
+      return _loadAllEmployees.apply(this, arguments);
+    }
+    function _loadAllEmployees() {
+      _loadAllEmployees = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+        var confirm, response, _t6;
+        return _regenerator().w(function (_context7) {
+          while (1) switch (_context7.p = _context7.n) {
+            case 0:
+              _context7.n = 1;
+              return sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+                title: 'โหลดรายชื่อพนักงานทั้งหมด?',
+                text: 'อาจใช้เวลาสักครู่',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'โหลด',
+                cancelButtonText: 'ยกเลิก'
+              });
+            case 1:
+              confirm = _context7.v;
+              if (confirm.isConfirmed) {
+                _context7.n = 2;
+                break;
+              }
+              return _context7.a(2);
+            case 2:
+              _context7.p = 2;
+              memberTab.value = 'all';
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+                title: 'กำลังโหลด..',
+                didOpen: function didOpen() {
+                  return sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().showLoading();
+                },
+                allowOutsideClick: false
+              });
+              _context7.n = 3;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get('/admin/employees');
+            case 3:
+              response = _context7.v;
+              searchResults.value = response.data.data;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().close();
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+                icon: 'success',
+                title: "\u0E42\u0E2B\u0E25\u0E14\u0E23\u0E32\u0E22\u0E0A\u0E37\u0E48\u0E2D\u0E1E\u0E19\u0E31\u0E01\u0E07\u0E32\u0E19\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14 ".concat(searchResults.value.length, " \u0E04\u0E19\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08"),
+                timer: 1500,
+                showConfirmButton: false
+              });
+              _context7.n = 5;
+              break;
+            case 4:
+              _context7.p = 4;
+              _t6 = _context7.v;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().close();
+              console.error('Failed to load all employees', _t6);
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลได้', 'error');
+            case 5:
+              return _context7.a(2);
+          }
+        }, _callee7, null, [[2, 4]]);
+      }));
+      return _loadAllEmployees.apply(this, arguments);
+    }
+    function addMember(emp) {
+      if (isMemberAdded(emp.email)) return;
+      form.value.members.push({
+        email: emp.email,
+        name: emp.full_name
+      });
+    }
+    function addAllSearchResults() {
+      var added = 0;
+      searchResults.value.forEach(function (emp) {
+        if (!isMemberAdded(emp.email)) {
+          form.value.members.push({
+            email: emp.email,
+            name: emp.full_name
+          });
+          added++;
+        }
+      });
+      if (added > 0) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+          icon: 'success',
+          title: "\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E2A\u0E21\u0E32\u0E0A\u0E34\u0E01 ".concat(added, " \u0E04\u0E19"),
+          timer: 1500,
+          showConfirmButton: false
+        });
+      }
+    }
+    function removeMember(index) {
+      form.value.members.splice(index, 1);
+    }
+    function isMemberAdded(email) {
+      return form.value.members.some(function (m) {
+        return m.email === email;
+      });
+    }
+    function clearAllMembers() {
+      return _clearAllMembers.apply(this, arguments);
+    }
+    function _clearAllMembers() {
+      _clearAllMembers = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8() {
+        var confirm;
+        return _regenerator().w(function (_context8) {
+          while (1) switch (_context8.n) {
+            case 0:
+              _context8.n = 1;
+              return sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+                title: 'ลบสมาชิกทั้งหมด?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก'
+              });
+            case 1:
+              confirm = _context8.v;
+              if (confirm.isConfirmed) {
+                form.value.members = [];
+              }
+            case 2:
+              return _context8.a(2);
+          }
+        }, _callee8);
+      }));
+      return _clearAllMembers.apply(this, arguments);
+    }
+    function saveGroup() {
+      return _saveGroup.apply(this, arguments);
+    }
+    function _saveGroup() {
+      _saveGroup = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9() {
+        var payload, _e$response, _t7;
+        return _regenerator().w(function (_context9) {
+          while (1) switch (_context9.p = _context9.n) {
+            case 0:
+              if (form.value.name.trim()) {
+                _context9.n = 1;
+                break;
+              }
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('กรุณาระบุชื่อกลุ่ม', '', 'warning');
+              return _context9.a(2);
+            case 1:
+              if (!(form.value.members.length === 0)) {
+                _context9.n = 2;
+                break;
+              }
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('กรุณาเพิ่มสมาชิกอย่างน้อย 1 คน', '', 'warning');
+              return _context9.a(2);
+            case 2:
+              _context9.p = 2;
+              payload = {
+                name: form.value.name,
+                type: form.value.type,
+                members: form.value.members
+              };
+              if (!isEdit.value) {
+                _context9.n = 4;
+                break;
+              }
+              _context9.n = 3;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].put("/admin/recipient-groups/".concat(form.value.id), payload);
+            case 3:
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('สำเร็จ', 'แก้ไขกลุ่มเรียบร้อย', 'success');
+              _context9.n = 6;
+              break;
+            case 4:
+              _context9.n = 5;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].post('/admin/recipient-groups', payload);
+            case 5:
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('สำเร็จ', 'สร้างกลุ่มเรียบร้อย', 'success');
+            case 6:
+              closeModal();
+              loadGroups();
+              _context9.n = 8;
+              break;
+            case 7:
+              _context9.p = 7;
+              _t7 = _context9.v;
+              console.error('Failed to save group', _t7);
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', ((_e$response = _t7.response) === null || _e$response === void 0 || (_e$response = _e$response.data) === null || _e$response === void 0 ? void 0 : _e$response.message) || 'ไม่สามารถบันทึกได้', 'error');
+            case 8:
+              return _context9.a(2);
+          }
+        }, _callee9, null, [[2, 7]]);
+      }));
+      return _saveGroup.apply(this, arguments);
+    }
+    function deleteGroup(_x2) {
+      return _deleteGroup.apply(this, arguments);
+    }
+    function _deleteGroup() {
+      _deleteGroup = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(id) {
+        var confirm, _t8;
+        return _regenerator().w(function (_context0) {
+          while (1) switch (_context0.p = _context0.n) {
+            case 0:
+              _context0.n = 1;
+              return sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+                title: 'ยืนยันการลบ',
+                text: 'การลบกลุ่มนี้จะไม่สามารถกู้คืนได้',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก'
+              });
+            case 1:
+              confirm = _context0.v;
+              if (confirm.isConfirmed) {
+                _context0.n = 2;
+                break;
+              }
+              return _context0.a(2);
+            case 2:
+              _context0.p = 2;
+              _context0.n = 3;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/admin/recipient-groups/".concat(id));
+            case 3:
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ลบสำเร็จ', '', 'success');
+              loadGroups();
+              _context0.n = 5;
+              break;
+            case 4:
+              _context0.p = 4;
+              _t8 = _context0.v;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถลบกลุ่มได้', 'error');
+            case 5:
+              return _context0.a(2);
+          }
+        }, _callee0, null, [[2, 4]]);
+      }));
+      return _deleteGroup.apply(this, arguments);
+    }
+    function viewMembers(_x3) {
+      return _viewMembers.apply(this, arguments);
+    }
+    function _viewMembers() {
+      _viewMembers = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1(group) {
+        var response, _t9;
+        return _regenerator().w(function (_context1) {
+          while (1) switch (_context1.p = _context1.n) {
+            case 0:
+              _context1.p = 0;
+              _context1.n = 1;
+              return _services_BackendService__WEBPACK_IMPORTED_MODULE_1__["default"].get("/admin/recipient-groups/".concat(group.id));
+            case 1:
+              response = _context1.v;
+              viewingGroup.value = group;
+              viewingMembers.value = response.data.members;
+              showMembersModal.value = true;
+              _context1.n = 3;
+              break;
+            case 2:
+              _context1.p = 2;
+              _t9 = _context1.v;
+              sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire('ข้อผิดพลาด', 'ไม่สามารถโหลดข้อมูลสมาชิกได้', 'error');
+            case 3:
+              return _context1.a(2);
+          }
+        }, _callee1, null, [[0, 2]]);
+      }));
+      return _viewMembers.apply(this, arguments);
+    }
+    function closeModal() {
+      showModal.value = false;
+      form.value = {
+        id: null,
+        name: '',
+        description: '',
+        type: 'custom',
+        members: []
+      };
+      searchQuery.value = '';
+      searchResults.value = [];
+      selectedDepartment.value = '';
+    }
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            _context.n = 1;
+            return loadGroups();
+          case 1:
+            _context.n = 2;
+            return loadDepartments();
+          case 2:
+            return _context.a(2);
+        }
+      }, _callee);
+    })));
     var __returned__ = {
       groups: groups,
       showModal: showModal,
       isEdit: isEdit,
+      memberTab: memberTab,
       searchQuery: searchQuery,
       searchResults: searchResults,
-      showMemberModal: showMemberModal,
+      departments: departments,
+      selectedDepartment: selectedDepartment,
+      showMembersModal: showMembersModal,
       viewingGroup: viewingGroup,
       viewingMembers: viewingMembers,
       form: form,
+      getTypeLabel: getTypeLabel,
+      formatDate: formatDate,
+      loadGroups: loadGroups,
+      loadDepartments: loadDepartments,
+      openCreateModal: openCreateModal,
+      editGroup: editGroup,
+      searchEmployees: searchEmployees,
+      loadByDepartment: loadByDepartment,
+      loadAllEmployees: loadAllEmployees,
+      addMember: addMember,
+      addAllSearchResults: addAllSearchResults,
+      removeMember: removeMember,
+      isMemberAdded: isMemberAdded,
+      clearAllMembers: clearAllMembers,
+      saveGroup: saveGroup,
+      deleteGroup: deleteGroup,
+      viewMembers: viewMembers,
+      closeModal: closeModal,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       onMounted: vue__WEBPACK_IMPORTED_MODULE_0__.onMounted,
       get http() {
@@ -26138,7 +26681,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "px-4 py-3"
   }, "สถานะ"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "px-4 py-3"
-  }, "QR Coe"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "QR Code"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     "class": "px-4 py-3"
   }, "ดำเนินการ")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.paginatePolicies, function (policy) {
     var _policy$code, _policy$title, _policy$policy_window, _policy$policy_window2;
@@ -26153,7 +26696,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return $options.toggleWindow(policy.policy_windows[0]);
       },
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['px-3 py-1.5 text-xs font-medium rounded-full transition-colors', (_policy$policy_window = policy.policy_windows[0]) !== null && _policy$policy_window !== void 0 && _policy$policy_window.is_open ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'])
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_policy$policy_window2 = policy.policy_windows[0]) !== null && _policy$policy_window2 !== void 0 && _policy$policy_window2.is_open ? 'เปิดการรับทราบ' : 'ปิดการรับทราบ'), 11 /* TEXT, CLASS, PROPS */, _hoisted_12)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_13, [$options.hasQrCode(policy) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_policy$policy_window2 = policy.policy_windows[0]) !== null && _policy$policy_window2 !== void 0 && _policy$policy_window2.is_open ? 'เปิดการรับทราบ' : 'ปิด'), 11 /* TEXT, CLASS, PROPS */, _hoisted_12)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_13, [$options.hasQrCode(policy) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       onClick: function onClick($event) {
         return $options.viewQr(policy.policy_windows[0]);
       },
@@ -26301,29 +26844,32 @@ var _hoisted_9 = {
 var _hoisted_10 = ["onClick"];
 var _hoisted_11 = ["onClick"];
 var _hoisted_12 = {
+  "class": "example-one"
+};
+var _hoisted_13 = {
   key: 0,
   "class": "fixed top-0 left-0 flex items-center justify-center w-full h-full modal"
 };
-var _hoisted_13 = {
+var _hoisted_14 = {
   "class": "z-50 w-11/12 p-5 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
 };
-var _hoisted_14 = {
+var _hoisted_15 = {
   "class": "flex items-center justify-center w-full h-auto"
 };
-var _hoisted_15 = {
+var _hoisted_16 = {
   "class": "flex items-start justify-start w-full h-auto py-2 text-xl font-bold"
 };
-var _hoisted_16 = {
+var _hoisted_17 = {
   "class": "text-lg font-semibold"
 };
-var _hoisted_17 = {
+var _hoisted_18 = {
   "class": "w-full h-auto mb-4"
 };
-var _hoisted_18 = {
+var _hoisted_19 = {
   key: 0,
   "class": "mt-2 text-sm text-red-500"
 };
-var _hoisted_19 = {
+var _hoisted_20 = {
   "class": "grid grid-cols-3 gap-4"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -26384,7 +26930,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "stroke-width": "2",
       d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
     })], -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_11)])]);
-  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VueAwesomePaginate, {
+  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VueAwesomePaginate, {
     modelValue: $data.currentPage,
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.currentPage = $event;
@@ -26393,7 +26939,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "items-per-page": $data.perPage,
     "max-pages-shown": 7,
     "on-click": $options.onPageChanged
-  }, null, 8 /* PROPS */, ["modelValue", "total-items", "items-per-page", "on-click"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Popup สำหรับเพิ่มประเภทนโยบายใหม่"), $data.showAddModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Header"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.mode === 'create' ? 'เพิ่มประเภทนโยบาย' : 'แก้ไขประเภทนโยบาย'), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, null, 8 /* PROPS */, ["modelValue", "total-items", "items-per-page", "on-click"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Popup สำหรับเพิ่มประเภทนโยบายใหม่"), $data.showAddModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Header"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.mode === 'create' ? 'เพิ่มประเภทนโยบาย' : 'แก้ไขประเภทนโยบาย'), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.closeAddPolicyCategory && $options.closeAddPolicyCategory.apply($options, arguments);
     }),
@@ -26418,7 +26964,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     y1: "6",
     x2: "18",
     y2: "18"
-  })], -1 /* CACHED */)]))), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Header End ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  })], -1 /* CACHED */)]))), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Header End ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     ref: "addPolicyCategoryForm",
     onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.onSubmit && $options.onSubmit.apply($options, arguments);
@@ -26433,18 +26979,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "text",
     "class": "w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow",
     placeholder: "กรุณากรอกข้อมูล"
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.name]]), $setup.v$.form.name.$error ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.v$.form.name.$error[0].$message), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "col-span-2"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    type: "submit",
-    "class": "w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 rounded-lg hover:bg-blue-700"
-  }, " บันทึก ")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.name]]), $setup.v$.form.name.$error ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.v$.form.name.$error[0].$message), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     onClick: _cache[4] || (_cache[4] = function () {
       return $options.onResetForm && $options.onResetForm.apply($options, arguments);
     }),
     "class": "w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-gray-500 rounded-lg hover:bg-gray-700"
-  }, " ล้าง ")])])], 544 /* NEED_HYDRATION, NEED_PATCH */)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
+  }, " ล้าง ")]), _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "col-span-2"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    "class": "w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 rounded-lg hover:bg-blue-700"
+  }, " บันทึก ")], -1 /* CACHED */))])], 544 /* NEED_HYDRATION, NEED_PATCH */)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -26469,23 +27015,159 @@ function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 
 var _hoisted_1 = {
-  "class": "fixed top-0 left-0 flex items-center justify-center w-full h-full modal"
+  "class": "w-full overflow-hidden rounded-lg shadow-xs"
 };
 var _hoisted_2 = {
-  "class": "z-50 w-11/12 p-5 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
+  "class": "w-full overflow-x-auto"
 };
 var _hoisted_3 = {
-  "class": "w-full h-auto mb-4"
+  "class": "w-full whitespace-no-wrap"
 };
 var _hoisted_4 = {
-  ref: "addPolicyCategoryForm"
+  "class": "bg-white divide-y"
+};
+var _hoisted_5 = {
+  "class": "px-4 py-3 font-medium"
+};
+var _hoisted_6 = {
+  "class": "px-4 py-3"
+};
+var _hoisted_7 = {
+  "class": "px-4 py-3"
+};
+var _hoisted_8 = {
+  "class": "px-4 py-3 text-sm"
+};
+var _hoisted_9 = {
+  "class": "px-4 py-3"
+};
+var _hoisted_10 = {
+  "class": "flex gap-1"
+};
+var _hoisted_11 = ["onClick"];
+var _hoisted_12 = ["onClick"];
+var _hoisted_13 = ["onClick"];
+var _hoisted_14 = {
+  key: 0
+};
+var _hoisted_15 = {
+  "class": "flex items-center justify-between p-6 border-b"
+};
+var _hoisted_16 = {
+  "class": "text-xl font-medium"
+};
+var _hoisted_17 = {
+  "class": "flex-1 p-6 overflow-y-auto"
+};
+var _hoisted_18 = {
+  "class": "space-y-4"
+};
+var _hoisted_19 = {
+  "class": "pt-4 border-t"
+};
+var _hoisted_20 = {
+  "class": "flex mb-3 border-b"
+};
+var _hoisted_21 = {
+  key: 0,
+  "class": "space-y-3"
+};
+var _hoisted_22 = {
+  "class": "flex gap-2"
+};
+var _hoisted_23 = {
+  key: 1,
+  "class": "space-y-3"
+};
+var _hoisted_24 = ["value"];
+var _hoisted_25 = {
+  key: 2,
+  "class": "p-3 mb-3 overflow-y-auto bg-gray-50 border rounded max-h-64"
+};
+var _hoisted_26 = {
+  "class": "flex item-center justify-between mb-2"
+};
+var _hoisted_27 = {
+  "class": "text-sm font-medium"
+};
+var _hoisted_28 = {
+  "class": "flex-1 min-w-0"
+};
+var _hoisted_29 = {
+  "class": "text-sm font-medium truncate"
+};
+var _hoisted_30 = {
+  "class": "text-xs text-gray-600 truncate"
+};
+var _hoisted_31 = {
+  key: 0,
+  "class": "ml-2 text-gray-500"
+};
+var _hoisted_32 = ["onClick"];
+var _hoisted_33 = {
+  key: 1,
+  "class": "flex-shrink-0 ml-2 text-xs text-grey-500"
+};
+var _hoisted_34 = {
+  "class": "p-3 overflow-y-auto bg-white border rounded max-h-80"
+};
+var _hoisted_35 = {
+  "class": "flex items-center justify-between pb-2 mb-2 bg-white border-b"
+};
+var _hoisted_36 = {
+  "class": "text-sm font-medium"
+};
+var _hoisted_37 = {
+  key: 0,
+  "class": "py-8 text-center text-gray-500"
+};
+var _hoisted_38 = {
+  "class": "flex-1 min-w-0"
+};
+var _hoisted_39 = {
+  "class": "text-sm font-medium truncate"
+};
+var _hoisted_40 = {
+  "class": "text-sm text-gray-600 truncate"
+};
+var _hoisted_41 = ["onClick"];
+var _hoisted_42 = {
+  "class": "flex justify-end gap-2 p-6 border-t bg-gray-50"
+};
+var _hoisted_43 = ["disabled"];
+var _hoisted_44 = {
+  "class": "flex items-center justify-between p-6 border-b"
+};
+var _hoisted_45 = {
+  "class": "text-lg font-medium"
+};
+var _hoisted_46 = {
+  "class": "p-6 overflow-y-auto flex-1"
+};
+var _hoisted_47 = {
+  key: 0,
+  "class": "text-center py-8 text-gray-500"
+};
+var _hoisted_48 = {
+  "class": "flex-1"
+};
+var _hoisted_49 = {
+  "class": "font-medium"
+};
+var _hoisted_50 = {
+  "class": "font-sm text-gray-600"
+};
+var _hoisted_51 = {
+  "class": "p-6 border-t bg-gray-50"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  var _$setup$viewingGroup;
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "flex items-center justify-between my-8"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.openCreateModal,
     "class": "flex items-center justify-between px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, _toConsumableArray(_cache[11] || (_cache[11] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     "class": "w-4 h-4 mr-2 -ml-1",
     fill: "none",
     viewBox: "0 0 24 24",
@@ -26495,7 +27177,223 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "stroke-linejoin": "round",
     "stroke-width": "2",
     d: "M12 4v16m8-8H4"
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "สร้างกลุ่มใหม่")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ตารางแสดงประเภทนโยบาย "), _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"w-full overflow-hidden rounded-lg shadow-xs\"><div class=\"w-full overflow-x-auto\"><table class=\"w-full whitespace-no-wrap\"><thead><tr class=\"text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border\"><th class=\"px-4 py-3\">ชื่อกลุ่ม</th><th class=\"px-4 py-3\">ประเภท</th><th class=\"px-4 py-3\">จำนวนสมาชิก</th><th class=\"px-4 py-3\">ดำเนินการ</th></tr></thead><tbody class=\"bg-white divide-y dark:divide-gray-700 dark:bg-gray-800\"><tr class=\"text-gray-700 dark:text-gray-400 hover:bg-blue-100\"><td class=\"px-4 py-3\"><div class=\"flex items-center text-sm\"><div class=\"relative hidden w-full h-8 mr-3 rounded-full md:block\"><p></p></div></div></td><td class=\"px-4 py-3 text-sm\"><button class=\"px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-yellow-400 border border-transparent rounded-lg active:bg-yellow-300 hover:bg-yellow-500 focus:outline-none\"><svg class=\"w-3 h-3\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg></button><button class=\"px-4 py-2 mx-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-500 hover:bg-red-700 focus:outline-none\"><svg class=\"w-3 h-3\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></button></td></tr></tbody></table><!-- &lt;VueAwesomePaginate v-model=&quot;currentPage&quot; :total-items=&quot;total&quot; :items-per-page=&quot;perPage&quot;\r\n                :max-pages-shown=&quot;7&quot; :on-click=&quot;onPageChanged&quot; /&gt; --></div></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Popup สำหรับเพิ่มประเภทนโยบายใหม่"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Header"), _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex items-center justify-center w-full h-auto\"><div class=\"flex items-start justify-start w-full h-auto py-2 text-xl font-bold\"><h3 class=\"text-lg font-semibold\"></h3></div><div class=\"flex items-center justify-center w-1/12 h-auto cursor-pointer\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#000000\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-x\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line></svg></div><!-- Header End --></div>", 1)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_4, _toConsumableArray(_cache[0] || (_cache[0] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<label for=\"name\" class=\"block my-3 text-gray-700 text-md\">ประเภทนโยบาย</label><input type=\"text\" class=\"w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow\" placeholder=\"กรุณากรอกข้อมูล\"><div class=\"mt-2 text-sm text-red-500\"></div><div class=\"grid grid-cols-3 gap-4\"><div class=\"col-span-2\"><button type=\"submit\" class=\"w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 rounded-lg hover:bg-blue-700\"> บันทึก </button></div><div><button type=\"button\" class=\"w-full px-4 py-2 mt-4 font-medium leading-5 text-white transition-colors duration-150 bg-gray-500 rounded-lg hover:bg-gray-700\"> ล้าง </button></div></div>", 4)])), 512 /* NEED_PATCH */)])])])], 64 /* STABLE_FRAGMENT */);
+  })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "สร้างกลุ่มใหม่", -1 /* CACHED */)])))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ตารางแสดงประเภทนโยบาย "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+    "class": "text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "px-4 py-3"
+  }, "ชื่อกลุ่ม"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "px-4 py-3"
+  }, "ประเภท"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "px-4 py-3"
+  }, "จำนวนสมาชิก"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "px-4 py-3"
+  }, "สร้างเมื่อ"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+    "class": "px-4 py-3"
+  }, "ดำเนินการ")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.groups, function (group) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      key: group.id,
+      "class": "hover:bg-gray-50"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(group.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["px-2 py-1 text-xs rounded-full", {
+        'bg-blue-100 text-blue-800': group.type === 'department',
+        'bg-green-100 text-green-800': group.type === 'level',
+        'bg-gray-100 text-gray-800': group.type === 'custom'
+      }])
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.getTypeLabel(group.type)), 3 /* TEXT, CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(group.members_count) + " คน", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.formatDate(group.created_at)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $setup.viewMembers(group);
+      },
+      "class": "px-2 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 flex items-center gap-1",
+      title: "ดูสมาชิก"
+    }, _toConsumableArray(_cache[12] || (_cache[12] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      "class": "w-4 h-4",
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 640 512"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+      fill: "#ffffff",
+      d: "M320 16a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM96 88a72 72 0 1 1 0 144 72 72 0 1 1 0-144zM0 416c0-70.7 57.3-128 128-128 12.8 0 25.2 1.9 36.9 5.4-32.9 36.8-52.9 85.4-52.9 138.6l0 16c0 11.4 2.4 22.2 6.7 32L32 480c-17.7 0-32-14.3-32-32l0-32zm521.3 64c4.3-9.8 6.7-20.6 6.7-32l0-16c0-53.2-20-101.8-52.9-138.6 11.7-3.5 24.1-5.4 36.9-5.4 70.7 0 128 57.3 128 128l0 32c0 17.7-14.3 32-32 32l-86.7 0zM472 160a72 72 0 1 1 144 0 72 72 0 1 1 -144 0zM160 432c0-88.4 71.6-160 160-160s160 71.6 160 160l0 16c0 17.7-14.3 32-32 32l-256 0c-17.7 0-32-14.3-32-32l0-16z"
+    })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "สมาชิก", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_11), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $setup.editGroup(group);
+      },
+      "class": "px-3 py-2 text-white bg-yellow-500 rounded hover:bg-yellow-600 flex items-center gap-1",
+      title: "แก้ไข"
+    }, _toConsumableArray(_cache[13] || (_cache[13] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      "class": "w-4 h-4",
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 640 512"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+      fill: "#fafcff",
+      d: "M256.1 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56c-98.5 0-178.3 79.8-178.3 178.3 0 16.4 13.3 29.7 29.7 29.7l196.5 0 10.9-54.5c4.3-21.7 15-41.6 30.6-57.2l67.3-67.3c-28-18.3-61.4-28.9-97.4-28.9l-59.4 0zM332.3 466.9l-11.9 59.6c-.2 .9-.3 1.9-.3 2.9 0 8 6.5 14.6 14.6 14.6 1 0 1.9-.1 2.9-.3l59.6-11.9c12.4-2.5 23.8-8.6 32.7-17.5l118.9-118.9-80-80-118.9 118.9c-8.9 8.9-15 20.3-17.5 32.7zm267.8-123c22.1-22.1 22.1-57.9 0-80s-57.9-22.1-80 0l-28.8 28.8 80 80 28.8-28.8z"
+    })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "แก้ไข", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_12), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $setup.deleteGroup(group.id);
+      },
+      "class": "px-3 py-2 text-white bg-red-600 rounded hover:bg-red-700 flex items-center gap-1",
+      title: "ลบ"
+    }, _toConsumableArray(_cache[14] || (_cache[14] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      "class": "w-4 h-4",
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 448 512"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+      fill: "#ffffff",
+      d: "M136.7 5.9L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-8.7-26.1C306.9-7.2 294.7-16 280.9-16L167.1-16c-13.8 0-26 8.8-30.4 21.9zM416 144L32 144 53.1 467.1C54.7 492.4 75.7 512 101 512L347 512c25.3 0 46.3-19.6 47.9-44.9L416 144z"
+    })], -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "ลบ", -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_13)])])]);
+  }), 128 /* KEYED_FRAGMENT */)), $setup.groups.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_14, _toConsumableArray(_cache[15] || (_cache[15] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: "6",
+    "class": "px-4 py-8 text-center text-gray-500"
+  }, " ยังไม่มีกลุ่มผู้รับนโยบาย ", -1 /* CACHED */)])))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <VueAwesomePaginate v-model=\"currentPage\" :total-items=\"total\" :items-per-page=\"perPage\"\r\n                :max-pages-shown=\"7\" :on-click=\"onPageChanged\" /> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal สร้าง/แก้ไขกลุ่มผู้รับ "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
+    to: "body"
+  }, [$setup.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
+    onClick: $setup.closeModal,
+    "class": "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    onClick: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["stop"])),
+    "class": "bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Header "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.isEdit ? 'แก้ไขกลุ่มผู้รับนโยบาย' : 'สร้างกลุ่มผู้รับนโยบาย'), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.closeModal,
+    "class": "text-2xl text-gray-500 hover:text-gray-700"
+  }, " ✕ ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ชื่อกลุ่ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[17] || (_cache[17] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "class": "block mb-1 text-sm font-medium"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ชื่อกลุ่ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "text-red-500"
+  }, "*")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $setup.form.name = $event;
+    }),
+    type: "text",
+    "class": "w-full px-3 py-2 border rounded focus:ring-2 focus:ring-red-200",
+    placeholder: "เช่น แผนก ICT, ผู้จัดการทุกแผนก"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ประเภทกลุ่ม "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "class": "block mb-1 text-sm font-medium"
+  }, "ประเภทกลุ่ม", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $setup.form.type = $event;
+    }),
+    "class": "w-full px-3 py-2 border rounded focus:ring-2 focus:ring-red-200"
+  }, _toConsumableArray(_cache[18] || (_cache[18] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: "custom"
+  }, "กำหนดเอง", -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: "department"
+  }, "ตามแผนก", -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: "level"
+  }, "ตามระดับ", -1 /* CACHED */)])), 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.form.type]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" เพิ่มสมาชิก "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_cache[24] || (_cache[24] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "class": "block mb-2 text-sm font-medium"
+  }, "เพิ่มสมาชิกในกลุ่ม", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tabs "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $setup.memberTab = 'search';
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['px-4 py-2 font-medium', $setup.memberTab === 'search' ? 'border-b-2 border-red-600 text-red-600' : 'text-gray-500'])
+  }, " ค้นหา ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[3] || (_cache[3] = function ($event) {
+      return $setup.memberTab = 'department';
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['px-4 py-2 font-medium', $setup.memberTab === 'department' ? 'border-b-2 border-red-600 text-red-600' : 'text-gray-500'])
+  }, " ตามแผนก ", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.loadAllEmployees,
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['px-4 py-2 font-medium', $setup.memberTab === 'all' ? 'border-b-2 border-red-600 text-red-600' : 'text-gray-500'])
+  }, " ทั้งหมด ", 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tab ค้นหา "), $setup.memberTab === 'search' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $setup.searchQuery = $event;
+    }),
+    type: "text",
+    onKeyup: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)($setup.searchEmployees, ["enter"]),
+    "class": "flex-1 px-3 py-2 border rounded focus:ring-2 focus:ring-blue-100",
+    placeholder: "ค้นหาด้วย ชื่อ, Email, รหัสพนักงาน"
+  }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.searchQuery]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.searchEmployees,
+    "class": "px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+  }, " ค้นหา ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Tab: ตามแผนก "), $setup.memberTab === 'department' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return $setup.selectedDepartment = $event;
+    }),
+    onChange: $setup.loadByDepartment,
+    "class": "w-full px-3 py-2 border rounded focus:ring-2 focus:ring-red-200"
+  }, [_cache[20] || (_cache[20] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+    value: ""
+  }, "-- เลือกแผนก --", -1 /* CACHED */)), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.departments, function (dept) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      key: dept,
+      value: dept
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(dept), 9 /* TEXT, PROPS */, _hoisted_24);
+  }), 128 /* KEYED_FRAGMENT */))], 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $setup.selectedDepartment]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ผลการค้นหา "), $setup.searchResults.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_27, " ผลการค้นหา (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.searchResults.length) + " คน) ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.addAllSearchResults,
+    "class": "px-2 py-1 text-xs text-white bg-green-600 rounded hover:bg-green-700"
+  }, " เพิ่มทั้งหมด ")]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.searchResults, function (emp) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: emp.EmpCode,
+      "class": "flex items-center justify-between px-2 py-2 rounded hover:bg-white"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(emp.full_name) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(emp.EmpCode) + ") ", 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(emp.email) + " ", 1 /* TEXT */), emp.Department ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_31, " • " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(emp.Department), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), !$setup.isMemberAdded(emp.email) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      key: 0,
+      onClick: function onClick($event) {
+        return $setup.addMember(emp);
+      },
+      "class": "flex-shrink-0 px-3 py-1 ml-2 text-xs text-white bg-green-600 rounded hover:bg-green-700"
+    }, " เพิ่ม", 8 /* PROPS */, _hoisted_32)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_33, _toConsumableArray(_cache[21] || (_cache[21] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      "class": "w-5 h-5",
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 448 512"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+      fill: "#04e000",
+      d: "M384 32c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32l320 0zM342 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L189.1 315.2 137 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.9 7.5 18.8 7s13.4-4.1 17.5-9.8L347.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"
+    })], -1 /* CACHED */)]))))]);
+  }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" สมาชิกปัจจุบัน "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_36, " สมาชิกในกลุ่ม (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.members.length) + " คน) ", 1 /* TEXT */), $setup.form.members.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    onClick: $setup.clearAllMembers
+  }, "ลบทั้งหมด")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $setup.form.members.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_37, _toConsumableArray(_cache[22] || (_cache[22] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "ยังไม่มีสมาชิกในกลุ่ม", -1 /* CACHED */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "mt-1 text-xs"
+  }, "กรุณาค้นหาและเพิ่มสมาชิก", -1 /* CACHED */)])))) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.form.members, function (member, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: index,
+      "class": "flex items-center justify-between px-2 py-2 border-b rounded last:border-0 hover:bg-gray-50"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(member.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(member.email), 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $setup.removeMember(index);
+      },
+      "class": "flex-shrink-0 ml-2 text-red-600 hover:text-red-800"
+    }, _toConsumableArray(_cache[23] || (_cache[23] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+      "class": "h-5 w-5",
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 640 512"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+      fill: "#cc0000",
+      d: "M136 128a120 120 0 1 1 240 0 120 120 0 1 1 -240 0zM48 482.3C48 383.8 127.8 304 226.3 304l59.4 0c98.5 0 178.3 79.8 178.3 178.3 0 16.4-13.3 29.7-29.7 29.7L77.7 512C61.3 512 48 498.7 48 482.3zM472 168l144 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-144 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
+    })], -1 /* CACHED */)])), 8 /* PROPS */, _hoisted_41)]);
+  }), 128 /* KEYED_FRAGMENT */))])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Footer "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.closeModal,
+    "class": "px-6 py-2 bg-gray-200 rounded hover:bg-gray-300"
+  }, "ยกเลิก"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: $setup.saveGroup,
+    disabled: !$setup.form.name || $setup.form.members.length === 0,
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['px-6 py-2 rounded', $setup.form.name && $setup.form.members.length > 0 ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-300 text-gray-500 cursor-now-allowed'])
+  }, "บันทึก", 10 /* CLASS, PROPS */, _hoisted_43)])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
+    to: "body"
+  }, [$setup.showMembersModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
+    onClick: _cache[10] || (_cache[10] = function ($event) {
+      return $setup.showMembersModal = false;
+    }),
+    "class": "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    onClick: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["stop"])),
+    "class": "bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_45, "สมาชิกในกลุ่ม: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$setup$viewingGroup = $setup.viewingGroup) === null || _$setup$viewingGroup === void 0 ? void 0 : _$setup$viewingGroup.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[7] || (_cache[7] = function ($event) {
+      return $setup.showMembersModal = false;
+    }),
+    "class": "text-2xl text-gray-500 hover:text-gray-700"
+  }, " ✕ ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [$setup.viewingMembers.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_47, " ไม่มีสมาชิกในกลุ่มนี้ ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.viewingMembers, function (member, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+      key: index,
+      "class": "flex items-center py-3 border-b last:border-0"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(member.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(member.email), 1 /* TEXT */)])]);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[8] || (_cache[8] = function ($event) {
+      return $setup.showMembersModal = false;
+    }),
+    "class": "w-full px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+  }, " ปิด ")])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -26881,7 +27779,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.pagination-container {\r\n    margin-top: 10px;\r\n    background-color: #f0f0f0;\r\n    border-radius: 5px;\r\n    padding: 10px 0px;\n}\n.paginate-buttons {\r\n    width: 30px;\r\n    height: 30px;\r\n    margin-inline: 5px;\r\n    cursor: pointer;\r\n    border: none;\r\n    background-color: transparent;\r\n    border-radius: 2px;\n}\n.back-button {\r\n    width: 30px;\n}\n.next-button {\r\n    width: 30px;\n}\n.back-button svg {\r\n    transform: rotate(180deg);\n}\n.active-page {\r\n    background-color: #2980b9;\r\n    color: #fff;\n}\n.paginate-buttons:hover {\r\n    background-color: #e5e5e5;\n}\n.active-page:hover {\r\n    background-color: #3b8cc3;\r\n    color: #fff;\n}\n.back-button:active,\r\n.next-button:active {\r\n    background-color: #dedede;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.example-one .pagination-container {\r\n    -moz-column-gap: 5px;\r\n         column-gap: 5px;\r\n    background-color: #F9FAFB;\n}\n.example-one .paginate-buttons {\r\n    height: 30px;\r\n    width: 30px;\r\n    border-radius: 20px;\r\n    cursor: pointer;\r\n    background-color: rgb(242, 242, 242);\r\n    border: 1px solid rgb(217, 217, 217);\r\n    color: black;\n}\n.example-one .paginate-buttons:hover {\r\n    background-color: #d8d8d8;\n}\n.example-one .active-page {\r\n    background-color: #991B1B;\r\n    border: 1px solid #991B1B;\r\n    color: white;\n}\n.example-one .active-page:hover {\r\n    background-color: #b81b1b;\r\n    border: 1px solid #b81b1b;\n}\n.example-one .back-button:active,\r\n.example-one .next-button:active {\r\n    background-color: #c4c4c4;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

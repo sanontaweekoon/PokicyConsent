@@ -1,6 +1,7 @@
 <?php
 
 /* ส่วนของ Admin จัดการระบบ */
+
 use App\Http\Controllers\Admin\CompaniesController;
 // ส่วนของการสร้างนโยบาย เพิ่ม แก้ไข ลบ 
 use App\Http\Controllers\Admin\PoliciesController;
@@ -10,6 +11,10 @@ use App\Http\Controllers\Admin\PolicyCategoriesController;
 use App\Http\Controllers\Admin\PolicyWindowActionController;
 // ส่วนของการเปิด-ปิด การรับทราบของนโยบาย
 use App\Http\Controllers\Admin\PolicyWindowController;
+// ส่วนของการดึงรายชื่อพนักงาน
+use App\Http\Controllers\Admin\EmployeeController;
+// ส่วนของการจัดการกลุ่มผู้รับ
+use App\Http\Controllers\Admin\RecipientGroupController;
 
 // ส่วนของการเข้าใช้งานระบบ เฉพาะ Admin
 use App\Http\Controllers\AuthController;
@@ -83,6 +88,13 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::put('policy-windows/{window}/toggle', [PolicyWindowController::class, 'toggle']);
         Route::put('policy-windows/{window}/open', [PolicyWindowController::class, 'open']);
         Route::put('policy-windows/{window}/close', [PolicyWindowController::class, 'close']);
+
+        Route::apiResource('recipient-groups', RecipientGroupController::class);
+
+        Route::get('employees', [EmployeeController::class, 'index']);
+        Route::get('employees/search', [EmployeeController::class, 'search']);
+        Route::get('employees/departments', [EmployeeController::class, 'departments']);
+        Route::get('employees/by-department', [EmployeeController::class, 'byDepartment']);
     });
 
     // Logout

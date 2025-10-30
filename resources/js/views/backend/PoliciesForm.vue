@@ -2,7 +2,6 @@
   <div class="flex items-center my-5 space-y-6">
     <!-- ฟอร์ม -->
     <form class="container mx-auto">
-      <!-- ซ้าย -->
       <div class="space-y-2">
         <div class="grid grid-cols-1">
           <div class="flex">
@@ -10,23 +9,13 @@
 
             <div class="flex flex-col">
               <div class="flex items-center gap-2">
-                <input
-                  type="radio"
-                  id="option1"
-                  name="recipient"
-                  value="all"
-                  class="w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500"
-                />
+                <input type="radio" id="option1" name="recipient" value="all"
+                  class="w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500" />
                 <label for="option1" class="text-gray-700">ทุกคน</label>
               </div>
               <div class="flex items-center gap-2 mt-2">
-                <input
-                  type="radio"
-                  id="option2"
-                  name="recipient"
-                  value="group"
-                  class="w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500"
-                />
+                <input type="radio" id="option2" name="recipient" value="group"
+                  class="w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500" />
                 <label for="option2" class="text-gray-700">กำหนดเป้าหมาย</label>
               </div>
             </div>
@@ -39,75 +28,44 @@
 
             <div class="flex flex-col">
               <div class="flex items-center gap-2">
-                <input
-                  type="radio"
-                  id="option3"
-                  name="announce"
-                  value="now"
-                  v-model="announce"
-                  class="w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500"
-                />
+                <input type="radio" id="option3" name="announce" value="now" v-model="announce"
+                  class="w-4 h-4 text-red-600 accent-red-700 focus:ring-red-500" />
                 <label for="option3" class="text-gray-700">ประกาศตอนนี้</label>
               </div>
 
               <div class="grid grid-cols-2">
                 <div class="flex items-center gap-3 mt-2">
-                  <input
-                    type="radio"
-                    id="option4"
-                    name="announce"
-                    value="scheduled"
-                    v-model="announce"
-                    class="w-4 h-4 text-red-600 scale-125 accent-red-700 focus:ring-red-500"
-                  />
+                  <input type="radio" id="option4" name="announce" value="scheduled" v-model="announce"
+                    class="w-4 h-4 text-red-600 scale-125 accent-red-700 focus:ring-red-500" />
                   <label for="option4" class="text-gray-700">
                     <div class="flex flex-row">
                       <div class="flex flex-col">
-                        <VueFlatpickr
-                          v-model="form.publish_date"
-                          :config="{
-                            dateFormat: 'Y-m-d',
-                            minDate: 'today',
-                          }"
-                          placeholder="YYYY-MM-DD"
-                          :disabled="announce !== 'scheduled'"
-                          :key="'date-' + announce"
-                          class="px-3 py-2 mr-5 border rounded"
-                        />
-                        <div
-                          v-if="publishErrors.publish_date"
-                          class="mt-2 text-sm text-red-500"
-                        >
+                        <VueFlatpickr v-model="form.publish_date" :config="{
+                          dateFormat: 'Y-m-d',
+                          minDate: 'today',
+                        }" placeholder="YYYY-MM-DD" :disabled="announce !== 'scheduled'" :key="'date-' + announce"
+                          class="px-3 py-2 mr-5 border rounded" />
+                        <div v-if="publishErrors.publish_date" class="mt-2 text-sm text-red-500">
                           {{ publishErrors.publish_date }}
                         </div>
                       </div>
 
                       <div class="flex flex-col">
-                        <VueFlatpickr
-                          v-model="form.publish_time"
-                          :config="{
-                            enableTime: true,
-                            noCalendar: true,
-                            dateFormat: 'H:i',
-                            time_24hr: true,
-                            minuteIncrement: 1,
-                          }"
-                          placeholder="HH:MM"
-                          :disabled="announce !== 'scheduled'"
-                          :key="'time-' + announce"
-                          class="px-3 py-2 mr-5 border rounded"
-                        />
-                        <div
-                          v-if="publishErrors.publish_time"
-                          class="mt-2 text-sm text-red-500"
-                        >
+                        <VueFlatpickr v-model="form.publish_time" :config="{
+                          enableTime: true,
+                          noCalendar: true,
+                          dateFormat: 'H:i',
+                          time_24hr: true,
+                          minuteIncrement: 1,
+                        }" placeholder="HH:MM" :disabled="announce !== 'scheduled'" :key="'time-' + announce"
+                          class="px-3 py-2 mr-5 border rounded" />
+                        <div v-if="publishErrors.publish_time" class="mt-2 text-sm text-red-500">
                           {{ publishErrors.publish_time }}
                         </div>
                       </div>
 
                       <div
-                        class="w-auto px-3 my-auto text-xs text-center text-gray-500 border-2 text-nowrap rounded-xl"
-                      >
+                        class="w-auto px-3 my-auto text-xs text-center text-gray-500 border-2 text-nowrap rounded-xl">
                         <p>UTC +7:00</p>
                       </div>
                     </div>
@@ -121,12 +79,8 @@
         <div class="grid grid-cols-2 gap-5">
           <div>
             <label class="block mb-1 font-medium">หัวข้อ *</label>
-            <input
-              type="text"
-              v-model="form.title"
-              class="w-full px-3 py-2 border rounded"
-              placeholder="ระบุหัวข้อนโยบาย"
-            />
+            <input type="text" v-model="form.title" class="w-full px-3 py-2 border rounded"
+              placeholder="ระบุหัวข้อนโยบาย" />
             <div v-if="publishErrors.title" class="mt-2 text-sm text-red-500">
               {{ publishErrors.title }}
             </div>
@@ -134,19 +88,13 @@
 
           <div>
             <label class="block mb-1 font-medium">ประเภทนโยบาย *</label>
-            <select
-              v-model="form.category_id"
-              class="w-full px-3 py-2 bg-white border rounded"
-            >
+            <select v-model="form.category_id" class="w-full px-3 py-2 bg-white border rounded">
               <option :value="null">— เลือกประเภท —</option>
               <option v-for="c in categories" :key="c.id" :value="c.id">
                 {{ c.name }}
               </option>
             </select>
-            <div
-              v-if="publishErrors.category_id"
-              class="mt-2 text-sm text-red-500"
-            >
+            <div v-if="publishErrors.category_id" class="mt-2 text-sm text-red-500">
               {{ publishErrors.category_id }}
             </div>
             <small v-if="catLoading" class="text-grey 500">กำลังโหลด...</small>
@@ -156,46 +104,26 @@
 
       <div class="mt-5 space-y-3 md:col-span-2">
         <div class="flex">
-          <label class="flex mb-1 font-medium"
-            >ข้อมูลนโยบาย/มาตรการองค์กร *</label
-          >
-          <div
-            v-if="publishErrors.description"
-            class="mx-3 my-auto text-sm text-red-500"
-          >
+          <label class="flex mb-1 font-medium">ข้อมูลนโยบาย/มาตรการองค์กร *</label>
+          <div v-if="publishErrors.description" class="mx-3 my-auto text-sm text-red-500">
             {{ publishErrors.description }}
           </div>
         </div>
         <div>
-          <Editor
-            v-model="content"
-            :init="tinymceInit"
-            @init="onEditorInit"
-            :tinymce-script-src="'/tinymce/tinymce.min.js'"
-          />
+          <Editor v-model="content" :init="tinymceInit" @init="onEditorInit"
+            :tinymce-script-src="'/tinymce/tinymce.min.js'" />
         </div>
       </div>
 
       <div class="flex items-center justify-center w-full my-5 space-x-5">
-        <button
-          type="button"
-          @click="cancel"
-          class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700"
-        >
+        <button type="button" @click="cancel" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">
           ยกเลิก
         </button>
-        <button
-          type="button"
-          @click="saveDraft"
-          class="px-4 py-2 text-white rounded-lg bg-zinc-500 hover:bg-zinc-700"
-        >
+        <button type="button" @click="saveDraft" class="px-4 py-2 text-white rounded-lg bg-zinc-500 hover:bg-zinc-700">
           บันทึกฉบับร่าง
         </button>
-        <button
-          type="button"
-          @click="publishPolicy"
-          class="px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
-        >
+        <button type="button" @click="publishPolicy"
+          class="px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700">
           ประกาศ
         </button>
       </div>
@@ -218,6 +146,7 @@ import "flatpickr/dist/flatpickr.css";
 const content = ref(""); // เก็บ text จาก TinyMCE
 const editorRef = ref(null);
 const announce = ref("now");
+const recipientGroups = ref([]); // กลุ่มเป้าหมายผู้รับนโยบาย
 
 function clearScheduleFields() {
   form.value.publish_date = "";
@@ -230,6 +159,12 @@ watch(announce, async (val) => {
   if (val === "now") {
     clearScheduleFields();
     await nextTick();
+  }
+});
+
+watch(() => form.value.recipient_type, (newType) => {
+  if (newType === 'all') {
+    form.value.recipient_emails = [];
   }
 });
 
@@ -246,7 +181,11 @@ function clearPublishErrors() {
 function collectValidationErrors() {
   clearPublishErrors();
   const v = v$.value;
-  alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย");
+
+  if (form.value.recipientt_type === 'target' && form.value.recipient_emails.length === 0) {
+    publishErrors.value.recipient_emails = "กรุณาเลือกผู้รับนโยบายอย่างน้อย 1 คน";
+  }
+
   for (const key of Object.keys(v)) {
     if (v[key] && v[key].$errors && v[key].$errors.length) {
       publishErrors.value[key] =
@@ -254,7 +193,7 @@ function collectValidationErrors() {
     }
   }
   if (Object.keys(publishErrors.value).length === 0) {
-    publishErrors.value._general = "กรุณากรอกข้อมูลให้ครบถ้วน";
+    alert("กรุณากรอกข้อมูลให้ครบถ้วนก่อนประกาศนโยบาย");
   }
   publishErrors.value = { ...publishErrors.value };
 }
@@ -280,6 +219,8 @@ const form = ref({
   publish_at: "",
   publish_date: "",
   publish_time: "",
+  recipient_type: "all",
+  recipient_emails: [],
 });
 
 const rules = {

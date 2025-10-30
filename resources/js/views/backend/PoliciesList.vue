@@ -94,7 +94,7 @@
                         <th class="px-4 py-3">หัวข้อ</th>
                         <th class="px-4 py-3">เวลาประกาศ</th>
                         <th class="px-4 py-3">สถานะ</th>
-                        <th class="px-4 py-3">QR Coe</th>
+                        <th class="px-4 py-3">QR Code</th>
                         <th class="px-4 py-3">ดำเนินการ</th>
                     </tr>
                 </thead>
@@ -121,7 +121,7 @@
                                         ? 'bg-green-100 text-green-800 hover:bg-green-200'
                                         : 'bg-red-100 text-red-800 hover:bg-red-200'  
                                 ]">
-                                {{  policy.policy_windows[0]?.is_open ? 'เปิดการรับทราบ' : 'ปิดการรับทราบ' }}
+                                {{  policy.policy_windows[0]?.is_open ? 'เปิดการรับทราบ' : 'ปิด' }}
                                 </button>
                             </div>
                         </td>
